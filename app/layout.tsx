@@ -34,7 +34,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="h-full">
       <head>
-        <link rel="apple-touch-icon" href="/icons/homefront_icon-180.png" />
+        <link rel="apple-touch-icon" href="/icons/homefront_homefront_logo_transparent.png" />
       </head>
       <body className="h-full">
         <PWARegister />

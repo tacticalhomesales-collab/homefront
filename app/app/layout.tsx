@@ -33,6 +33,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="h-full">
+      <head>
+        <link rel="apple-touch-icon" href="/icons/homefront_homefront_logo_transparent.png" />
+      </head>
       <body className="h-full">
         <PWARegister />
         <Suspense fallback={<div className="min-h-[100dvh] bg-[#0b0f14]" />}>
