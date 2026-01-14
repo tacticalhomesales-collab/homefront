@@ -65,7 +65,13 @@ function AudienceContent() {
 
 export default function AudiencePage() {
   return (
-    <Suspense fallback={<PhoneShell title="Service Profile" subtitle="Select what best fits you." /> }>
+    <Suspense
+      fallback={
+        <PhoneShell title="Service Profile" subtitle="Select what best fits you.">
+          <div className="h-8" />
+        </PhoneShell>
+      }
+    >
       <AudienceContent />
     </Suspense>
   );
