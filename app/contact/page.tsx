@@ -1,9 +1,10 @@
 "use client";
 
-import { useMemo, useRef, useState, useEffect } from "react";
+import dynamic from "next/dynamic";
+import { Suspense, useMemo, useRef, useState, useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 
-export default function ContactPage() {
+function ContactContent() {
   const sp = useSearchParams();
   const router = useRouter();
   const didNavigate = useRef(false);
@@ -74,10 +75,8 @@ export default function ContactPage() {
 
   return (
     <main className="min-h-[100dvh] w-full bg-[#0b0f14] text-white px-4">
-      {/* Same scaffold vibe as your other pages */}
       <div className="min-h-[100dvh] flex flex-col items-center text-center pt-8 pb-10">
         <div className="w-full max-w-md relative">
-          {/* Logo */}
           <div className="mx-auto w-full max-w-[95vw] mt-16 pointer-events-none select-none">
             <img
               src="/homefront-badge.png"
@@ -87,7 +86,6 @@ export default function ContactPage() {
             />
           </div>
 
-          {/* Title */}
           <div className="-mt-6 flex flex-col items-center justify-center">
             <h1 className="text-4xl font-extrabold tracking-tight leading-none">
               Contact Info
@@ -97,7 +95,6 @@ export default function ContactPage() {
             </p>
           </div>
 
-          {/* Form */}
           <form onSubmit={onSubmit} className="mt-5 text-left relative z-50">
             <label className="block">
               <span className="block text-[12px] font-extrabold tracking-wide text-white/70">
@@ -134,7 +131,6 @@ export default function ContactPage() {
               />
             </label>
 
-            {/* Optional email at the bottom (per your request) */}
             <label className="block mt-4">
               <span className="block text-[12px] font-extrabold tracking-wide text-white/70">
                 EMAIL (OPTIONAL)
@@ -193,3 +189,13 @@ export default function ContactPage() {
     </main>
   );
 }
+
+function ContactPage() {
+  return (
+    <Suspense fallback={<div className="min-h-[100dvh] w-full bg-[#0b0f14]" />}>
+      <ContactContent />
+    </Suspense>
+  );
+}
+
+export default dynamic(() => Promise.resolve(ContactPage), { ssr: false });

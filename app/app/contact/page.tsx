@@ -1,12 +1,13 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useRouter, useSearchParams } from "next/navigation";
-import { FormEvent, useMemo, useState } from "react";
+import { FormEvent, Suspense, useMemo, useState } from "react";
 import PhoneShell from "../_components/PhoneShell";
 
 type SubmitState = "idle" | "submitting" | "success" | "error";
 
-export default function ContactPage() {
+function ContactContent() {
   const router = useRouter();
   const sp = useSearchParams();
 
@@ -160,3 +161,13 @@ export default function ContactPage() {
     </PhoneShell>
   );
 }
+
+function ContactPage() {
+  return (
+    <Suspense fallback={<div className="min-h-[100dvh] w-full bg-[#0b0f14]" />}>
+      <ContactContent />
+    </Suspense>
+  );
+}
+
+export default dynamic(() => Promise.resolve(ContactPage), { ssr: false });
