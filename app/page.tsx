@@ -34,12 +34,12 @@ export default function LandingPage() {
         >
           <div className="w-full max-w-[320px] relative">
             {/* Logo */}
-            <div className="mx-auto w-full max-w-[170px] mt-8 pointer-events-none select-none">
+            <div className="mx-auto w-full max-w-[180px] mt-8 pointer-events-none select-none">
               <img
-                src="/homefront-badge.png"
+                src="/homefront-logo.png"
                 alt="HomeFront"
-                width={340}
-                height={240}
+                width={400}
+                height={200}
                 className="w-full h-auto"
                 draggable={false}
               />
