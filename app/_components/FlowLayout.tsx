@@ -6,6 +6,12 @@ type FlowLayoutProps = {
   title: string;
   subtitle?: string;
   showLogo?: boolean;
+  logoSrc?: string;
+  logoAlt?: string;
+  logoWidth?: number;
+  logoHeight?: number;
+  logoContainerClassName?: string;
+  logoClassName?: string;
   children: React.ReactNode;
 };
 
@@ -13,6 +19,12 @@ export default function FlowLayout({
   title,
   subtitle,
   showLogo = true,
+  logoSrc = "/homefront-badge.png",
+  logoAlt = "HomeFront",
+  logoWidth = 400,
+  logoHeight = 200,
+  logoContainerClassName,
+  logoClassName,
   children,
 }: FlowLayoutProps) {
   const [mounted, setMounted] = useState(false);
@@ -62,13 +74,18 @@ export default function FlowLayout({
 
             {/* Logo - EXACT same position across all pages */}
             {showLogo && (
-              <div className="mx-auto w-full max-w-[95vw] mt-16 pointer-events-none select-none">
+              <div
+                className={
+                  logoContainerClassName ||
+                  "mx-auto w-full max-w-[95vw] mt-16 pointer-events-none select-none"
+                }
+              >
                 <img
-                  src="/homefront-badge.png"
-                  alt="HomeFront"
-                  width={400}
-                  height={200}
-                  className="w-full h-auto scale-200 origin-center"
+                  src={logoSrc}
+                  alt={logoAlt}
+                  width={logoWidth}
+                  height={logoHeight}
+                  className={logoClassName || "w-full h-auto scale-200 origin-center"}
                   draggable={false}
                 />
               </div>

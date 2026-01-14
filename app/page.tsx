@@ -11,7 +11,16 @@ export default function LandingPage() {
   const searchParams = useSearchParams();
   const [mounted, setMounted] = useState(false);
   const [showShare, setShowShare] = useState(false);
-      <FlowLayout title="HomeFront" subtitle="Streamlined access to your housing benefits">
+      <FlowLayout
+        title="HomeFront"
+        subtitle="Streamlined access to your housing benefits"
+        logoSrc="/homefront-logo.png"
+        logoAlt="HomeFront"
+        logoWidth={520}
+        logoHeight={200}
+        logoContainerClassName="mx-auto w-full max-w-[280px] mt-14 pointer-events-none select-none"
+        logoClassName="w-full h-auto"
+      >
         {/* Primary CTA matches spacing/size from page 2 buttons */}
         <div className="relative z-50 flex flex-col gap-3">
           <button
