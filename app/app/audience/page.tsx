@@ -9,9 +9,6 @@ import { useStepNav } from "../_components/useStepNav";
 
 type Choice = { label: string; nextPath: string; extra: Record<string, string> };
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
-
 function AudienceContent() {
   const router = useRouter();
   const sp = useSearchParams();
