@@ -1,0 +1,46 @@
+@import "tailwindcss";
+
+/* Keep everything sized correctly on mobile + prevent accidental zooming behavior */
+html, body {
+  height: 100%;
+  background: #0b0f14;
+  color: #fff;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Premium page transitions - subtle fade */
+@media (prefers-reduced-motion: no-preference) {
+  .page-transition-enter {
+    animation: pageEnter 180ms ease-out;
+  }
+}
+
+@keyframes pageEnter {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
