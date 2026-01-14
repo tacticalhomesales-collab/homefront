@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { Suspense } from "react";
 import "./globals.css";
 import PWARegister from "./pwa-register";
 
@@ -34,7 +35,9 @@ export default function RootLayout({
     <html lang="en" className="h-full">
       <body className="h-full">
         <PWARegister />
-        {children}
+        <Suspense fallback={<div className="min-h-[100dvh] bg-[#0b0f14]" />}>
+          {children}
+        </Suspense>
       </body>
     </html>
   );
