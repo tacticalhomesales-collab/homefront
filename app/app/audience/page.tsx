@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import PhoneShell from "../_components/PhoneShell";
 import ChoiceButton from "../_components/ChoiceButton";
 import LoadingApprovedOverlay from "../_components/LoadingApprovedOverlay";
@@ -9,7 +9,10 @@ import { useStepNav } from "../_components/useStepNav";
 
 type Choice = { label: string; nextPath: string; extra: Record<string, string> };
 
-export default function AudiencePage() {
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
+function AudienceContent() {
   const router = useRouter();
   const sp = useSearchParams();
 
@@ -63,5 +66,19 @@ export default function AudiencePage() {
         ))}
       </div>
     </PhoneShell>
+  );
+}
+
+export default function AudiencePage() {
+  return (
+    <Suspense
+      fallback={
+        <PhoneShell title="Service Profile" subtitle="Select what best fits you.">
+          <div className="h-8" />
+        </PhoneShell>
+      }
+    >
+      <AudienceContent />
+    </Suspense>
   );
 }
