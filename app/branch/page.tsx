@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 
 const BRANCHES = [
   "Army",
@@ -12,7 +12,9 @@ const BRANCHES = [
   "Coast Guard",
 ] as const;
 
-export default function BranchPage() {
+export const dynamic = "force-dynamic";
+
+function BranchContent() {
   const router = useRouter();
   const sp = useSearchParams();
 
@@ -118,5 +120,13 @@ export default function BranchPage() {
         </div>
       </div>
     </main>
+  );
+}
+
+export default function BranchPage() {
+  return (
+    <Suspense fallback={<main className="min-h-[100dvh] w-full bg-[#0b0f14]" /> }>
+      <BranchContent />
+    </Suspense>
   );
 }
