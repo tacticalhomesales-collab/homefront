@@ -10,6 +10,35 @@ export default function RankPage() {
   const [pressed, setPressed] = useState(false);
   const [activeLabel, setActiveLabel] = useState<string | null>(null);
 
+  const startVerifyThenGoContact = (paygrade: string) => {
+    if (pressed) return;
+
+    setActiveLabel(paygrade);
+    setPressed(true);
+
+    const q = new URLSearchParams();
+    for (const [k, v] of sp.entries()) q.set(k, v);
+    q.set("paygrade", paygrade);
+
+    const nextPath = "/contact";
+    const nextUrl = `${nextPath}?${q.toString()}`;
+
+    setTimeout(() => {
+      try {
+        router.push(nextUrl);
+      } finally {
+        setTimeout(() => {
+          if (
+            typeof window !== "undefined" &&
+            window.location.pathname !== nextPath
+          ) {
+            window.location.assign(nextUrl);
+          }
+        }, 250);
+      }
+    }, 120);
+  };
+
   const goNext = (paygrade: string) => {
     if (pressed) return;
 
