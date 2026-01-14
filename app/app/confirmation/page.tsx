@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import QRCode from "qrcode";
 import PhoneShell from "../_components/PhoneShell";
@@ -16,7 +16,9 @@ type ConfettiPiece = {
   opacity: number; // 0-1
 };
 
-export default function ConfirmationPage() {
+export const dynamic = "force-dynamic";
+
+function ConfirmationContent() {
   const sp = useSearchParams();
 
   const [refCode, setRefCode] = useState<string>("");
@@ -244,5 +246,19 @@ export default function ConfirmationPage() {
         </div>
       </div>
     </PhoneShell>
+  );
+}
+
+export default function ConfirmationPage() {
+  return (
+    <Suspense
+      fallback={
+        <PhoneShell title="You're set" subtitle="Save your QR and share your link.">
+          <div className="h-8" />
+        </PhoneShell>
+      }
+    >
+      <ConfirmationContent />
+    </Suspense>
   );
 }
