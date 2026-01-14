@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import PhoneShell from "../_components/PhoneShell";
 import ChoiceButton from "../_components/ChoiceButton";
 import LoadingApprovedOverlay from "../_components/LoadingApprovedOverlay";
@@ -9,7 +9,9 @@ import { useStepNav } from "../_components/useStepNav";
 
 const BRANCHES = ["Army", "Marine Corps", "Navy", "Air Force", "Space Force", "Coast Guard"] as const;
 
-export default function BranchPage() {
+export const dynamic = "force-dynamic";
+
+function BranchContent() {
   const router = useRouter();
   const sp = useSearchParams();
 
@@ -53,5 +55,19 @@ export default function BranchPage() {
         ))}
       </div>
     </PhoneShell>
+  );
+}
+
+export default function BranchPage() {
+  return (
+    <Suspense
+      fallback={
+        <PhoneShell title="Branch of Service" subtitle="Select your branch.">
+          <div className="h-8" />
+        </PhoneShell>
+      }
+    >
+      <BranchContent />
+    </Suspense>
   );
 }
