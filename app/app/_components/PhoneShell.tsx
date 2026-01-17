@@ -9,7 +9,7 @@ type PhoneShellProps = {
 
 export default function PhoneShell({ title, subtitle, meta, children }: PhoneShellProps) {
   return (
-    <main className="min-h-[100dvh] w-full text-white px-3 overflow-x-hidden">
+    <main className="min-h-[100dvh] w-full text-white px-4 overflow-x-hidden">
       {/* Background (deep blue + subtle texture) */}
       <div className="fixed inset-0 -z-10">
         <div className="absolute inset-0 bg-[#0b0f14]" />
@@ -25,10 +25,10 @@ export default function PhoneShell({ title, subtitle, meta, children }: PhoneShe
         />
       </div>
 
-      <div className="min-h-[100dvh] flex flex-col items-center text-center pt-4 pb-7">
-        <div className="w-full max-w-[330px] relative">
+      <div className="min-h-[100dvh] flex flex-col items-center text-center pt-7 pb-10">
+        <div className="w-full max-w-[420px] relative">
           {/* Logo */}
-          <div className="mx-auto mt-1 w-full max-w-[180px] pointer-events-none select-none">
+          <div className="mx-auto mt-2 w-full max-w-[240px] pointer-events-none select-none">
             <img
               src="/homefront-badge.png"
               alt="HomeFront"
@@ -38,19 +38,19 @@ export default function PhoneShell({ title, subtitle, meta, children }: PhoneShe
           </div>
 
           {/* Title + subtitle */}
-          <div className="mt-3 flex flex-col items-center justify-center pointer-events-none">
-            <h1 className="text-[26px] sm:text-3xl font-extrabold tracking-tight leading-none text-white">
+          <div className="mt-4 flex flex-col items-center justify-center pointer-events-none">
+            <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight leading-none text-white">
               {title}
             </h1>
 
             {subtitle ? (
-              <p className="mt-2 text-[12px] font-semibold text-white/70">{subtitle}</p>
+              <p className="mt-2 text-sm font-semibold text-white/70">{subtitle}</p>
             ) : null}
 
-            {meta ? <p className="mt-2 text-[10px] text-white/45">{meta}</p> : null}
+            {meta ? <p className="mt-2 text-[11px] text-white/45">{meta}</p> : null}
           </div>
 
-          <div className="mt-2">{children}</div>
+          <div className="mt-5">{children}</div>
         </div>
       </div>
     </main>
