@@ -37,8 +37,8 @@ export default function PreapprovedDetailsPage() {
       return `/compare-lenders?${q.toString()}`;
     }
 
-    // Otherwise route to match-preview
-    return `/match-preview?${q.toString()}`;
+    // Otherwise route to match-preview (now review)
+    return `/review?${q.toString()}`;
   };
 
   const onPickLoanType = (value: string) => {

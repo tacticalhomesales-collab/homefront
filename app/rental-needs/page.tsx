@@ -46,7 +46,7 @@ export default function RentalNeedsPage() {
     for (const [k, v] of sp.entries()) q.set(k, v);
     q.set("rental_needs", selected.join(","));
 
-    const href = `/match-preview?${q.toString()}`;
+    const href = `/review?${q.toString()}`;
     setTimeout(() => router.push(href), 120);
   };
 

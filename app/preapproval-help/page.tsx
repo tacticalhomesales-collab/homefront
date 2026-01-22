@@ -23,8 +23,8 @@ export default function PreapprovalHelpPage() {
     q.set("timeline", timeline);
     q.set("credit_band", creditBand);
 
-    // Route to match-preview (identity already collected earlier in flow)
-    return `/match-preview?${q.toString()}`;
+    // Route to match-preview (now review, identity already collected earlier in flow)
+    return `/review?${q.toString()}`;
   };
 
   const onPickTimeline = (value: string) => {
@@ -50,7 +50,7 @@ export default function PreapprovalHelpPage() {
     q.set("timeline", timeline);
     q.set("credit_band", value);
 
-    const href = `/match-preview?${q.toString()}`;
+    const href = `/review?${q.toString()}`;
     setTimeout(() => router.push(href), 120);
   };
 

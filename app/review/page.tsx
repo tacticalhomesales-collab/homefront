@@ -109,10 +109,10 @@ export default function ReviewPage() {
           {/* Title */}
           <div className="-mt-6 flex flex-col items-center justify-center pointer-events-none">
             <h1 className="text-4xl font-extrabold tracking-tight leading-none text-white">
-              Review
+              Match Preview
             </h1>
             <p className="mt-3 text-sm font-semibold text-white/70">
-              Confirm your information before continuing.
+              We're finding homes that match your profile. Confirm your information before continuing.
             </p>
           </div>
 

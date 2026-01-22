@@ -1,3 +1,6 @@
+// Backup of previous app/partner/dashboard/page.tsx before major cleanup
+// Saved on 2026-01-21
+
 "use client";
 
 import { useEffect, useState } from "react";

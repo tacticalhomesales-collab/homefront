@@ -26,7 +26,7 @@ export default function SellStatusPage() {
     for (const [k, v] of sp.entries()) q.set(k, v);
     q.set("sell_status", s.value);
 
-    const href = `/match-preview?${q.toString()}`;
+    const href = `/review?${q.toString()}`;
 
     setActiveLabel(s.value);
     setPressed(true);

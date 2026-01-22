@@ -40,11 +40,8 @@ export default function FirstResponderPage() {
 
   return (
     <main className="min-h-[100dvh] w-full bg-[#0b0f14] text-white px-4">
-
-      {/* MATCH the Service Profile page scaffold */}
       <div className="min-h-[100dvh] flex flex-col items-center text-center pt-8 pb-10">
         <div className="w-full max-w-md relative">
-          {/* Invisible spacer row to keep consistent rhythm across screens */}
           <div className="mb-3 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-[18px] font-extrabold tracking-[-0.02em] text-white/80 opacity-0 pointer-events-none select-none">
             <span>Buy</span>
             <span className="text-white/25">•</span>
@@ -54,18 +51,16 @@ export default function FirstResponderPage() {
             <span className="text-white/25">•</span>
             <span>Manage</span>
           </div>
-
-          {/* Big logo (same sizing rules as your Service Profile screenshot) */}
           <div className="mx-auto w-full max-w-[95vw] mt-16 pointer-events-none select-none">
-            <img
-              src="/homefront-badge.png"
-              alt="HomeFront"
-              className="w-full h-auto scale-200 origin-center"
-              draggable={false}
-            />
+            <div className="flex justify-center items-center w-full" style={{ minHeight: '200px' }}>
+              <img
+                src="/homefront-badge.png"
+                alt="HomeFront"
+                className="max-w-[900px] max-h-[450px] object-contain pointer-events-none select-none"
+                draggable={false}
+              />
+            </div>
           </div>
-
-          {/* Title + subtitle positioned like Service Profile */}
           <div className="-mt-6 flex flex-col items-center justify-center pointer-events-none">
             <h1 className="text-4xl font-extrabold tracking-tight leading-none text-white">
               First Responder
@@ -74,8 +69,6 @@ export default function FirstResponderPage() {
               Select the option that best fits you.
             </p>
           </div>
-
-          {/* Buttons (same width/feel as Service Profile list buttons) */}
           <div className="mt-2 relative z-50 flex flex-col gap-3">
             {ROLES.map((r) => {
               const isActive = active === r;

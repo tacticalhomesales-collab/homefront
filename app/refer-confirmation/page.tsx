@@ -10,6 +10,8 @@ export default function ReferConfirmationPage() {
     <FlowLayout
       title="Thank You!"
       subtitle="Your referral has been submitted successfully."
+      logoSrc="/homefront-logo.png"
+      logoAlt="HomeFront Logo"
     >
       <div className="relative z-50 flex flex-col gap-6">
         {/* Success message */}

@@ -71,7 +71,27 @@ export default function MissionPage() {
   };
 
   return (
-    <FlowLayout title="Mission" subtitle="Choose one to continue.">
+    <FlowLayout
+      title="Mission"
+      subtitle="Choose one to continue."
+      logoSrc="/homefront-logo.png"
+      logoAlt="HomeFront Logo"
+      logoContainerClassName="mx-auto w-full max-w-[98vw] sm:max-w-[900px] mt-2 mb-2 pointer-events-none select-none"
+      logoClassName="w-full h-auto"
+      logoWidth={900}
+      logoHeight={650}
+      topContent={
+        <div className="mb-2 flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-[13px] font-bold tracking-[-0.01em] text-gray-400 select-none">
+          <span>Buy</span>
+          <span className="mx-0.5">•</span>
+          <span>Sell</span>
+          <span className="mx-0.5">•</span>
+          <span>Rent</span>
+          <span className="mx-0.5">•</span>
+          <span>Manage</span>
+        </div>
+      }
+    >
       <div className="relative z-50 flex flex-col gap-3">
         {MISSIONS.map((m) => (
           <MissionButton key={m.value} {...m} />

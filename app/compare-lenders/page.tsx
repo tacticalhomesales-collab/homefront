@@ -5,14 +5,24 @@ import { useState } from "react";
 
 const LENDER_TYPES = ["Bank", "Credit Union", "Mortgage Broker", "Online Lender", "Not sure / Unknown"] as const;
 const RATE_BANDS = ["Under 6%", "6.0% - 6.49%", "6.5% - 6.99%", "7%+", "Unknown"] as const;
+const CREDIT_BANDS = [
+  "Great (720+)",
+  "Good (660-719)",
+  "Fair (600-659)",
+  "Needs work (<600)",
+  "Prefer not to say"
+] as const;
 
 export default function CompareLendersPage() {
   const router = useRouter();
   const sp = useSearchParams();
 
-  const [step, setStep] = useState<1 | 2 | 3>(1);
+  // If user is pre-approved and wants to compare lenders, start at credit status step
+  const isPreApproved = sp.get("preapproved") === "true";
+  const [step, setStep] = useState<1 | 2 | 3 | 4>(isPreApproved ? 4 : 1);
   const [lenderType, setLenderType] = useState("");
   const [rateBand, setRateBand] = useState("");
+  const [creditBand, setCreditBand] = useState("");
   const [priorities, setPriorities] = useState<string[]>([]);
 
   const [pressed, setPressed] = useState(false);
@@ -74,16 +84,25 @@ export default function CompareLendersPage() {
 
   const onContinue = () => {
     if (pressed || priorities.length === 0) return;
-
     setPressed(true);
+    setStep(4);
+    setPressed(false);
+  };
+
+  const onPickCreditBand = (value: string) => {
+    if (pressed) return;
+    setActiveLabel(value);
+    setPressed(true);
+    setCreditBand(value);
 
     const q = new URLSearchParams();
     for (const [k, v] of sp.entries()) q.set(k, v);
     q.set("current_lender_type", lenderType);
     q.set("current_rate_band", rateBand);
     q.set("compare_priority", priorities.join(","));
+    q.set("credit_band", value);
 
-    const href = `/match-preview?${q.toString()}`;
+    const href = `/review?${q.toString()}`;
     setTimeout(() => router.push(href), 120);
   };
 
@@ -155,8 +174,8 @@ export default function CompareLendersPage() {
           {/* Logo */}
           <div className="mx-auto w-full max-w-[95vw] mt-16 pointer-events-none select-none">
             <img
-              src="/homefront-badge.png"
-              alt="HomeFront"
+              src="/homefront-logo.png"
+              alt="HomeFront Logo"
               className="w-full h-auto scale-200 origin-center"
               draggable={false}
             />
@@ -168,11 +187,13 @@ export default function CompareLendersPage() {
               {step === 1 && "Current Lender"}
               {step === 2 && "Current Rate"}
               {step === 3 && "Top Priorities"}
+              {step === 4 && "Credit Status"}
             </h1>
             <p className="mt-3 text-sm font-semibold text-white/70">
               {step === 1 && "What type of lender do you have?"}
               {step === 2 && "What's your approximate rate?"}
               {step === 3 && "Pick your top 2 priorities"}
+              {step === 4 && "How's your credit?"}
             </p>
           </div>
 
@@ -222,6 +243,15 @@ export default function CompareLendersPage() {
                 </button>
               </div>
             </>
+          )}
+
+          {/* Step 4: Credit Band */}
+          {step === 4 && (
+            <div className="mt-2 relative z-50 flex flex-col gap-3">
+              {CREDIT_BANDS.map((c) => (
+                <ChoiceButton key={c} label={c} onClick={() => onPickCreditBand(c)} />
+              ))}
+            </div>
           )}
 
           <p className="mt-5 text-[11px] text-white/45">

@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 
 type FlowLayoutProps = {
-  title: string;
+  title: string | null;
   subtitle?: string;
   showLogo?: boolean;
   logoSrc?: string;
@@ -12,6 +12,7 @@ type FlowLayoutProps = {
   logoHeight?: number;
   logoContainerClassName?: string;
   logoClassName?: string;
+  topContent?: React.ReactNode;
   children: React.ReactNode;
 };
 
@@ -25,6 +26,7 @@ export default function FlowLayout({
   logoHeight = 200,
   logoContainerClassName,
   logoClassName,
+  topContent,
   children,
 }: FlowLayoutProps) {
   const [mounted, setMounted] = useState(false);
@@ -59,50 +61,43 @@ export default function FlowLayout({
         ].join(" ")}
       >
         <div className="w-full max-w-md relative">
-          {/* Fixed height header zone to prevent layout shift */}
-          <div className="min-h-[280px]">
-            {/* Invisible spacer row (maintains vertical rhythm) */}
-            <div className="mb-3 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-[18px] font-extrabold tracking-[-0.02em] text-white/80 opacity-0 pointer-events-none select-none">
-              <span>Buy</span>
-              <span className="text-white/25">•</span>
-              <span>Sell</span>
-              <span className="text-white/25">•</span>
-              <span>Rent</span>
-              <span className="text-white/25">•</span>
-              <span>Manage</span>
+          {/* Top content (custom, e.g. Buy • Sell • Rent • Manage) */}
+          {topContent}
+
+          {/* Logo - same as reference page */}
+          {showLogo && (
+            <div
+              className={
+                logoContainerClassName ||
+                "mx-auto w-full max-w-[95vw] mt-16 pointer-events-none select-none"
+              }
+            >
+              <img
+                src={logoSrc}
+                alt={logoAlt}
+                width={logoWidth}
+                height={logoHeight}
+                className={logoClassName || "w-full h-auto scale-200 origin-center"}
+                draggable={false}
+              />
             </div>
+          )}
 
-            {/* Logo - EXACT same position across all pages */}
-            {showLogo && (
-              <div
-                className={
-                  logoContainerClassName ||
-                  "mx-auto w-full max-w-[95vw] mt-16 pointer-events-none select-none"
-                }
-              >
-                <img
-                  src={logoSrc}
-                  alt={logoAlt}
-                  width={logoWidth}
-                  height={logoHeight}
-                  className={logoClassName || "w-full h-auto scale-200 origin-center"}
-                  draggable={false}
-                />
-              </div>
-            )}
-
-            {/* Title zone - consistent positioning */}
+          {/* Title zone - same as reference page */}
+          {(title || subtitle) && (
             <div className="-mt-6 flex flex-col items-center justify-center pointer-events-none">
-              <h1 className="text-4xl font-extrabold tracking-tight leading-none text-white">
-                {title}
-              </h1>
+              {title && (
+                <h1 className="text-4xl font-extrabold tracking-tight leading-none text-white">
+                  {title}
+                </h1>
+              )}
               {subtitle && (
                 <p className="mt-3 text-sm font-semibold text-white/70">
                   {subtitle}
                 </p>
               )}
             </div>
-          </div>
+          )}
 
           {/* Content zone - consistent top spacing */}
           <div className="mt-3">{children}</div>

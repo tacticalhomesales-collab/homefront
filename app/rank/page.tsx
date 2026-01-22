@@ -4,6 +4,9 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
 export default function RankPage() {
+    function startVerifyThenGoContact(paygrade: string) {
+      goNext(paygrade);
+    }
   const router = useRouter();
   const sp = useSearchParams();
 

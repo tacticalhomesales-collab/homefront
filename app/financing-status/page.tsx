@@ -31,8 +31,8 @@ export default function FinancingStatusPage() {
       return `/preapproval-help?${q.toString()}`;
     }
 
-    // For other options, route to match-preview (identity already collected)
-    return `/match-preview?${q.toString()}`;
+    // For other options, route to match-preview (now review, identity already collected)
+    return `/review?${q.toString()}`;
   };
 
   const onPick = (value: string) => {
