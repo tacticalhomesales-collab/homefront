@@ -1,25 +1,51 @@
 
 "use client";
 import React from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function ChoosePage() {
   const router = useRouter();
+  const sp = useSearchParams();
+  const mission = sp.get("mission");
 
   const BUTTONS = [
     {
       label: "Military Affiliated",
-      onClick: () => router.push("/military-status?lane=service&service_track=military"),
+      onClick: () => handleBranch("military"),
     },
     {
       label: "First Responder",
-      onClick: () => router.push("/first-responder?lane=service&service_track=fr"),
+      onClick: () => handleBranch("first_responder"),
     },
     {
       label: "Civilian",
-      onClick: () => router.push("/mission?lane=civ"),
+      onClick: () => handleBranch("civilian"),
     },
   ];
+
+  function handleBranch(pathType: string) {
+    setSelectedPath(pathType);
+    setPressedButton(pathType);
+    setTimeout(() => {
+      setPressedButton(null);
+      // Branch to the correct next step based on mission and pathType
+      if (pathType === "military") {
+        router.push(`/military-status?lane=service&service_track=military&mission=${mission || ""}`);
+      } else if (pathType === "first_responder") {
+        router.push(`/first-responder?lane=service&service_track=fr&mission=${mission || ""}`);
+      } else {
+        // Civilian: branch based on mission param
+        if (mission === "sell") {
+          router.push(`/sell-property?mission=sell`);
+        } else if (mission === "manage_rental") {
+          router.push(`/rental-property?mission=manage_rental`);
+        } else {
+          // buy or rent
+          router.push(`/location?mission=${mission || "buy"}`);
+        }
+      }
+    }, 120);
+  }
 
   const [selectedPath, setSelectedPath] = React.useState<string | null>(null);
   const [pressedButton, setPressedButton] = React.useState<string | null>(null);
@@ -33,7 +59,7 @@ export default function ChoosePage() {
     }, 120);
   };
 
-  let logoSrc = "/homefront-logo.png";
+  let logoSrc = "/homefront-badge.png";
   let logoAlt = "HomeFront";
   if (selectedPath === "Military Affiliated" || selectedPath === "First Responder") {
     logoSrc = "/serving-those-who-serve-logo.png";
@@ -80,27 +106,12 @@ export default function ChoosePage() {
           </div>
 
           {/* Buttons */}
-          <div className="mt-2 relative z-50 flex flex-col gap-2 w-full max-w-[400px] mx-auto">
-            {BUTTONS.map((b) => (
-              <button
-                key={b.label}
-                type="button"
-                onClick={() => handleSelect(b.label, b.onClick)}
-                className={[
-                  "cursor-pointer pointer-events-auto block w-full py-2 rounded-xl border border-white/15 bg-white/10 text-white text-[13px] font-bold hover:bg-white/15 active:scale-[0.99] transition focus:outline-none focus-visible:ring-2 focus-visible:ring-white/30",
-                  pressedButton === b.label ? "bg-[#ff385c] text-white" : ""
-                ].join(" ")}
-              >
-                {b.label}
-              </button>
-            ))}
-          </div>
           <div className="mt-8 relative z-50 flex flex-col gap-5 w-full max-w-[500px] mx-auto items-center">
             {BUTTONS.map((b) => (
               <button
                 key={b.label}
                 type="button"
-                onClick={() => handleSelect(b.label, b.onClick)}
+                onClick={b.onClick}
                 className={[
                   "cursor-pointer pointer-events-auto block w-full py-4 rounded-2xl border border-white/15 bg-white/10 text-white text-[16px] font-bold hover:bg-white/15 active:scale-[0.98] transition focus:outline-none focus-visible:ring-2 focus-visible:ring-white/30 shadow-lg",
                   pressedButton === b.label ? "bg-[#ff385c] text-white" : ""
@@ -110,6 +121,7 @@ export default function ChoosePage() {
               </button>
             ))}
           </div>
+          {/* Only one button container should remain. */}
         </div>
       </div>
     </main>

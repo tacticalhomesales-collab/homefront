@@ -7,192 +7,119 @@ import dynamic from "next/dynamic";
 
 const ShareSheetModal = dynamic(() => import("./_components/ShareSheetModal"), { ssr: false });
 
-// Mission logic for Buy/Sell/Rent/Manage row
-const MISSION_CHOICES = [
-	{ label: "Buy", value: "buy" },
-	{ label: "Sell", value: "sell" },
-	{ label: "Rent", value: "rent" },
-	{ label: "Manage", value: "manage_rental" },
-];
 export default function LandingPage() {
-	const router = useRouter();
-	const [showToast, setShowToast] = useState(false);
-	const [showShareModal, setShowShareModal] = useState(false);
+  const router = useRouter();
+  const [showShareModal, setShowShareModal] = useState(false);
 
-	// Open share modal
-	const handleShare = () => setShowShareModal(true);
+  return (
+    <main className="min-h-[100dvh] flex flex-col bg-[#0b0f14] text-white w-full overflow-x-hidden">
+      <div className="flex flex-col flex-1 items-center mx-auto w-full max-w-[420px] px-2 gap-3 pt-4 pb-2">
+        {/* Logo */}
+        <div className="mx-auto w-full flex justify-center items-center mb-4" style={{ minHeight: 180 }}>
+          <img
+            src="/homefront-badge.png"
+            alt="HomeFront"
+            className="h-[340px] w-auto pointer-events-none select-none"
+            style={{ objectFit: "contain", width: "100vw", maxWidth: "100vw" }}
+            draggable={false}
+            aria-label="HomeFront logo"
+          />
+        </div>
 
-	// Read More dropdown for mission/value statement
-	const [showMore, setShowMore] = useState(false);
+        {/* Headline / Logo */}
+        {/* Logo removed as requested */}
 
-	// Mission row selection state
-	const [activeMission, setActiveMission] = useState<string | null>(null);
-	const [pressedMission, setPressedMission] = useState(false);
+        {/* Value bullets */}
+          {/* Value bullets removed */}
 
-	// Read More section selection state
-	const [selectedSection, setSelectedSection] = useState<string | null>(null);
+        {/* ...existing code... */}
 
-	// Mission navigation logic (same as mission page)
-	const handleMissionClick = (choice: { label: string; value: string }) => {
-		if (pressedMission) return;
-		setActiveMission(choice.value);
-		setPressedMission(true);
-		// Build next URL logic
-		const q = new URLSearchParams();
-		q.set("mission", choice.value);
-		let nextUrl = "";
-		if (choice.value === "sell") {
-			nextUrl = `/sell-property?${q.toString()}`;
-		} else if (choice.value === "manage_rental") {
-			nextUrl = `/rental-property?${q.toString()}`;
-		} else {
-			nextUrl = `/location?${q.toString()}`;
-		}
-		setTimeout(() => router.push(nextUrl), 120);
-	};
+        {/* Label above buttons */}
+        <span className="block w-full text-center font-semibold mb-0.5" style={{ fontSize: "clamp(13px,3.4vw,15px)" }}>
+          Choose your mission
+        </span>
 
-	return (
-		<main className="min-h-[100dvh] w-full bg-[#0b0f14] text-white px-4">
-			<div className="min-h-[100dvh] flex flex-col items-center text-center pt-8 pb-10">
-				<div className="w-full max-w-md relative">
-					{/* Logo (maximum size, responsive) - now above mission row */}
-					<div className="mx-auto w-full max-w-[98vw] sm:max-w-[900px] mt-2 mb-2 pointer-events-none select-none">
-						<img
-							src="/homefront-logo.png"
-							alt="HomeFront"
-							className="w-full h-auto"
-							style={{ maxWidth: '900px', maxHeight: '650px', objectFit: 'contain' }}
-							draggable={false}
-						/>
-					</div>
+        {/* Button grid */}
+        <div className="w-full grid grid-cols-2 gap-3">
+          {[
+            { label: "Buy", mission: "buy" },
+            { label: "Sell", mission: "sell" },
+            { label: "Rent", mission: "rent" },
+            { label: "Manage Rental", mission: "manage_rental" },
+          ].map((chip) => (
+            <button
+              key={chip.label}
+              type="button"
+              tabIndex={0}
+              className="rounded-full border border-[#ff385c] bg-[#ff385c] text-white font-bold focus:outline-none focus-visible:ring-2 focus-visible:ring-[#ff385c]/40 transition-all select-none hover:bg-[#e11d48] active:bg-[#c81e4a] aria-selected:border-white aria-selected:bg-[#ff385c]/80 shadow-md"
+              style={{
+                minHeight: 48,
+                height: 52,
+                fontSize: "clamp(15px,3.7vw,17px)",
+                padding: "0 0.5rem",
+                width: "100%",
+              }}
+              aria-pressed="false"
+              aria-label={chip.label}
+              onClick={() => router.push(`/choose?mission=${chip.mission}`)}
+            >
+              {chip.label}
+            </button>
+          ))}
+        </div>
+        {/* Helper text directly below buttons */}
+        <span
+          className="font-semibold text-center mt-2"
+          style={{ fontSize: "clamp(12px,3.2vw,14px)", lineHeight: "1.2", display: "block" }}
+        >
+          60-second survey to get your plan.
+        </span>
+      </div>
 
-					{/* Buy • Sell • Rent • Manage row (smaller, clickable, red highlight on select) */}
-					<div className="mb-2 flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-[13px] font-bold tracking-[-0.01em] text-gray-400 select-none">
-						{MISSION_CHOICES.map((c, i) => (
-							<span key={c.value}>
-								<button
-									type="button"
-									disabled={pressedMission}
-									onClick={() => handleMissionClick(c)}
-									className={[
-										"px-1.5 py-0.5 rounded transition font-bold",
-										activeMission === c.value
-											? "bg-[#ff385c] text-white"
-											: "hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#ff385c]/40 text-gray-400",
-									].join(" ")}
-									style={{ minWidth: 36 }}
-								>
-									{c.label}
-								</button>
-								{i < MISSION_CHOICES.length - 1 && <span className="mx-0.5">•</span>}
-							</span>
-						))}
-					</div>
-
-					{/* Title removed as requested */}
-
-					{/* Mission/Value Statement with Read More (brand-specific, neutral) - heading and bold writing removed */}
-					<div className="mt-6 mb-2 bg-white/5 rounded-xl p-5 text-left text-white/90 shadow-lg max-w-xl mx-auto">
-						<p className="mb-3 text-base text-white">
-							Empowering you to make smart, confident moves in real estate—whether you’re buying, selling, renting, or managing a home.
-						</p>
-						<button
-							onClick={() => setShowMore((v) => !v)}
-							className="text-sm text-white underline focus:outline-none mb-2 font-semibold"
-						>
-							{showMore ? "Hide details" : "Read more"}
-						</button>
-						{showMore && (
-							<div className="space-y-3">
-								<p className="text-base text-white/90">
-									We’re not just a platform—we’re your partner. HomeFront is built by real estate and finance experts who believe in transparency, education, and putting your needs first. No sales pressure. No jargon. Just honest, actionable guidance for every step of your journey.
-								</p>
-								<div className="flex flex-wrap gap-2 mb-2">
-									{[
-										{ key: "Clarity", desc: "We break down the process so you always know what’s next." },
-										{ key: "Smart Guidance", desc: "Get matched with the right experts and resources for your goals." },
-										{ key: "Trust", desc: "Your privacy and best interests come first—always." },
-										{ key: "Empowerment", desc: "We give you the tools and knowledge to make confident decisions." },
-									].map((s) => (
-										<button
-											key={s.key}
-											type="button"
-											onClick={() => setSelectedSection(s.key)}
-											className={[
-												"px-3 py-2 rounded-xl font-bold border transition text-sm",
-												selectedSection === s.key
-													? "bg-[#ff385c] text-white border-[#ff385c]"
-													: "bg-white/10 text-white border-white/15 hover:bg-white/20",
-												].join(" ")}
-											style={{ minWidth: 120 }}
-										>
-											{s.key}
-										</button>
-									))}
-								</div>
-								<div className="text-white/90 min-h-[32px] text-sm font-medium">
-									{selectedSection
-										? ([
-											{ key: "Clarity", desc: "We break down the process so you always know what’s next." },
-											{ key: "Smart Guidance", desc: "Get matched with the right experts and resources for your goals." },
-											{ key: "Trust", desc: "Your privacy and best interests come first—always." },
-											{ key: "Empowerment", desc: "We give you the tools and knowledge to make confident decisions." },
-										].find((s) => s.key === selectedSection)?.desc || ""
-										) : ""}
-								</div>
-								<ul className="list-none pl-0 text-white/80 space-y-1">
-									<li>Simple, up-to-date guides and workshops for every stage.</li>
-									<li>Connect with real people, not just algorithms.</li>
-									<li>Decades of hands-on expertise, shared for your benefit.</li>
-								</ul>
-							</div>
-						)}
-					</div>
-					{/* Main CTA Button */}
-					<div className="mt-2 relative z-50 flex flex-col gap-3">
-						<button
-							type="button"
-							onClick={() => router.push("/choose")}
-							className="cursor-pointer pointer-events-auto block w-[calc(100%+2.5rem)] -mx-5 py-4 rounded-2xl border border-white/15 bg-white/10 text-white text-[21px] font-extrabold hover:bg-white/15 active:scale-[0.99] transition shadow-[0_10px_30px_rgba(255,56,92,0.15)] focus:outline-none focus-visible:ring-4 focus-visible:ring-white/30"
-						>
-							Get Started
-						</button>
-						<div className="mt-6 flex flex-row items-center justify-center gap-8">
-							<button
-								onClick={handleShare}
-								className="text-[15px] text-white font-extrabold px-4 py-2 rounded-xl hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40 transition cursor-pointer"
-								style={{ lineHeight: "1.2" }}
-								type="button"
-							>
-								Share
-							</button>
-							<ShareSheetModal isOpen={showShareModal} onClose={() => setShowShareModal(false)} />
-							<button
-								onClick={() => router.push("/refer")}
-								className="text-[15px] text-white font-extrabold px-4 py-2 rounded-xl hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40 transition cursor-pointer"
-								style={{ lineHeight: "1.2" }}
-								type="button"
-							>
-								Refer a Friend
-							</button>
-							<button
-								onClick={() => router.push("/partner")}
-								className="text-[15px] text-white font-extrabold px-4 py-2 rounded-xl hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40 transition cursor-pointer"
-								style={{ lineHeight: "1.2" }}
-								type="button"
-							>
-								Partner Portal
-							</button>
-						</div>
-					</div>
-				</div>
-			</div>
-			{/* Toast for link copied */}
-			{showToast && (
-				<div className="fixed left-1/2 bottom-16 -translate-x-1/2 bg-[#222] text-white text-[14px] px-4 py-2 rounded-xl shadow-lg z-50 transition-all">
-					Link copied ✅
-				</div>
-			)}
-		</main>
-	);
+      {/* Bottom nav pinned */}
+      <footer className="w-full max-w-[420px] mx-auto mt-auto flex flex-col items-center gap-2 pb-2">
+        <div className="flex flex-row items-center justify-center gap-4 mb-1">
+          <div className="flex flex-col items-center">
+            <button onClick={() => setShowShareModal(true)} className="hover:scale-110 transition" aria-label="Share">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-sky-400">
+                <path d="M12 19v-7" />
+                <path d="M5 12l7-7 7 7" />
+                <rect x="5" y="19" width="14" height="2" rx="1" fill="currentColor" className="opacity-20" />
+              </svg>
+            </button>
+            <span className="text-xs text-white/60 mt-1">Share</span>
+          </div>
+          <div className="flex flex-col items-center">
+            <button onClick={() => router.push("/refer")} className="hover:scale-110 transition" aria-label="Refer a Friend">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-emerald-400">
+                <circle cx="12" cy="7" r="4" />
+                <path d="M6 21v-2a4 4 0 0 1 4-4h0a4 4 0 0 1 4 4v2" />
+                <path d="M19 8v6" />
+                <path d="M22 11h-6" />
+              </svg>
+            </button>
+            <span className="text-xs text-white/60 mt-1">Refer a friend</span>
+          </div>
+          <div className="flex flex-col items-center">
+            <button onClick={() => router.push("/partner")} className="hover:scale-110 transition" aria-label="Partner Portal">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-fuchsia-400">
+                <rect x="7" y="11" width="10" height="2" rx="1" />
+                <path d="M8.5 13a4 4 0 1 1 0-8h7a4 4 0 1 1 0 8" />
+              </svg>
+            </button>
+            <span className="text-xs text-white/60 mt-1">Partner portal</span>
+          </div>
+          <div className="flex flex-col items-center">
+            <button onClick={() => router.push("/reviews")} className="hover:scale-110 transition" aria-label="Reviews">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-yellow-400">
+                <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+              </svg>
+            </button>
+            <span className="text-xs text-white/60 mt-1">See reviews</span>
+          </div>
+          <ShareSheetModal isOpen={showShareModal} onClose={() => setShowShareModal(false)} />
+        </div>
+      </footer>
+    </main>
+  );
 }

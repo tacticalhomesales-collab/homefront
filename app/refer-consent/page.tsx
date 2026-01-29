@@ -62,7 +62,7 @@ export default function ReferConsentPage() {
   };
 
   return (
-    <FlowLayout title="Consent" subtitle="Please review and agree to continue." logoSrc="/homefront-logo.png" logoAlt="HomeFront Logo">
+    <FlowLayout title="Consent" subtitle="Please review and agree to continue." logoSrc="/homefront-badge.png" logoAlt="HomeFront Logo">
       <div className="relative z-50 flex flex-col gap-4">
         <div className="flex flex-col gap-4 text-left">
           {/* Consent checkboxes */}

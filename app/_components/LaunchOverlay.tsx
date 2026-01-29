@@ -52,7 +52,7 @@ export default function LaunchOverlay() {
     >
       <div className="flex flex-col items-center gap-4">
         <img
-          src="/homefront-logo.png"
+          src="/homefront-badge.png"
           alt="HomeFront"
           className="w-64 h-auto"
           draggable={false}

@@ -22,13 +22,14 @@ export default function LocationPage() {
     setActive(true);
     setPressed(true);
 
-    const q = new URLSearchParams();
-    for (const [k, v] of sp.entries()) q.set(k, v);
-    q.set("location", cleaned);
-
-    const fullUrl = `/financing-status?${q.toString()}`;
-
+    // Show red state immediately, then navigate after a short delay
     setTimeout(() => {
+      const q = new URLSearchParams();
+      for (const [k, v] of sp.entries()) q.set(k, v);
+      q.set("location", cleaned);
+
+      const fullUrl = `/financing-status?${q.toString()}`;
+
       try {
         router.push(fullUrl);
       } finally {
@@ -41,7 +42,7 @@ export default function LocationPage() {
           }
         }, 250);
       }
-    }, 120);
+    }, 150);
   };
 
   const canContinue = value.trim().length > 0;
@@ -88,7 +89,6 @@ export default function LocationPage() {
         </div>
 
         <p className="mt-4 text-[11px] text-white/55 pointer-events-none">
-          Next: Financing Status
         </p>
       </div>
     </FlowLayout>

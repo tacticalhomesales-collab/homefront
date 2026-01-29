@@ -155,7 +155,6 @@ export default function RetiringRankPage() {
             </div>
 
             <p className="mt-4 text-[11px] text-white/55 pointer-events-none">
-              Next: Years of Service
             </p>
           </div>
 

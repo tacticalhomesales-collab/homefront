@@ -80,7 +80,7 @@ export default function SellMotivationPage() {
           {/* Logo */}
           <div className="mx-auto w-full max-w-[95vw] mt-16 pointer-events-none select-none">
             <img
-              src="/homefront-logo.png"
+              src="/homefront-badge.png"
               alt="HomeFront Logo"
               className="w-full h-auto scale-200 origin-center"
               draggable={false}

@@ -28,8 +28,10 @@ export default function MilitaryStatusPage() {
     q.set("service_status", s.value);
     q.set("audience", s.audience);
 
-    // Route to /branch for active/reserve/guard/veteran, /family-profile for family
-    const nextPage = s.value === "family" ? "family-profile" : "branch";
+    // Route to /branch for active/reserve/veteran, /rank for guard, /family-profile for family
+    let nextPage = "branch";
+    if (s.value === "family") nextPage = "family-profile";
+    else if (s.value === "guard") nextPage = "rank";
     const href = `/${nextPage}?${q.toString()}`;
 
     setActiveLabel(s.value);
@@ -83,7 +85,7 @@ export default function MilitaryStatusPage() {
             <img
               src="/homefront-badge.png"
               alt="HomeFront"
-              className="w-full h-auto scale-200 origin-center"
+              className="w-1/2 h-auto mx-auto scale-100 origin-center"
               draggable={false}
             />
           </div>
@@ -98,8 +100,8 @@ export default function MilitaryStatusPage() {
             </p>
           </div>
 
-          {/* Buttons */}
-          <div className="mt-2 relative z-50 flex flex-col gap-3">
+          {/* 2-column grid for status options */}
+          <div className="mt-2 relative z-50 w-full grid grid-cols-2 gap-4">
             {STATUSES.map((s) => (
               <StatusButton key={s.value} {...s} />
             ))}

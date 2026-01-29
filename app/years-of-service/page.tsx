@@ -39,20 +39,20 @@ export default function YearsOfServicePage() {
 
   return (
     <main className="min-h-[100dvh] w-full bg-[#0b0f14] text-white px-4">
-      <div className="min-h-[100dvh] flex flex-col items-center text-center pt-8 pb-10">
+      <div className="min-h-[100dvh] flex flex-col items-center text-center pt-4 pb-4">
         <div className="w-full max-w-md relative">
-          <div className="mx-auto w-full max-w-[95vw] mt-16 pointer-events-none select-none">
-            <div className="flex justify-center items-center w-full" style={{ minHeight: '200px' }}>
+          <div className="mx-auto w-full max-w-[95vw] mt-6 pointer-events-none select-none">
+            <div className="flex justify-center items-center w-full" style={{ minHeight: '120px' }}>
               <img
-                src="/homefront-logo.png"
+                src="/homefront-badge.png"
                 alt="HomeFront Logo"
-                className="max-w-[900px] max-h-[450px] object-contain pointer-events-none select-none"
+                className="max-w-[900px] max-h-[120px] object-contain pointer-events-none select-none"
                 draggable={false}
               />
             </div>
           </div>
 
-          <div className="-mt-6 flex flex-col items-center justify-center pointer-events-none">
+          <div className="-mt-2 flex flex-col items-center justify-center pointer-events-none">
             <h1 className="text-4xl font-extrabold tracking-tight leading-none">
               Years of Service
             </h1>

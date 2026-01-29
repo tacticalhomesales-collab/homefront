@@ -23,7 +23,7 @@ export default function PartnerEntryPage() {
     <main className="min-h-[100dvh] w-full bg-[#0b0f14] text-white px-4 flex flex-col items-center justify-center">
       <div className="w-full max-w-md mx-auto flex flex-col items-center">
         <img
-          src="/homefront-logo.png"
+          src="/homefront-badge.png"
           alt="HomeFront – Smart Moves. Strong Homes."
           className="w-80 h-auto mb-8 select-none pointer-events-none drop-shadow-xl"
           draggable={false}

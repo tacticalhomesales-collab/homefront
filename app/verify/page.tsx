@@ -75,26 +75,25 @@ export default function VerifyPage() {
 
           {verifyStage === "verified" && (
             <div className="flex flex-col items-center gap-4">
-                <svg
-                  className="h-[200px] w-[400px] text-green-500"
+              <svg
+                className="h-[120px] w-[120px] text-green-500"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
+                <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" fill="white" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M7 13l3 3 7-7"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
                   fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <circle
-                    className="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    strokeWidth="4"
-                  ></circle>
-                  <path
-                    className="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                  ></path>
-                </svg>
-                <p className="text-lg font-semibold">Verified!</p>
+                />
+              </svg>
+              <p className="text-2xl font-bold text-green-400 mt-2">Verified!</p>
+              <p className="text-base text-white/80">Your information has been successfully verified.</p>
             </div>
           )}
         </div>

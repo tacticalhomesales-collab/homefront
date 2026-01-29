@@ -29,8 +29,7 @@ export default function BranchPage() {
     for (const [k, v] of sp.entries()) q.set(k, v);
     q.set("branch", branch);
 
-    const audience = q.get("audience") || "";
-    const nextPath = audience === "veteran" ? "/retiring-rank" : "/rank";
+    const nextPath = "/service-category";
     const nextUrl = `${nextPath}?${q.toString()}`;
 
     setTimeout(() => {

@@ -1,0 +1,36 @@
+{
+  "name": "HomeFront",
+  "short_name": "HomeFront",
+  "description": "Streamlined access to your housing benefits",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#0A1C3C",
+  "icons": [
+    {
+      "src": "/icons/homefront_icon-red-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/homefront_icon-red-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Share my QR",
+      "short_name": "Share",
+      "description": "Share your referral QR code",
+      "url": "/?share=1",
+      "icons": [
+        {
+          "src": "/icons/homefront_icon-red-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ]
+}
