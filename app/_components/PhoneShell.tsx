@@ -28,11 +28,11 @@ export default function PhoneShell({ title, subtitle, meta, children }: PhoneShe
       <div className="min-h-[100dvh] flex flex-col items-center text-center pt-7 pb-10">
         <div className="w-full max-w-[420px] relative">
           {/* Logo */}
-          <div className="mx-auto mt-2 w-full max-w-[240px] pointer-events-none select-none">
+          <div className="mx-auto mt-8 pointer-events-none select-none">
             <img
-              src="/homefront-badge.png"
+              src="/homefront-logo.png"
               alt="HomeFront"
-              className="w-full h-auto"
+              style={{ width: "100vw", maxWidth: "700px", height: "auto", display: "block" }}
               draggable={false}
             />
           </div>

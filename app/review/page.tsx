@@ -1,14 +1,14 @@
 "use client";
 
+import AppShell from "../../components/AppShell";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 export default function ReviewPage() {
   const router = useRouter();
   const sp = useSearchParams();
 
   const [pressed, setPressed] = useState(false);
-  const [active, setActive] = useState(false);
 
   // Extract key params
   const mission = sp.get("mission") || "";
@@ -41,10 +41,24 @@ export default function ReviewPage() {
   const current_rate_band = sp.get("current_rate_band") || "";
   const compare_priority = sp.get("compare_priority") || "";
 
+  const formatLabel = (str: string) => {
+    return (str || "")
+      .replace(/_/g, " ")
+      .replace(/-/g, " ")
+      .split(" ")
+      .filter(Boolean)
+      .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+      .join(" ");
+  };
+
+  const buildEditUrl = (page: string) => {
+    const q = new URLSearchParams();
+    for (const [k, v] of sp.entries()) q.set(k, v);
+    return `/${page}?${q.toString()}`;
+  };
+
   const goNext = () => {
     if (pressed) return;
-
-    setActive(true);
     setPressed(true);
 
     const q = new URLSearchParams();
@@ -68,288 +82,216 @@ export default function ReviewPage() {
     }, 120);
   };
 
-  const buildEditUrl = (page: string) => {
-    const q = new URLSearchParams();
-    for (const [k, v] of sp.entries()) q.set(k, v);
-    return `/${page}?${q.toString()}`;
-  };
+  // ✅ EXACT same outer box sizing as Financing buttons
+  const boxClass =
+    "block w-[calc(100%+2.5rem)] -mx-5 py-1.5 rounded-lg border border-white/15 bg-white/10";
 
-  const formatLabel = (str: string) => {
-    return str
-      .split("_")
-      .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-      .join(" ");
-  };
-
-  return (
-    <main className="min-h-[100dvh] w-full bg-[#0b0f14] text-white px-4">
-      <div className="min-h-[100dvh] flex flex-col items-center text-center pt-8 pb-10">
-        <div className="w-full max-w-md relative">
-          {/* Invisible spacer row */}
-          <div className="mb-3 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-[18px] font-extrabold tracking-[-0.02em] text-white/80 opacity-0 pointer-events-none select-none">
-            <span>Buy</span>
-            <span className="text-white/25">•</span>
-            <span>Sell</span>
-            <span className="text-white/25">•</span>
-            <span>Rent</span>
-            <span className="text-white/25">•</span>
-            <span>Manage</span>
+  const Row = ({
+    label,
+    value,
+    editHref,
+  }: {
+    label: string;
+    value: string;
+    editHref: string;
+  }) => {
+    return (
+      <div className={boxClass}>
+        <div className="px-3 flex items-center justify-between gap-2">
+          {/* Slightly smaller typography */}
+          <div className="text-[13px] font-extrabold text-white leading-none truncate">
+            <span className="text-white/70">{label}:</span>{" "}
+            <span className="text-white">{value}</span>
           </div>
 
-          {/* Logo */}
-          <div className="mx-auto w-full max-w-[95vw] mt-16 pointer-events-none select-none">
-            <img
-              src="/homefront-badge.png"
-              alt="HomeFront"
-              className="w-full h-auto scale-200 origin-center"
-              draggable={false}
-            />
-          </div>
-
-          {/* Title */}
-          <div className="-mt-6 flex flex-col items-center justify-center pointer-events-none">
-            <h1 className="text-4xl font-extrabold tracking-tight leading-none text-white">
-              Match Preview
-            </h1>
-            <p className="mt-3 text-sm font-semibold text-white/70">
-              We're finding homes that match your profile. Confirm your information before continuing.
-            </p>
-          </div>
-
-          {/* Review Cards */}
-          <div className="mt-5 relative z-50 flex flex-col gap-3 text-left">
-            {/* Mission */}
-            {mission && (
-              <div className="w-[calc(100%+2.5rem)] -mx-5 rounded-2xl border border-white/15 bg-white/5 p-4">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-xs font-bold text-white/50 uppercase tracking-wide">Mission</p>
-                    <p className="text-lg font-extrabold text-white capitalize mt-1">
-                      {formatLabel(mission)}
-                    </p>
-                  </div>
-                  <a
-                    href={buildEditUrl("mission")}
-                    className="text-[#ff385c] text-sm font-bold hover:underline"
-                  >
-                    Edit
-                  </a>
-                </div>
-              </div>
-            )}
-
-            {/* Location */}
-            {location && (
-              <div className="w-[calc(100%+2.5rem)] -mx-5 rounded-2xl border border-white/15 bg-white/5 p-4">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-xs font-bold text-white/50 uppercase tracking-wide">Location</p>
-                    <p className="text-lg font-extrabold text-white mt-1">{location}</p>
-                  </div>
-                  <a
-                    href={buildEditUrl("location")}
-                    className="text-[#ff385c] text-sm font-bold hover:underline"
-                  >
-                    Edit
-                  </a>
-                </div>
-              </div>
-            )}
-
-            {/* Financing */}
-            {financing && (
-              <div className="w-[calc(100%+2.5rem)] -mx-5 rounded-2xl border border-white/15 bg-white/5 p-4">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-xs font-bold text-white/50 uppercase tracking-wide">Financing</p>
-                    <p className="text-lg font-extrabold text-white capitalize mt-1">
-                      {formatLabel(financing)}
-                    </p>
-                  </div>
-                  <a
-                    href={buildEditUrl("financing-status")}
-                    className="text-[#ff385c] text-sm font-bold hover:underline"
-                  >
-                    Edit
-                  </a>
-                </div>
-              </div>
-            )}
-
-            {/* Service Info (if applicable) */}
-            {(audience || branch || paygrade || retiring_rank || years_of_service || role) && (
-              <div className="w-[calc(100%+2.5rem)] -mx-5 rounded-2xl border border-white/15 bg-white/5 p-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex-1">
-                    <p className="text-xs font-bold text-white/50 uppercase tracking-wide mb-1">
-                      Service Profile
-                    </p>
-                    {audience && (
-                      <p className="text-base font-extrabold text-white capitalize">
-                        {formatLabel(audience)}
-                      </p>
-                    )}
-                    {role && (
-                      <p className="text-base font-extrabold text-white">{role}</p>
-                    )}
-                    {branch && (
-                      <p className="text-sm font-semibold text-white/70 mt-1">{branch}</p>
-                    )}
-                    {(paygrade || retiring_rank) && (
-                      <p className="text-sm font-semibold text-white/70">
-                        Rank: {paygrade || retiring_rank}
-                      </p>
-                    )}
-                    {years_of_service && (
-                      <p className="text-sm font-semibold text-white/70">
-                        Years of Service: {years_of_service}
-                      </p>
-                    )}
-                  </div>
-                  <a
-                    href={buildEditUrl(role ? "first-responder" : "audience")}
-                    className="text-[#ff385c] text-sm font-bold hover:underline"
-                  >
-                    Edit
-                  </a>
-                </div>
-              </div>
-            )}
-
-            {/* Sell Flow Info */}
-            {mission === "sell" && property_location && (
-              <div className="w-[calc(100%+2.5rem)] -mx-5 rounded-2xl border border-white/15 bg-white/5 p-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex-1">
-                    <p className="text-xs font-bold text-white/50 uppercase tracking-wide mb-1">
-                      Property Details
-                    </p>
-                    <p className="text-base font-extrabold text-white">{property_location}</p>
-                    {property_type && (
-                      <p className="text-sm font-semibold text-white/70 mt-1">{property_type}</p>
-                    )}
-                    {sell_timeline && (
-                      <p className="text-sm font-semibold text-white/70">
-                        Timeline: {formatLabel(sell_timeline)}
-                      </p>
-                    )}
-                    {sell_motivation && (
-                      <p className="text-sm font-semibold text-white/70">
-                        Reason: {formatLabel(sell_motivation)}
-                      </p>
-                    )}
-                    {sell_status && (
-                      <p className="text-sm font-semibold text-white/70">
-                        Status: {formatLabel(sell_status)}
-                      </p>
-                    )}
-                  </div>
-                  <a
-                    href={buildEditUrl("sell-property")}
-                    className="text-[#ff385c] text-sm font-bold hover:underline"
-                  >
-                    Edit
-                  </a>
-                </div>
-              </div>
-            )}
-
-            {/* Rental/Manage Flow Info */}
-            {mission === "manage_rental" && rental_location && (
-              <div className="w-[calc(100%+2.5rem)] -mx-5 rounded-2xl border border-white/15 bg-white/5 p-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex-1">
-                    <p className="text-xs font-bold text-white/50 uppercase tracking-wide mb-1">
-                      Rental Property
-                    </p>
-                    <p className="text-base font-extrabold text-white">{rental_location}</p>
-                    {rental_type && (
-                      <p className="text-sm font-semibold text-white/70 mt-1">{rental_type}</p>
-                    )}
-                    {rental_status && (
-                      <p className="text-sm font-semibold text-white/70">
-                        Status: {formatLabel(rental_status)}
-                      </p>
-                    )}
-                    {rent_band && (
-                      <p className="text-sm font-semibold text-white/70">
-                        Rent: {rent_band}/mo
-                      </p>
-                    )}
-                    {rental_needs && (
-                      <p className="text-sm font-semibold text-white/70">
-                        Needs: {rental_needs.split(",").map(formatLabel).join(", ")}
-                      </p>
-                    )}
-                  </div>
-                  <a
-                    href={buildEditUrl("rental-property")}
-                    className="text-[#ff385c] text-sm font-bold hover:underline"
-                  >
-                    Edit
-                  </a>
-                </div>
-              </div>
-            )}
-
-            {/* Compare Lenders Info */}
-            {current_lender_type && (
-              <div className="w-[calc(100%+2.5rem)] -mx-5 rounded-2xl border border-white/15 bg-white/5 p-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex-1">
-                    <p className="text-xs font-bold text-white/50 uppercase tracking-wide mb-1">
-                      Lender Comparison
-                    </p>
-                    <p className="text-base font-extrabold text-white">{current_lender_type}</p>
-                    {current_rate_band && (
-                      <p className="text-sm font-semibold text-white/70 mt-1">
-                        Rate: {current_rate_band}
-                      </p>
-                    )}
-                    {compare_priority && (
-                      <p className="text-sm font-semibold text-white/70">
-                        Priorities: {compare_priority.split(",").map(formatLabel).join(", ")}
-                      </p>
-                    )}
-                  </div>
-                  <a
-                    href={buildEditUrl("compare-lenders")}
-                    className="text-[#ff385c] text-sm font-bold hover:underline"
-                  >
-                    Edit
-                  </a>
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* Continue Button */}
-          <div className="mt-5 w-[calc(100%+2.5rem)] -mx-5">
-            <button
-              type="button"
-              disabled={pressed}
-              onClick={goNext}
-              className={[
-                "cursor-pointer pointer-events-auto block w-full py-4 rounded-2xl",
-                "text-[21px] font-extrabold active:scale-[0.99] transition",
-                "select-none touch-manipulation",
-                "focus:outline-none focus-visible:ring-4 focus-visible:ring-[#ff385c]/30",
-                pressed
-                  ? "bg-white/5 border border-white/10 text-white/40 cursor-not-allowed"
-                  : active
-                  ? "bg-[#ff385c] text-white shadow-[0_10px_30px_rgba(255,56,92,0.25)]"
-                  : "border border-white/15 bg-white/10 text-white hover:bg-white/15",
-              ].join(" ")}
-            >
-              Looks Good
-            </button>
-          </div>
-
-          <p className="mt-5 text-[11px] text-white/45">
-            Not affiliated with any government agency.
-          </p>
+          <a
+            href={editHref}
+            className="text-[#ff385c] text-[11px] font-extrabold leading-none hover:underline shrink-0"
+          >
+            Edit
+          </a>
         </div>
       </div>
-    </main>
+    );
+  };
+
+  const DetailBox = ({
+    title,
+    editHref,
+    children,
+  }: {
+    title: string;
+    editHref: string;
+    children: React.ReactNode;
+  }) => {
+    return (
+      <div className={boxClass}>
+        <div className="px-3">
+          <div className="flex items-center justify-between gap-2">
+            <div className="text-[13px] font-extrabold text-white leading-none">
+              {title}
+            </div>
+            <a
+              href={editHref}
+              className="text-[#ff385c] text-[11px] font-extrabold leading-none hover:underline shrink-0"
+            >
+              Edit
+            </a>
+          </div>
+
+          {/* Compact details text */}
+          <div className="mt-1 text-[10px] font-semibold text-white/70 leading-tight space-y-1">
+            {children}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const serviceItems = useMemo(() => {
+    const rows: Array<{ k: string; v: string }> = [];
+    const add = (k: string, v: string) => {
+      if (!v) return;
+      rows.push({ k, v: formatLabel(v) });
+    };
+
+    add("Audience", audience);
+    add("Role", role);
+    add("Branch", branch);
+    add("Paygrade", paygrade);
+    add("Retiring Rank", retiring_rank);
+    add("Years", years_of_service);
+    add("Lane", lane);
+
+    return rows;
+  }, [audience, role, branch, paygrade, retiring_rank, years_of_service, lane]);
+
+  return (
+    <AppShell>
+      {/* ✅ EXACT same wrapper as Financing page */}
+      <div className="w-full max-w-md relative mx-auto text-center px-4 pt-0 pb-10">
+        {/* Remove all vertical spacing between logo and header/cards */}
+        <div className="flex flex-col items-center justify-center pointer-events-none m-0 p-0">
+          <h1 className="text-2xl font-extrabold tracking-tight leading-none text-white m-0 p-0">
+            Match Preview
+          </h1>
+        </div>
+
+        {/* Remove all vertical spacing above cards */}
+        <div className="flex flex-col gap-1 w-full m-0 p-0 text-left">
+          {mission && (
+            <Row
+              label="Mission"
+              value={formatLabel(mission)}
+              editHref={buildEditUrl("mission")}
+            />
+          )}
+
+          {location && (
+            <Row
+              label="Location"
+              value={location}
+              editHref={buildEditUrl("location")}
+            />
+          )}
+
+          {financing && (
+            <Row
+              label="Financing"
+              value={formatLabel(financing)}
+              editHref={buildEditUrl("financing-status")}
+            />
+          )}
+
+          {/* Service Profile */}
+          {serviceItems.length > 0 && (
+            <DetailBox
+              title="Service Profile"
+              editHref={buildEditUrl(role ? "first-responder" : "audience")}
+            >
+              <div className="grid grid-cols-2 gap-x-4 gap-y-1">
+                {serviceItems.map((r) => (
+                  <div key={r.k} className="min-w-0">
+                    <div className="text-white/60 text-[10px] font-bold leading-none truncate">
+                      {r.k}
+                    </div>
+                    <div className="mt-[2px] text-white text-[12px] font-extrabold leading-none truncate">
+                      {r.v}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </DetailBox>
+          )}
+
+          {/* Sell Details */}
+          {mission === "sell" && property_location && (
+            <DetailBox title="Property Details" editHref={buildEditUrl("sell-property")}>
+              <div className="text-white text-[12px] font-extrabold leading-none truncate">
+                {property_location}
+              </div>
+              {property_type && <div>Type: {formatLabel(property_type)}</div>}
+              {sell_timeline && <div>Timeline: {formatLabel(sell_timeline)}</div>}
+              {sell_motivation && <div>Reason: {formatLabel(sell_motivation)}</div>}
+              {sell_status && <div>Status: {formatLabel(sell_status)}</div>}
+            </DetailBox>
+          )}
+
+          {/* Rental / Manage */}
+          {mission === "manage_rental" && rental_location && (
+            <DetailBox title="Rental Property" editHref={buildEditUrl("rental-property")}>
+              <div className="text-white text-[12px] font-extrabold leading-none truncate">
+                {rental_location}
+              </div>
+              {rental_type && <div>Type: {formatLabel(rental_type)}</div>}
+              {rental_status && <div>Status: {formatLabel(rental_status)}</div>}
+              {rent_band && <div>Rent: {rent_band}/mo</div>}
+              {rental_needs && (
+                <div>
+                  Needs: {rental_needs.split(",").map(formatLabel).join(", ")}
+                </div>
+              )}
+            </DetailBox>
+          )}
+
+          {/* Compare Lenders */}
+          {current_lender_type && (
+            <DetailBox title="Lender Comparison" editHref={buildEditUrl("compare-lenders")}>
+              <div className="text-white text-[12px] font-extrabold leading-none truncate">
+                {formatLabel(current_lender_type)}
+              </div>
+              {current_rate_band && <div>Rate: {formatLabel(current_rate_band)}</div>}
+              {compare_priority && (
+                <div>
+                  Priorities: {compare_priority.split(",").map(formatLabel).join(", ")}
+                </div>
+              )}
+            </DetailBox>
+          )}
+        </div>
+
+        {/* ✅ Button matches Financing sizing (NOT big py-4 / 21px) */}
+        <button
+          type="button"
+          disabled={pressed}
+          onClick={goNext}
+          className={[
+            "cursor-pointer pointer-events-auto block w-[calc(100%+2.5rem)] -mx-5 py-2 rounded-xl",
+            "text-[15px] font-extrabold active:scale-[0.99] transition",
+            "select-none touch-manipulation",
+            "focus:outline-none focus-visible:ring-4 focus-visible:ring-[#ff385c]/30",
+            pressed
+              ? "bg-white/5 border border-white/10 text-white/40 cursor-not-allowed"
+              : "bg-[#ff385c] text-white shadow-[0_10px_30px_rgba(255,56,92,0.25)]",
+          ].join(" ")}
+        >
+          Looks Good
+        </button>
+
+        <p className="mt-5 text-[11px] text-white/45">
+          Not affiliated with any government agency.
+        </p>
+      </div>
+    </AppShell>
   );
 }

@@ -2,7 +2,7 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
-import FlowLayout from "../_components/FlowLayout";
+import AppShell from "../../components/AppShell";
 
 const TIMELINES = [
   { label: "ASAP", value: "asap" },
@@ -66,12 +66,22 @@ export default function ReferTimelinePage() {
   };
 
   return (
-    <FlowLayout title="Timeline" subtitle="When is your friend looking to move?">
-      <div className="relative z-50 flex flex-col gap-3">
-        {TIMELINES.map((t) => (
-          <TimelineButton key={t.value} {...t} />
-        ))}
+    <AppShell>
+      <div className="w-full max-w-md relative mx-auto text-center px-4 pt-8 pb-10 flex flex-col gap-3">
+        <div className="flex flex-col items-center justify-center pointer-events-none mb-5 text-center">
+          <h1 className="text-4xl font-extrabold tracking-tight leading-none">
+            Timeline
+          </h1>
+          <p className="mt-3 text-sm font-semibold text-white/70">
+            When is your friend looking to move?
+          </p>
+        </div>
+        <div className="relative z-50 flex flex-col gap-3">
+          {TIMELINES.map((t) => (
+            <TimelineButton key={t.value} {...t} />
+          ))}
+        </div>
       </div>
-    </FlowLayout>
+    </AppShell>
   );
 }

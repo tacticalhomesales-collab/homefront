@@ -2,7 +2,7 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
-import PhoneShell from "../_components/PhoneShell";
+import AppShell from "../../components/AppShell";
 import ChoiceButton from "../_components/ChoiceButton";
 import { useStepNav } from "../_components/useStepNav";
 
@@ -46,18 +46,31 @@ export default function FamilyProfilePage() {
     (location ? `Location: ${location}` : "");
 
   return (
-    <PhoneShell title="Family Profile" subtitle="Who are you connected to?" meta={meta || undefined}>
-      <div className="relative z-50 flex flex-col gap-3 text-left">
-        {CHOICES.map((c) => (
-          <ChoiceButton
-            key={c.label}
-            label={c.label}
-            active={active === c.label}
-            disabled={locked}
-            onClick={() => onPick(c)}
-          />
-        ))}
+    <AppShell>
+      <div className="w-full max-w-md relative mx-auto text-left px-4 pt-8 pb-10">
+        <div className="flex flex-col items-center justify-center pointer-events-none mb-5 text-center">
+          <h1 className="text-4xl font-extrabold tracking-tight leading-none">
+            Family Profile
+          </h1>
+          <p className="mt-3 text-sm font-semibold text-white/70">
+            Who are you connected to?
+          </p>
+          {meta && (
+            <p className="mt-1 text-xs text-white/50">{meta}</p>
+          )}
+        </div>
+        <div className="relative z-50 flex flex-col gap-3 text-left">
+          {CHOICES.map((c) => (
+            <ChoiceButton
+              key={c.label}
+              label={c.label}
+              active={active === c.label}
+              disabled={locked}
+              onClick={() => onPick(c)}
+            />
+          ))}
+        </div>
       </div>
-    </PhoneShell>
+    </AppShell>
   );
 }

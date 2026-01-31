@@ -1,5 +1,6 @@
-"use client";
 
+"use client";
+import AppShell from "../../components/AppShell";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
@@ -77,11 +78,11 @@ export default function PreapprovalHelpPage() {
         {label}
       </button>
     );
-  };
+  } // <-- Add missing closing brace for ChoiceButton
 
   return (
-    <main className="min-h-[100dvh] w-full bg-[#0b0f14] text-white px-4">
-      <div className="min-h-[100dvh] flex flex-col items-center text-center pt-8 pb-10">
+    <AppShell>
+      <div className="flex flex-col items-center text-center pt-8 pb-10 min-h-[70svh] px-4">
         <div className="w-full max-w-md relative">
           {/* Invisible spacer row */}
           <div className="mb-3 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-[18px] font-extrabold tracking-[-0.02em] text-white/80 opacity-0 pointer-events-none select-none">
@@ -92,16 +93,6 @@ export default function PreapprovalHelpPage() {
             <span>Rent</span>
             <span className="text-white/25">•</span>
             <span>Manage</span>
-          </div>
-
-          {/* Logo */}
-          <div className="mx-auto w-full max-w-[95vw] mt-16 pointer-events-none select-none">
-            <img
-              src="/homefront-badge.png"
-              alt="HomeFront"
-              className="w-full h-auto scale-200 origin-center"
-              draggable={false}
-            />
           </div>
 
           {/* Title - changes based on step */}
@@ -137,6 +128,6 @@ export default function PreapprovalHelpPage() {
           </p>
         </div>
       </div>
-    </main>
+  	</AppShell>
   );
 }

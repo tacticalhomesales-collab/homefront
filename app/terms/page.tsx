@@ -2,6 +2,7 @@
 
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
+import AppShell from "../../components/AppShell";
 
 export default function TermsPage() {
   const sp = useSearchParams();
@@ -13,15 +14,15 @@ export default function TermsPage() {
   };
 
   return (
-    <main className="min-h-[100dvh] w-full bg-[#0b0f14] text-white px-6 py-10">
-      <div className="max-w-3xl mx-auto">
+    <AppShell>
+      <div className="max-w-3xl mx-auto px-6 py-10">
         <div className="mb-8">
           <Link
             href={`/consent?${getParamString()}`}
             className="text-[#ff385c] hover:text-[#ff284d] text-sm font-semibold flex items-center gap-2"
           >
             <svg
-              className="w-4 h-4"
+              className="w-6 h-6"
               fill="none"
               stroke="currentColor"
               strokeWidth="2.5"
@@ -119,6 +120,6 @@ export default function TermsPage() {
           </p>
         </div>
       </div>
-    </main>
+    </AppShell>
   );
 }

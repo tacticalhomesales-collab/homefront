@@ -1,7 +1,9 @@
 "use client";
 
+
 import { useMemo, useRef, useState, useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
+import AppShell from "../../components/AppShell";
 
 export default function ContactPage() {
   const sp = useSearchParams();
@@ -73,123 +75,69 @@ export default function ContactPage() {
   };
 
   return (
-    <main className="min-h-[100dvh] w-full bg-[#0b0f14] text-white px-4">
-      {/* Same scaffold vibe as your other pages */}
-      <div className="min-h-[100dvh] flex flex-col items-center text-center pt-8 pb-10">
-        <div className="w-full max-w-md relative">
-          {/* Logo */}
-          <div className="mx-auto w-full max-w-[95vw] mt-16 pointer-events-none select-none">
-            <img
-              src="/homefront-badge.png"
-              alt="HomeFront"
-              className="w-full h-auto scale-200 origin-center"
-              draggable={false}
+    <AppShell>
+      <div className="w-full max-w-md mx-auto flex flex-col items-center pt-0 mt-0" style={{marginTop: '0'}}>
+        <h1 className="text-[24px] font-extrabold text-center mb-1">Contact Info</h1>
+        <div className="text-[17px] text-white/80 text-center mb-1 font-semibold">Where should we send your options?</div>
+        <form onSubmit={onSubmit} className="w-full mt-0 text-left relative z-50">
+          <label className="block mt-[4px]">
+            <span className="block text-[11px] font-extrabold tracking-wide text-white/70">FULL NAME</span>
+            <input
+              value={fullName}
+              onChange={(e) => setFullName(e.target.value)}
+              autoComplete="name"
+              className="mt-[4px] w-full rounded px-[10px] py-[10px] text-[13px] font-semibold bg-white/10 border border-white/15 text-white placeholder:text-white/35 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#ff385c]/30"
+              placeholder="First & last"
             />
-          </div>
-
-          {/* Title */}
-          <div className="-mt-6 flex flex-col items-center justify-center">
-            <h1 className="text-4xl font-extrabold tracking-tight leading-none">
-              Contact Info
-            </h1>
-            <p className="mt-3 text-sm font-semibold text-white/70">
-              Where should we send your options?
-            </p>
-          </div>
-
-          {/* Form */}
-          <form onSubmit={onSubmit} className="mt-5 text-left relative z-50">
-            <label className="block">
-              <span className="block text-[12px] font-extrabold tracking-wide text-white/70">
-                FULL NAME
-              </span>
-              <input
-                value={fullName}
-                onChange={(e) => setFullName(e.target.value)}
-                autoComplete="name"
-                className={[
-                  "mt-2 w-full rounded-2xl px-4 py-4 text-[16px] font-semibold",
-                  "bg-white/10 border border-white/15 text-white placeholder:text-white/35",
-                  "focus:outline-none focus-visible:ring-4 focus-visible:ring-[#ff385c]/30",
-                ].join(" ")}
-                placeholder="First & last"
-              />
-            </label>
-
-            <label className="block mt-4">
-              <span className="block text-[12px] font-extrabold tracking-wide text-white/70">
-                PHONE NUMBER
-              </span>
-              <input
-                value={phone}
-                onChange={(e) => setPhone(formatPhone(e.target.value))}
-                inputMode="tel"
-                autoComplete="tel"
-                className={[
-                  "mt-2 w-full rounded-2xl px-4 py-4 text-[16px] font-semibold",
-                  "bg-white/10 border border-white/15 text-white placeholder:text-white/35",
-                  "focus:outline-none focus-visible:ring-4 focus-visible:ring-[#ff385c]/30",
-                ].join(" ")}
-                placeholder="(555) 555-5555"
-              />
-            </label>
-
-            {/* Optional email at the bottom (per your request) */}
-            <label className="block mt-4">
-              <span className="block text-[12px] font-extrabold tracking-wide text-white/70">
-                EMAIL (OPTIONAL)
-              </span>
-              <input
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                inputMode="email"
-                autoComplete="email"
-                className={[
-                  "mt-2 w-full rounded-2xl px-4 py-4 text-[16px] font-semibold",
-                  "bg-white/10 border border-white/15 text-white placeholder:text-white/35",
-                  "focus:outline-none focus-visible:ring-4 focus-visible:ring-[#ff385c]/30",
-                ].join(" ")}
-                placeholder="name@email.com"
-              />
-            </label>
-
-            <label className="block mt-4">
-              <span className="block text-[12px] font-extrabold tracking-wide text-white/70">
-                NOTES (OPTIONAL)
-              </span>
-              <textarea
-                value={notes}
-                onChange={(e) => setNotes(e.target.value)}
-                rows={3}
-                className={[
-                  "mt-2 w-full rounded-2xl px-4 py-4 text-[16px] font-semibold",
-                  "bg-white/10 border border-white/15 text-white placeholder:text-white/35",
-                  "focus:outline-none focus-visible:ring-4 focus-visible:ring-[#ff385c]/30",
-                ].join(" ")}
-                placeholder="Anything we should know?"
-              />
-            </label>
-
-            <button
-              type="submit"
-              disabled={!isValid}
-              className={[
-                "mt-5 block w-[calc(100%+2.5rem)] -mx-5 py-4 rounded-2xl text-[21px] font-extrabold transition active:scale-[0.99]",
-                "focus:outline-none focus-visible:ring-4 focus-visible:ring-[#ff385c]/30",
-                isValid
-                  ? "bg-[#ff385c] text-white shadow-[0_10px_30px_rgba(255,56,92,0.25)]"
-                  : "bg-white/10 border border-white/15 text-white/40 cursor-not-allowed",
-              ].join(" ")}
-            >
-              Continue
-            </button>
-
-            <p className="mt-4 text-[11px] text-white/45 text-center">
-              Not affiliated with any government agency.
-            </p>
-          </form>
-        </div>
+          </label>
+          <label className="block mt-[4px]">
+            <span className="block text-[11px] font-extrabold tracking-wide text-white/70">PHONE NUMBER</span>
+            <input
+              value={phone}
+              onChange={(e) => setPhone(formatPhone(e.target.value))}
+              inputMode="tel"
+              autoComplete="tel"
+              className="mt-[4px] w-full rounded px-[10px] py-[10px] text-[13px] font-semibold bg-white/10 border border-white/15 text-white placeholder:text-white/35 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#ff385c]/30"
+              placeholder="(555) 555-5555"
+            />
+          </label>
+          <label className="block mt-[4px]">
+            <span className="block text-[11px] font-extrabold tracking-wide text-white/70">EMAIL (OPTIONAL)</span>
+            <input
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              inputMode="email"
+              autoComplete="email"
+              className="mt-[4px] w-full rounded px-[10px] py-[10px] text-[13px] font-semibold bg-white/10 border border-white/15 text-white placeholder:text-white/35 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#ff385c]/30"
+              placeholder="name@email.com"
+            />
+          </label>
+          <label className="block mt-[4px]">
+            <span className="block text-[11px] font-extrabold tracking-wide text-white/70">NOTES (OPTIONAL)</span>
+            <textarea
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+              rows={2}
+              className="mt-[4px] w-full rounded px-[10px] py-[10px] text-[13px] font-semibold bg-white/10 border border-white/15 text-white placeholder:text-white/35 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#ff385c]/30"
+              placeholder="Anything we should know?"
+            />
+          </label>
+          <button
+            type="submit"
+            disabled={!isValid}
+            className={[
+              "mt-[8px] block w-full py-[12px] rounded text-[16px] font-extrabold transition active:scale-[0.99]",
+              "focus:outline-none focus-visible:ring-2 focus-visible:ring-[#ff385c]/30",
+              isValid
+                ? "bg-[#ff385c] text-white shadow-[0_1px_2px_rgba(255,56,92,0.18)]"
+                : "bg-white/10 border border-white/15 text-white/40 cursor-not-allowed",
+            ].join(" ")}
+          >
+            Continue
+          </button>
+          <p className="mt-[8px] text-[10px] text-white/45 text-center">Not affiliated with any government agency.</p>
+        </form>
       </div>
-    </main>
+    </AppShell>
   );
 }

@@ -77,12 +77,13 @@ export default function SellMotivationPage() {
             <span>Manage</span>
           </div>
 
-          {/* Logo */}
-          <div className="mx-auto w-full max-w-[95vw] mt-16 pointer-events-none select-none">
+          {/* Logo - much smaller, more margin below */}
+          <div className="mx-auto w-full max-w-[95vw] mt-4 mb-4 pointer-events-none select-none flex justify-center">
             <img
               src="/homefront-badge.png"
-              alt="HomeFront Logo"
-              className="w-full h-auto scale-200 origin-center"
+              alt="HomeFront"
+              className="w-16 h-auto"
+              style={{maxHeight: '70px'}}
               draggable={false}
             />
           </div>

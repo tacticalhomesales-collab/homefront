@@ -1,19 +1,23 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import FlowLayout from "../_components/FlowLayout";
+import AppShell from "../../components/AppShell";
 
 export default function ReferConfirmationPage() {
   const router = useRouter();
 
   return (
-    <FlowLayout
-      title="Thank You!"
-      subtitle="Your referral has been submitted successfully."
-      logoSrc="/homefront-badge.png"
-      logoAlt="HomeFront Logo"
-    >
-      <div className="relative z-50 flex flex-col gap-6">
+    <AppShell>
+      <div className="w-full max-w-md relative mx-auto text-center px-4 pt-8 pb-10 flex flex-col gap-6">
+        <div className="flex flex-col items-center justify-center pointer-events-none mb-5 text-center">
+          <h1 className="text-4xl font-extrabold tracking-tight leading-none">
+            Thank You!
+          </h1>
+          <p className="mt-3 text-sm font-semibold text-white/70">
+            Your referral has been submitted successfully.
+          </p>
+        </div>
+        <div className="relative z-50 flex flex-col gap-6">
         {/* Success message */}
         <div className="text-center">
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-green-500/20 mb-4">
@@ -65,6 +69,7 @@ export default function ReferConfirmationPage() {
           </button>
         </div>
       </div>
-    </FlowLayout>
+      </div>
+    </AppShell>
   );
 }

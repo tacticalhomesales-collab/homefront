@@ -74,11 +74,11 @@ export default function RentalStatusPage() {
           </div>
 
           {/* Logo */}
-          <div className="mx-auto w-full max-w-[95vw] mt-16 pointer-events-none select-none">
+          <div className="mx-auto w-full max-w-[320px] mt-4 mb-2 pointer-events-none select-none">
             <img
               src="/homefront-badge.png"
               alt="HomeFront"
-              className="w-full h-auto scale-200 origin-center"
+              className="w-full h-auto"
               draggable={false}
             />
           </div>

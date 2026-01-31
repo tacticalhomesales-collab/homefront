@@ -73,15 +73,15 @@ export default function SellTimelinePage() {
             <span className="text-white/25">•</span>
             <span>Manage</span>
           </div>
-          <div className="mx-auto w-full max-w-[95vw] mt-16 pointer-events-none select-none">
-            <div className="flex justify-center items-center w-full" style={{ minHeight: '200px' }}>
-              <img
-                src="/homefront-badge.png"
-                alt="HomeFront"
-                className="max-w-[900px] max-h-[450px] object-contain pointer-events-none select-none"
-                draggable={false}
-              />
-            </div>
+          {/* Logo - much smaller, more margin below */}
+          <div className="mx-auto w-full max-w-[95vw] mt-4 mb-4 pointer-events-none select-none flex justify-center">
+            <img
+              src="/homefront-badge.png"
+              alt="HomeFront"
+              className="w-16 h-auto"
+              style={{maxHeight: '70px'}}
+              draggable={false}
+            />
           </div>
 
           {/* Title */}

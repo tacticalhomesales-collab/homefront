@@ -1,6 +1,7 @@
 "use client";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
+import AppShell from "../../components/AppShell";
 
 const CATEGORIES = [
   { label: "Enlisted", value: "enlisted" },
@@ -30,19 +31,9 @@ export default function ServiceCategoryPage() {
   };
 
   return (
-    <main className="min-h-[100dvh] w-full bg-[#0b0f14] text-white px-4 flex flex-col items-center justify-center">
-      <div className="w-full max-w-md mx-auto flex flex-col items-center">
-        {/* Logo at the top */}
-        <div className="mx-auto w-full max-w-[95vw] mt-6 mb-2 pointer-events-none select-none">
-          <img
-            src="/homefront-badge.png"
-            alt="HomeFront"
-            className="w-full h-auto scale-200 origin-center"
-            draggable={false}
-          />
-        </div>
+    <AppShell>
+      <div className="w-full max-w-md mx-auto flex flex-col items-center pt-1">
         <h1 className="text-2xl font-extrabold text-center mb-2">Service Category</h1>
-        <div className="text-base text-white/80 text-center mb-4 font-semibold">Select your service category.</div>
         {/* 2x2 grid for options */}
         <div className="grid grid-cols-2 grid-rows-2 gap-4 w-full mt-2">
           {CATEGORIES.map((cat) => (
@@ -67,6 +58,6 @@ export default function ServiceCategoryPage() {
           ))}
         </div>
       </div>
-    </main>
+    </AppShell>
   );
 }

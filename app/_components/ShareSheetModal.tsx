@@ -140,22 +140,7 @@ export default function ShareSheetModal({ isOpen, onClose }: ShareSheetModalProp
             </div>
           )}
 
-          {/* Referral Code (Big & Readable) */}
-          <div className="bg-white/5 border border-white/15 rounded-xl p-4 text-center">
-            <p className="text-xs font-bold text-white/50 uppercase tracking-wide mb-2">
-              Your Referral Code
-            </p>
-            <p className="text-4xl font-extrabold text-white tracking-wider">
-              {refCode}
-            </p>
-            <button
-              type="button"
-              onClick={() => handleCopy("code", refCode)}
-              className="mt-3 px-6 py-2 bg-white/10 hover:bg-white/15 border border-white/15 rounded-xl text-sm font-bold text-white transition"
-            >
-              {copied === "code" ? "✓ Copied!" : "Copy Code"}
-            </button>
-          </div>
+          {/* Referral Code section removed as requested */}
 
           {/* Copy Link */}
           <button

@@ -17,8 +17,8 @@ export async function POST(request: NextRequest) {
       consented_at,
     } = body;
 
-    // Validate required fields
-    if (!friend_name || !friend_phone || !referrer_name) {
+    // Validate required fields (referrer fields not required)
+    if (!friend_name || !friend_phone) {
       return NextResponse.json(
         { error: "Missing required fields" },
         { status: 400 }

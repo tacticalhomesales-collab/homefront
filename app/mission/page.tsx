@@ -15,7 +15,7 @@ export default function MissionPage() {
     }
     let next = "/location";
     if (mission === "sell") next = "/sell-property";
-    else if (mission === "manage_rental") next = "/rental-property";
+    else if (mission === "manage_rental" || mission === "manage") next = "/rental-property";
     // Always pass mission param
     router.replace(`${next}?mission=${mission || "buy"}&${q.toString()}`);
   }, [router, sp]);

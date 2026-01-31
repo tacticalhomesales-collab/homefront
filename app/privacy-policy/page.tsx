@@ -1,7 +1,8 @@
-"use client";
 
+"use client";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
+import AppShell from "../../components/AppShell";
 
 export default function PrivacyPolicyPage() {
   const sp = useSearchParams();
@@ -13,8 +14,8 @@ export default function PrivacyPolicyPage() {
   };
 
   return (
-    <main className="min-h-[100dvh] w-full bg-[#0b0f14] text-white px-6 py-10">
-      <div className="max-w-3xl mx-auto">
+    <AppShell>
+      <div className="max-w-3xl mx-auto px-6 py-10">
         <div className="mb-8">
           <Link
             href={`/consent?${getParamString()}`}
@@ -149,6 +150,6 @@ export default function PrivacyPolicyPage() {
           </p>
         </div>
       </div>
-    </main>
+    </AppShell>
   );
 }

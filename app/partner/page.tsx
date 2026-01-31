@@ -1,5 +1,7 @@
 
+
 "use client";
+import AppShell from "../../components/AppShell";
 
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -20,22 +22,18 @@ export default function PartnerEntryPage() {
   }, [router]);
 
   return (
-    <main className="min-h-[100dvh] w-full bg-[#0b0f14] text-white px-4 flex flex-col items-center justify-center">
-      <div className="w-full max-w-md mx-auto flex flex-col items-center">
-        <img
-          src="/homefront-badge.png"
-          alt="HomeFront – Smart Moves. Strong Homes."
-          className="w-80 h-auto mb-8 select-none pointer-events-none drop-shadow-xl"
-          draggable={false}
-        />
-        <h1 className="text-3xl sm:text-4xl font-extrabold text-center mb-2 tracking-tight leading-tight">
-          Become a HomeFront Partner
-        </h1>
-        <div className="text-base sm:text-lg text-white/80 text-center mb-2 font-semibold">
-          Earn cash for every referral. Agents earn more.
-        </div>
-        <div className="text-sm sm:text-base text-white/60 text-center mb-6 font-medium">
-          Trusted by real estate pros nationwide.
+    <AppShell>
+      <div className="w-full max-w-md mx-auto flex flex-col items-center px-4 pt-8 pb-10">
+        <div className="flex flex-col items-center justify-center pointer-events-none mb-5 text-center">
+          <h1 className="text-3xl sm:text-4xl font-extrabold text-center mb-2 tracking-tight leading-tight">
+            One Team One Fight
+          </h1>
+          <div className="text-base sm:text-lg text-white/80 text-center mb-2 font-semibold">
+            Earn cash for every referral. Agents earn more.
+          </div>
+          <div className="text-sm sm:text-base text-white/60 text-center mb-6 font-medium">
+            Trusted by real estate pros nationwide.
+          </div>
         </div>
         <div className="flex flex-col gap-5 w-full mb-8">
           <button
@@ -57,6 +55,6 @@ export default function PartnerEntryPage() {
         </div>
         <div className="text-xs text-white/50 text-center mt-2">Not affiliated with any government agency.</div>
       </div>
-    </main>
+    </AppShell>
   );
 }

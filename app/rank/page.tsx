@@ -1,160 +1,76 @@
+
 "use client";
 
+import AppShell from "../../components/AppShell";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
 export default function RankPage() {
-    function startVerifyThenGoContact(paygrade: string) {
-      goNext(paygrade);
-    }
   const router = useRouter();
   const sp = useSearchParams();
-
   const [pressed, setPressed] = useState(false);
-  const [activeLabel, setActiveLabel] = useState<string | null>(null);
-
-  const goNext = (paygrade: string) => {
+  function startVerifyThenGoContact(paygrade: string) {
     if (pressed) return;
-
-    setActiveLabel(paygrade);
     setPressed(true);
-
     const q = new URLSearchParams();
     for (const [k, v] of sp.entries()) q.set(k, v);
     q.set("paygrade", paygrade);
-
-    const nextPath = "/years-of-service";
-    const nextUrl = `${nextPath}?${q.toString()}`;
-
+    const url = `/verify?${q.toString()}`;
     setTimeout(() => {
       try {
-        router.push(nextUrl);
+        router.push(url);
       } finally {
         setTimeout(() => {
-          if (
-            typeof window !== "undefined" &&
-            window.location.pathname !== nextPath
-          ) {
-            window.location.assign(nextUrl);
+          if (typeof window !== "undefined" && !window.location.pathname.startsWith("/verify")) {
+            window.location.assign(url);
           }
         }, 250);
       }
     }, 120);
-  };
-
-  const Button = ({ label }: { label: string }) => {
-    const isActive = activeLabel === label;
-
-    return (
-      <button
-        type="button"
-        disabled={pressed}
-        onClick={() => goNext(label)}
-        className={[
-          "w-full py-4 rounded-2xl text-[18px] font-extrabold transition active:scale-[0.99]",
-          "select-none touch-manipulation",
-          isActive
-            ? "bg-[#ff385c] text-white cursor-not-allowed shadow-[0_10px_30px_rgba(255,56,92,0.25)]"
-            : pressed
-            ? "bg-white/5 border border-white/10 text-white/40 cursor-not-allowed"
-            : "border border-white/15 bg-white/10 text-white hover:bg-white/15 cursor-pointer",
-        ].join(" ")}
-      >
-        {label}
-      </button>
-    );
-  };
-
+  }
   return (
-    <main className="min-h-[100dvh] w-full bg-[#0b0f14] text-white px-4">
-
-      <div className="min-h-[100dvh] flex flex-col items-center text-center pt-8 pb-6">
-        <div className="w-full max-w-md relative">
-          {/* Invisible spacer row to match your layout rhythm */}
-          <div className="mb-3 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-[18px] font-extrabold tracking-[-0.02em] text-white/80 opacity-0 pointer-events-none select-none">
-            <span>Buy</span>
-            <span className="text-white/25">•</span>
-            <span>Sell</span>
-            <span className="text-white/25">•</span>
-            <span>Rent</span>
-            <span className="text-white/25">•</span>
-            <span>Manage</span>
-          </div>
-
-          {/* Logo */}
-          <div className="mx-auto w-full max-w-[95vw] mt-16 pointer-events-none select-none">
-            <img
-              src="/homefront-badge.png"
-              alt="HomeFront"
-              className="w-full h-auto scale-200 origin-center"
-              draggable={false}
-            />
-          </div>
-
-          {/* Title */}
-          <div className="-mt-6 flex flex-col items-center justify-center pointer-events-none">
-            <h1 className="text-4xl font-extrabold tracking-tight leading-none text-white">
-              Pay Grade
-            </h1>
-            <p className="mt-3 text-sm font-semibold text-white/70">
-              Select your current pay grade.
-            </p>
-          </div>
-
-          {/* Grid */}
-          <div className="mt-2 relative z-50">
-            <div className="grid grid-cols-2 gap-3 text-left">
-              <Button label="E-1" />
-              <Button label="E-2" />
-              <Button label="E-3" />
-              <Button label="E-4" />
-              <Button label="E-5" />
-              <Button label="E-6" />
-              <Button label="E-7" />
-              <Button label="E-8" />
-              <Button label="E-9" />
-              <Button label="E-9 (SGM/MCPO)" />
-
-              <Button label="W-1" />
-              <Button label="W-2" />
-              <Button label="W-3" />
-              <Button label="W-4" />
-              <Button label="W-5" />
-              <Button label="Warrant (Other)" />
-
-              <Button label="O-1" />
-              <Button label="O-2" />
-              <Button label="O-3" />
-              <Button label="O-4" />
-              <Button label="O-5" />
-              <Button label="O-6" />
-              <Button label="O-7+" />
-              <Button label="Officer (Other)" />
-
-              <div className="col-span-2">
+    <AppShell>
+      <div className="w-full max-w-md relative mx-auto text-center px-4 pt-8 pb-10">
+        <div className="flex flex-col items-center justify-center pointer-events-none mb-5">
+          <h1 className="text-4xl font-extrabold tracking-tight leading-none text-white">
+            Pay Grade
+          </h1>
+          <p className="mt-3 text-sm font-semibold text-white/70">
+            Select your current pay grade.
+          </p>
+        </div>
+        <div className="mt-2 relative z-50">
+          <div className="grid grid-cols-2 gap-3 text-left">
+            {[
+              "E-1","E-2","E-3","E-4","E-5","E-6","E-7","E-8","E-9","E-9 (SGM/MCPO)",
+              "W-1","W-2","W-3","W-4","W-5","Warrant (Other)",
+              "O-1","O-2","O-3","O-4","O-5","O-6","O-7+","Officer (Other)"
+            ].map((label) => (
                 <button
+                  key={label}
                   type="button"
-                  disabled={pressed}
-                  onClick={() => startVerifyThenGoContact("Unknown")}
-                  className={[
-                    "w-full py-3 rounded-2xl text-[15px] sm:text-lg font-extrabold transition active:scale-[0.99]",
-                    "select-none touch-manipulation",
-                    pressed
-                      ? "bg-[#ff385c] text-black cursor-not-allowed"
-                      : "bg-white/10 border border-white/15 text-white hover:bg-white/15 cursor-pointer",
-                  ].join(" ")}
+                  className="w-full py-3 rounded-2xl text-[15px] sm:text-lg font-extrabold transition active:scale-[0.99] select-none touch-manipulation bg-white/10 border border-white/15 text-white hover:bg-white/15 cursor-pointer"
+                  onClick={() => startVerifyThenGoContact(label)}
                 >
-                  Not sure
+                  {label}
                 </button>
-              </div>
+              ))}
+            </div>
+            <div className="col-span-2">
+              <button
+                type="button"
+                disabled={pressed}
+                onClick={() => startVerifyThenGoContact("Unknown")}
+                className={["w-full py-3 rounded-2xl text-[15px] sm:text-lg font-extrabold transition active:scale-[0.99]","select-none touch-manipulation",pressed? "bg-[#ff385c] text-black cursor-not-allowed":"bg-white/10 border border-white/15 text-white hover:bg-white/15 cursor-pointer",].join(" ")}
+              >
+                Not sure
+              </button>
             </div>
           </div>
-
           <p className="mt-4 text-[11px] text-white/45">
             Not affiliated with any government agency.
           </p>
         </div>
-      </div>
-    </main>
-  );
+      </AppShell>
+    );
 }

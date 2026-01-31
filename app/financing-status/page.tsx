@@ -1,5 +1,7 @@
+
 "use client";
 
+import AppShell from "../../components/AppShell";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
@@ -54,8 +56,8 @@ export default function FinancingStatusPage() {
         disabled={pressed}
         onClick={() => onPick(value)}
         className={[
-          "cursor-pointer pointer-events-auto block w-[calc(100%+2.5rem)] -mx-5 py-4 rounded-2xl",
-          "text-[21px] font-extrabold active:scale-[0.99] transition",
+          "cursor-pointer pointer-events-auto block w-[calc(100%+2.5rem)] -mx-5 py-2 rounded-xl",
+          "text-[15px] font-extrabold active:scale-[0.99] transition",
           "select-none touch-manipulation",
           "focus:outline-none focus-visible:ring-4 focus-visible:ring-[#ff385c]/30",
           isActive
@@ -71,52 +73,22 @@ export default function FinancingStatusPage() {
   };
 
   return (
-    <main className="min-h-[100dvh] w-full bg-[#0b0f14] text-white px-4">
-      <div className="min-h-[100dvh] flex flex-col items-center text-center pt-8 pb-10">
-        <div className="w-full max-w-md relative">
-          {/* Invisible spacer row to match other pages */}
-          <div className="mb-3 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-[18px] font-extrabold tracking-[-0.02em] text-white/80 opacity-0 pointer-events-none select-none">
-            <span>Buy</span>
-            <span className="text-white/25">•</span>
-            <span>Sell</span>
-            <span className="text-white/25">•</span>
-            <span>Rent</span>
-            <span className="text-white/25">•</span>
-            <span>Manage</span>
-          </div>
-
-          {/* Logo */}
-          <div className="mx-auto w-full max-w-[95vw] mt-16 pointer-events-none select-none">
-            <img
-              src="/homefront-badge.png"
-              alt="HomeFront"
-              className="w-full h-auto scale-200 origin-center"
-              draggable={false}
-            />
-          </div>
-
-          {/* Title */}
-          <div className="-mt-6 flex flex-col items-center justify-center pointer-events-none">
-            <h1 className="text-4xl font-extrabold tracking-tight leading-none text-white">
-              Financing Status
-            </h1>
-            <p className="mt-3 text-sm font-semibold text-white/70">
-              Where are you in the financing process?
-            </p>
-          </div>
-
-          {/* Buttons */}
-          <div className="mt-2 relative z-50 flex flex-col gap-3">
-            {OPTIONS.map((opt) => (
-              <OptionButton key={opt.value} label={opt.label} value={opt.value} />
-            ))}
-          </div>
-
-          <p className="mt-5 text-[11px] text-white/45">
-            Not affiliated with any government agency.
-          </p>
+    <AppShell>
+      <div className="w-full max-w-md relative mx-auto text-center px-4 pt-0 pb-10">
+        <div className="flex flex-col items-center justify-center pointer-events-none mb-2">
+          <h1 className="text-2xl font-extrabold tracking-tight leading-none text-white mb-0.5">
+            Financing Status
+          </h1>
         </div>
+        <div className="flex flex-col gap-2 w-full mt-0">
+          {OPTIONS.map((opt) => (
+            <OptionButton key={opt.value} label={opt.label} value={opt.value} />
+          ))}
+        </div>
+        <p className="mt-5 text-[11px] text-white/45">
+          Not affiliated with any government agency.
+        </p>
       </div>
-    </main>
+    </AppShell>
   );
 }

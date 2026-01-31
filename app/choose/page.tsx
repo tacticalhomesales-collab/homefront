@@ -1,7 +1,10 @@
 
+
 "use client";
 import React from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import AppShell from "../../components/AppShell";
+import { IntentBadge, IntentBanner, IntentIcon } from "../../components/IntentVisuals";
 
 export default function ChoosePage() {
   const router = useRouter();
@@ -30,17 +33,20 @@ export default function ChoosePage() {
       setPressedButton(null);
       // Branch to the correct next step based on mission and pathType
       if (pathType === "military") {
-        router.push(`/military-status?lane=service&service_track=military&mission=${mission || ""}`);
+        router.push(`/military-status?lane=service&service_track=military&mission=${mission || "buy"}`);
       } else if (pathType === "first_responder") {
-        router.push(`/first-responder?lane=service&service_track=fr&mission=${mission || ""}`);
+        router.push(`/first-responder?lane=service&service_track=fr&mission=${mission || "buy"}`);
       } else {
         // Civilian: branch based on mission param
         if (mission === "sell") {
           router.push(`/sell-property?mission=sell`);
-        } else if (mission === "manage_rental") {
-          router.push(`/rental-property?mission=manage_rental`);
+        } else if (mission === "manage" || mission === "manage_rental") {
+          router.push(`/rental-property?mission=manage`);
+        } else if (mission === "rent") {
+          // Renter path: follow buyer flow
+          router.push(`/military-status?lane=service&service_track=military&mission=rent`);
         } else {
-          // buy or rent
+          // Default to buy flow
           router.push(`/location?mission=${mission || "buy"}`);
         }
       }
@@ -59,71 +65,32 @@ export default function ChoosePage() {
     }, 120);
   };
 
-  let logoSrc = "/homefront-badge.png";
-  let logoAlt = "HomeFront";
-  if (selectedPath === "Military Affiliated" || selectedPath === "First Responder") {
-    logoSrc = "/serving-those-who-serve-logo.png";
-    logoAlt = "Serving Those Who Serve";
-  } else if (selectedPath === "Civilian") {
-    logoSrc = "/smart-moves-strong-homes-logo.png";
-    logoAlt = "Smart Moves Strong Homes";
-  }
-
   return (
-    <main className="min-h-[100dvh] w-full bg-[#0b0f14] text-white px-4">
-      <div className="min-h-[100dvh] flex flex-col items-center text-center pt-8 pb-10">
-        <div className="w-full max-w-[900px] relative mx-auto">
-          {/* Buy • Sell • Rent • Manage row (styled gray, above logo, not wider than logo) */}
-          <div className="mb-4 flex flex-wrap items-center justify-center gap-x-1 gap-y-0.5 text-[12px] font-bold tracking-[-0.01em] text-gray-400 select-none mx-auto w-full max-w-[900px]" style={{maxWidth: '900px'}}>
-            <span>Buy</span>
-            <span className="mx-0.5">•</span>
-            <span>Sell</span>
-            <span className="mx-0.5">•</span>
-            <span>Rent</span>
-            <span className="mx-0.5">•</span>
-            <span>Manage</span>
-          </div>
-
-          {/* Dynamic Logo - moved down and made larger */}
-          <div className="mx-auto w-full max-w-[98vw] sm:max-w-[1100px] mt-10 mb-2 pointer-events-none select-none">
-            <img
-              src={logoSrc}
-              alt={logoAlt}
-              className="w-full h-auto"
-              style={{ maxWidth: '1100px', maxHeight: '750px', objectFit: 'contain' }}
-              draggable={false}
-            />
-          </div>
-
-          {/* Title */}
-          <div className="mt-2 flex flex-col items-center justify-center pointer-events-none">
-            <h1 className="text-2xl font-extrabold tracking-tight leading-none text-white">
-              Choose Your Path
-            </h1>
-            <p className="mt-2 text-xs font-semibold text-white/70">
-              Select what best describes you.
-            </p>
-          </div>
-
-          {/* Buttons */}
-          <div className="mt-8 relative z-50 flex flex-col gap-5 w-full max-w-[500px] mx-auto items-center">
-            {BUTTONS.map((b) => (
-              <button
-                key={b.label}
-                type="button"
-                onClick={b.onClick}
-                className={[
-                  "cursor-pointer pointer-events-auto block w-full py-4 rounded-2xl border border-white/15 bg-white/10 text-white text-[16px] font-bold hover:bg-white/15 active:scale-[0.98] transition focus:outline-none focus-visible:ring-2 focus-visible:ring-white/30 shadow-lg",
-                  pressedButton === b.label ? "bg-[#ff385c] text-white" : ""
-                ].join(" ")}
-              >
-                {b.label}
-              </button>
-            ))}
-          </div>
-          {/* Only one button container should remain. */}
+    <AppShell>
+      <div className="w-full max-w-md mx-auto flex flex-col items-center pt-1" style={{marginTop: '-0.75rem'}}>
+        <h1 className="text-xl font-extrabold text-center mb-1 text-white">Choose Your Path</h1>
+        <div className="text-sm text-white/80 text-center mb-2 font-semibold">Select what best describes you.</div>
+        <div className="w-full flex flex-col gap-2 mt-1">
+          {BUTTONS.map((b) => (
+            <button
+              key={b.label}
+              type="button"
+              onClick={b.onClick}
+              disabled={pressedButton === b.label}
+              className={[
+                "cursor-pointer pointer-events-auto block w-full py-2 rounded-lg text-sm font-extrabold active:scale-[0.99] transition select-none touch-manipulation focus:outline-none focus-visible:ring-2 focus-visible:ring-[#ff385c]/30",
+                pressedButton === b.label
+                  ? "bg-[#ff385c] text-white shadow-[0_4px_10px_rgba(255,56,92,0.18)]"
+                  : "border border-white/15 bg-white/10 text-white hover:bg-white/15"
+              ].join(" ")}
+              style={{ fontSize: "clamp(12px,2.5vw,15px)" }}
+              aria-pressed={pressedButton === b.label}
+            >
+              {b.label}
+            </button>
+          ))}
         </div>
       </div>
-    </main>
+    </AppShell>
   );
 }

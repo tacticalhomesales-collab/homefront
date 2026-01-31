@@ -2,6 +2,7 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
+import AppShell from "../../components/AppShell";
 
 type VerifyStage = "verifying" | "verified";
 
@@ -43,7 +44,7 @@ export default function VerifyPage() {
   }, [router, sp]);
 
   return (
-    <main className="min-h-[100dvh] w-full bg-[#0b0f14] text-white px-4 relative">
+    <AppShell>
       {/* Verification Overlay */}
       <div className="absolute inset-0 bg-black/85 z-[9999] flex items-center justify-center">
         <div className="text-center">
@@ -100,27 +101,16 @@ export default function VerifyPage() {
       </div>
 
       {/* Background content (not visible during overlay) */}
-      <div className="min-h-[100dvh] flex flex-col items-center text-center pt-8 pb-10">
-        <div className="w-full max-w-md relative">
-          <div className="mx-auto w-full max-w-[95vw] mt-16 pointer-events-none select-none">
-            <img
-              src="/homefront-badge.png"
-              alt="HomeFront"
-              className="w-full h-auto scale-200 origin-center"
-              draggable={false}
-            />
-          </div>
-
-          <div className="-mt-6 flex flex-col items-center justify-center pointer-events-none">
-            <h1 className="text-4xl font-extrabold tracking-tight leading-none">
-              Verification
-            </h1>
-            <p className="mt-3 text-sm font-semibold text-white/70">
-              Please wait while we verify your information...
-            </p>
-          </div>
+      <div className="w-full max-w-md mx-auto">
+        <div className="-mt-6 flex flex-col items-center justify-center pointer-events-none">
+          <h1 className="text-4xl font-extrabold tracking-tight leading-none">
+            Verification
+          </h1>
+          <p className="mt-3 text-sm font-semibold text-white/70">
+            Please wait while we verify your information...
+          </p>
         </div>
       </div>
-    </main>
+    </AppShell>
   );
 }

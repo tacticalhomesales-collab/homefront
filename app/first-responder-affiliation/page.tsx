@@ -2,6 +2,7 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
+import AppShell from "../../components/AppShell";
 
 const AFFILIATIONS = [
   "Active Duty",
@@ -40,8 +41,8 @@ export default function FirstResponderAffiliationPage() {
   };
 
   return (
-    <main className="min-h-[100dvh] w-full bg-[#0b0f14] text-white flex flex-col items-center justify-center px-4">
-      <div className="max-w-md w-full mx-auto bg-white/5 border border-white/10 rounded-2xl p-8 shadow-xl flex flex-col items-center">
+    <AppShell>
+      <div className="max-w-md w-full mx-auto bg-white/5 border border-white/10 rounded-2xl p-8 shadow-xl flex flex-col items-center min-h-[70svh] justify-center mt-8">
         <h1 className="text-2xl font-extrabold mb-2 text-center">Military Affiliation</h1>
         <div className="text-white/70 text-center mb-6">Which best describes your military connection?</div>
         <div className="flex flex-col gap-3 w-full">
@@ -61,6 +62,6 @@ export default function FirstResponderAffiliationPage() {
           ))}
         </div>
       </div>
-    </main>
+    </AppShell>
   );
 }

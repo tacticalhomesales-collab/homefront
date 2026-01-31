@@ -1,7 +1,8 @@
-"use client";
 
+"use client";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
+import AppShell from "../../components/AppShell";
 
 const BRANCHES = [
   "Army",
@@ -10,6 +11,7 @@ const BRANCHES = [
   "Air Force",
   "Space Force",
   "Coast Guard",
+  "National Guard",
 ] as const;
 
 export default function BranchPage() {
@@ -57,8 +59,8 @@ export default function BranchPage() {
         disabled={pressed}
         onClick={() => goNext(label)}
         className={[
-          "cursor-pointer pointer-events-auto block w-[calc(100%+2.5rem)] -mx-5 py-4 rounded-2xl",
-          "text-[21px] font-extrabold active:scale-[0.99] transition",
+          "cursor-pointer pointer-events-auto block w-[calc(100%+2.5rem)] -mx-5 py-2 rounded-xl",
+          "text-[15px] font-extrabold active:scale-[0.99] transition",
           "select-none touch-manipulation",
           "focus:outline-none focus-visible:ring-4 focus-visible:ring-[#ff385c]/30",
           isActive
@@ -74,10 +76,10 @@ export default function BranchPage() {
   };
 
   return (
-    <main className="min-h-[100dvh] w-full bg-[#0b0f14] text-white px-4">
-      <div className="min-h-[100dvh] flex flex-col items-center text-center pt-8 pb-10">
+    <AppShell>
+      <div className="flex flex-col items-center text-center pt-0 pb-10 min-h-[70svh] px-4" style={{marginTop: '-0.75rem'}}>
         <div className="w-full max-w-md relative">
-          <div className="mb-3 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-[18px] font-extrabold tracking-[-0.02em] text-white/80 opacity-0 pointer-events-none select-none">
+          <div className="mb-1 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-[14px] font-extrabold tracking-[-0.02em] text-white/80 opacity-0 pointer-events-none select-none">
             <span>Buy</span>
             <span className="text-white/25">•</span>
             <span>Sell</span>
@@ -87,25 +89,16 @@ export default function BranchPage() {
             <span>Manage</span>
           </div>
 
-          <div className="mx-auto w-full max-w-[95vw] mt-16 pointer-events-none select-none">
-            <img
-              src="/homefront-badge.png"
-              alt="HomeFront"
-              className="w-full h-auto scale-200 origin-center"
-              draggable={false}
-            />
-          </div>
-
-          <div className="-mt-6 flex flex-col items-center justify-center pointer-events-none">
-            <h1 className="text-4xl font-extrabold tracking-tight leading-none text-white">
+          <div className="-mt-3 flex flex-col items-center justify-center pointer-events-none">
+            <h1 className="text-2xl font-extrabold tracking-tight leading-none text-white mb-0.5">
               Branch of Service
             </h1>
-            <p className="mt-3 text-sm font-semibold text-white/70">
+            <p className="mt-1 text-xs font-semibold text-white/70">
               Select your branch.
             </p>
           </div>
 
-          <div className="mt-2 relative z-50 flex flex-col gap-3">
+          <div className="mt-1 relative z-50 flex flex-col gap-2">
             {BRANCHES.map((b) => (
               <BranchButton key={b} label={b} />
             ))}
@@ -116,6 +109,6 @@ export default function BranchPage() {
           </p>
         </div>
       </div>
-    </main>
+    </AppShell>
   );
 }
