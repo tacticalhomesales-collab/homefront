@@ -21,6 +21,7 @@ export default function ShareSheetModal({ isOpen, onClose }: ShareSheetModalProp
     // Priority 1: Partner code
     const partnerCode = localStorage.getItem("hf_partner_public_code");
     if (partnerCode) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setRefCode(partnerCode);
       return;
     }
@@ -28,6 +29,7 @@ export default function ShareSheetModal({ isOpen, onClose }: ShareSheetModalProp
     // Priority 2: User code
     const userCode = localStorage.getItem("hf_user_code");
     if (userCode) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setRefCode(userCode);
       return;
     }
@@ -35,6 +37,7 @@ export default function ShareSheetModal({ isOpen, onClose }: ShareSheetModalProp
     // Priority 3: Generate new user code
     const newCode = generateCode();
     localStorage.setItem("hf_user_code", newCode);
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setRefCode(newCode);
   }, [isOpen]);
 
@@ -43,6 +46,7 @@ export default function ShareSheetModal({ isOpen, onClose }: ShareSheetModalProp
     if (!refCode) return;
     const origin = typeof window !== "undefined" ? window.location.origin : "";
     const link = `${origin}/?ref=${encodeURIComponent(refCode)}`;
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setRefLink(link);
   }, [refCode]);
 

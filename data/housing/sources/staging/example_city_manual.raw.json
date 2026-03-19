@@ -1,0 +1,42 @@
+[
+  {
+    "source": {
+      "source_id": "example_city_manual",
+      "state": "CA",
+      "agency": "Example City Housing Department (Demo)",
+      "level": "city",
+      "source_type": "manual_json",
+      "official_url": "https://example-city.gov/housing/programs",
+      "active": true,
+      "notes": "Demo-only example for a city down payment assistance program. Not a real program.",
+      "raw_file": "data/housing/sources/raw/examples/manual_city_programs.example.json",
+      "parser": "manual_json_generic"
+    },
+    "rawFilePath": "C:\\Users\\Kienan Wubs\\Desktop\\newest homefront model\\homefront-main\\homefront-main\\data\\housing\\sources\\raw\\examples\\manual_city_programs.example.json",
+    "rowIndex": 0,
+    "raw": {
+      "name": "Demo City First-Time Homebuyer Grant",
+      "state": "CA",
+      "level": "city",
+      "geography": "Demo City limits",
+      "cities": [
+        "Demo City"
+      ],
+      "counties": [
+        "Demo County"
+      ],
+      "zip_codes": [
+        "90001",
+        "90002"
+      ],
+      "category": "local_down_payment_assistance",
+      "target_audience": "first_time_buyers",
+      "assistance_summary": "Up to $15,000 in down payment assistance for eligible first-time buyers in Demo City (fictional example).",
+      "official_urls": [
+        "https://demo-city.gov/housing/programs/first-time-homebuyer-grant"
+      ],
+      "status": "open",
+      "notes": "This is a fictional example program used only to demonstrate the pipeline."
+    }
+  }
+]

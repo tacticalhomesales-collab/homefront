@@ -1,8 +1,45 @@
 "use client";
 
+import type React from "react";
 import AppShell from "../../components/AppShell";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useMemo, useState } from "react";
+
+type CompactRow = { k: string; v: string };
+
+function Card({
+  title,
+  children,
+}: {
+  title: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="w-full max-w-[16rem] bg-white/5 border border-white/15 rounded-lg px-3 py-2">
+      <div className="text-[9px] uppercase tracking-wide text-white/55 font-extrabold leading-none">
+        {title}
+      </div>
+      <div className="mt-1">{children}</div>
+    </div>
+  );
+}
+
+function CompactKVGrid({ rows }: { rows: CompactRow[] }) {
+  return (
+    <div className="grid grid-cols-2 gap-x-3 gap-y-1">
+      {rows.map((r) => (
+        <div key={r.k} className="min-w-0">
+          <div className="text-[8px] text-white/50 font-bold leading-none truncate">
+            {r.k}
+          </div>
+          <div className="mt-[2px] text-[10px] text-white font-extrabold leading-none truncate">
+            {r.v}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
 
 export default function MatchPreviewPage() {
   const router = useRouter();
@@ -50,8 +87,8 @@ export default function MatchPreviewPage() {
   const current_rate_band = sp.get("current_rate_band") || "";
   const compare_priority = sp.get("compare_priority") || "";
 
-  const serviceItems = useMemo(() => {
-    const rows: Array<{ k: string; v: string }> = [];
+  const serviceItems: CompactRow[] = useMemo(() => {
+    const rows: CompactRow[] = [];
     const add = (k: string, v: string) => {
       if (!v) return;
       rows.push({ k, v: formatLabel(v) });
@@ -68,8 +105,8 @@ export default function MatchPreviewPage() {
     return rows;
   }, [audience, branch, paygrade, retiring_rank, years_of_service, role, lane]);
 
-  const sellItems = useMemo(() => {
-    const rows: Array<{ k: string; v: string }> = [];
+  const sellItems: CompactRow[] = useMemo(() => {
+    const rows: CompactRow[] = [];
     const add = (k: string, v: string) => {
       if (!v) return;
       rows.push({ k, v: formatLabel(v) });
@@ -84,8 +121,8 @@ export default function MatchPreviewPage() {
     return rows;
   }, [property_location, property_type, sell_timeline, sell_motivation, sell_status]);
 
-  const rentalItems = useMemo(() => {
-    const rows: Array<{ k: string; v: string }> = [];
+  const rentalItems: CompactRow[] = useMemo(() => {
+    const rows: CompactRow[] = [];
     const add = (k: string, v: string) => {
       if (!v) return;
       rows.push({ k, v: formatLabel(v) });
@@ -100,8 +137,8 @@ export default function MatchPreviewPage() {
     return rows;
   }, [rental_location, rental_type, rental_status, rent_band, rental_needs]);
 
-  const lenderItems = useMemo(() => {
-    const rows: Array<{ k: string; v: string }> = [];
+  const lenderItems: CompactRow[] = useMemo(() => {
+    const rows: CompactRow[] = [];
     const add = (k: string, v: string) => {
       if (!v) return;
       rows.push({ k, v: formatLabel(v) });
@@ -123,40 +160,6 @@ export default function MatchPreviewPage() {
     router.push(`/verify?${q.toString()}`);
   };
 
-  const Card = ({
-    title,
-    children,
-  }: {
-    title: string;
-    children: React.ReactNode;
-  }) => {
-    return (
-      <div className="w-[calc(100%+2.5rem)] -mx-5 bg-white/5 border border-white/15 rounded-lg px-3 py-2">
-        <div className="text-[9px] uppercase tracking-wide text-white/55 font-extrabold leading-none">
-          {title}
-        </div>
-        <div className="mt-1">{children}</div>
-      </div>
-    );
-  };
-
-  const CompactKVGrid = ({ rows }: { rows: Array<{ k: string; v: string }> }) => {
-    return (
-      <div className="grid grid-cols-2 gap-x-3 gap-y-1">
-        {rows.map((r) => (
-          <div key={r.k} className="min-w-0">
-            <div className="text-[8px] text-white/50 font-bold leading-none truncate">
-              {r.k}
-            </div>
-            <div className="mt-[2px] text-[10px] text-white font-extrabold leading-none truncate">
-              {r.v}
-            </div>
-          </div>
-        ))}
-      </div>
-    );
-  };
-
   return (
     <AppShell>
       {/* ✅ Single reliable scroller (fixes “tiny scroll” on phone) */}
@@ -175,59 +178,85 @@ export default function MatchPreviewPage() {
             </p>
           </div>
 
-          {/* ✅ Thin boxes */}
+          {/* ✅ Single compact summary box */}
           <div className="flex flex-col gap-2 items-center">
-            {mission && (
-              <Card title="Mission">
-                <div className="text-[12px] font-extrabold text-white leading-tight truncate text-left">
-                  {formatLabel(mission)}
-                </div>
-              </Card>
-            )}
+            <Card title="Match Details">
+              <div className="space-y-2">
+                {/* Top-level summary */}
+                {mission && (
+                  <div>
+                    <div className="text-[8px] text-white/50 font-bold leading-none">
+                      Mission
+                    </div>
+                    <div className="mt-[2px] text-[10px] text-white font-extrabold leading-none truncate">
+                      {formatLabel(mission)}
+                    </div>
+                  </div>
+                )}
 
-            {location && (
-              <Card title="Location">
-                <div className="text-[12px] font-extrabold text-white leading-tight truncate text-left">
-                  {formatLabel(location)}
-                </div>
-              </Card>
-            )}
+                {location && (
+                  <div>
+                    <div className="text-[8px] text-white/50 font-bold leading-none">
+                      Location
+                    </div>
+                    <div className="mt-[2px] text-[10px] text-white font-extrabold leading-none truncate">
+                      {formatLabel(location)}
+                    </div>
+                  </div>
+                )}
 
-            {financing && (
-              <Card title="Financing">
-                <div className="text-[12px] font-extrabold text-white leading-tight truncate text-left">
-                  {formatLabel(financing)}
-                </div>
-              </Card>
-            )}
+                {financing && (
+                  <div>
+                    <div className="text-[8px] text-white/50 font-bold leading-none">
+                      Financing
+                    </div>
+                    <div className="mt-[2px] text-[10px] text-white font-extrabold leading-none truncate">
+                      {formatLabel(financing)}
+                    </div>
+                  </div>
+                )}
 
-            {/* Full service profile preview in ONE compact card */}
-            {(serviceItems.length > 0) && (
-              <Card title="Service Profile">
-                <CompactKVGrid rows={serviceItems} />
-              </Card>
-            )}
+                {/* Service profile */}
+                {serviceItems.length > 0 && (
+                  <div className="pt-1 border-t border-white/10 mt-1">
+                    <div className="mb-1 text-[8px] text-white/50 font-bold leading-none">
+                      Service Profile
+                    </div>
+                    <CompactKVGrid rows={serviceItems} />
+                  </div>
+                )}
 
-            {/* Optional sections (only render when present) */}
-            {sellItems.length > 0 && (
-              <Card title="Sell Details">
-                <CompactKVGrid rows={sellItems} />
-              </Card>
-            )}
+                {/* Optional sections */}
+                {sellItems.length > 0 && (
+                  <div className="pt-1 border-t border-white/10 mt-1">
+                    <div className="mb-1 text-[8px] text-white/50 font-bold leading-none">
+                      Sell Details
+                    </div>
+                    <CompactKVGrid rows={sellItems} />
+                  </div>
+                )}
 
-            {rentalItems.length > 0 && (
-              <Card title="Rental Details">
-                <CompactKVGrid rows={rentalItems} />
-              </Card>
-            )}
+                {rentalItems.length > 0 && (
+                  <div className="pt-1 border-t border-white/10 mt-1">
+                    <div className="mb-1 text-[8px] text-white/50 font-bold leading-none">
+                      Rental Details
+                    </div>
+                    <CompactKVGrid rows={rentalItems} />
+                  </div>
+                )}
 
-            {lenderItems.length > 0 && (
-              <Card title="Compare Lenders">
-                <CompactKVGrid rows={lenderItems} />
-              </Card>
-            )}
+                {lenderItems.length > 0 && (
+                  <div className="pt-1 border-t border-white/10 mt-1">
+                    <div className="mb-1 text-[8px] text-white/50 font-bold leading-none">
+                      Compare Lenders
+                    </div>
+                    <CompactKVGrid rows={lenderItems} />
+                  </div>
+                )}
+              </div>
+            </Card>
 
-            <p className="mt-1 text-[11px] text-white/40 leading-tight w-full">
+            <p className="mt-1 text-[11px] text-white/40 leading-tight w-full text-center">
               Not affiliated with any government agency.
             </p>
           </div>

@@ -40,7 +40,7 @@ export default function YearsOfServicePage() {
 
   return (
     <AppShell>
-      <div className="w-full max-w-md mx-auto" style={{marginTop: '-0.75rem'}}>
+      <div className="w-full max-w-md mx-auto" style={{ marginTop: "-0.25rem" }}>
         <div className="-mt-1 flex flex-col items-center justify-center pointer-events-none">
           <h1 className="text-2xl font-extrabold tracking-tight leading-none mb-0.5">
             Years of Service
@@ -69,7 +69,7 @@ export default function YearsOfServicePage() {
           </div>
         </div>
 
-        <p className="mt-3 text-[10px] text-white/45">
+        <p className="mt-3 text-[10px] text-white/45 text-center">
           Not affiliated with any government agency.
         </p>
       </div>

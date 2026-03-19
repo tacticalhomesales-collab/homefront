@@ -23,37 +23,37 @@ export default function PartnerEntryPage() {
 
   return (
     <AppShell>
-      <div className="w-full max-w-md mx-auto flex flex-col items-center px-4 pt-8 pb-10">
-        <div className="flex flex-col items-center justify-center pointer-events-none mb-5 text-center">
-          <h1 className="text-3xl sm:text-4xl font-extrabold text-center mb-2 tracking-tight leading-tight">
-            One Team One Fight
+      <div className="w-full max-w-md mx-auto flex flex-col items-center px-4 pt-1 pb-6">
+        <div className="flex flex-col items-center justify-center pointer-events-none mb-2 text-center">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-center mb-1 tracking-tight leading-tight">
+            One Team. One Mission.
           </h1>
-          <div className="text-base sm:text-lg text-white/80 text-center mb-2 font-semibold">
-            Earn cash for every referral. Agents earn more.
+          <div className="text-sm sm:text-base text-white/80 text-center mb-0.5 font-semibold">
+            Earn rewards when people you reach join HomeFront.
           </div>
-          <div className="text-sm sm:text-base text-white/60 text-center mb-6 font-medium">
-            Trusted by real estate pros nationwide.
+          <div className="text-xs sm:text-sm text-white/60 text-center mb-3 font-medium">
+            Built for community leaders and real estate pros.
           </div>
         </div>
-        <div className="flex flex-col gap-5 w-full mb-8">
+        <div className="flex flex-col gap-2 w-full mb-3">
           <button
             onClick={() => router.push("/partner/signup?type=ambassador")}
-            className="w-full py-5 rounded-2xl bg-white text-black font-extrabold text-lg shadow border border-white/15 focus:outline-none focus-visible:ring-4 focus-visible:ring-[#ff385c]/30 text-center transition-colors duration-150 hover:bg-[#fff6f6] active:bg-[#ff385c] active:text-white"
+            className="w-full py-2.5 rounded-2xl bg-white text-black font-extrabold text-[14px] shadow border border-white/15 focus:outline-none focus-visible:ring-4 focus-visible:ring-[#ff385c]/30 text-center transition-colors duration-150 hover:bg-[#fff6f6] active:bg-[#ff385c] active:text-white"
             type="button"
           >
-            <span className="block text-xl font-extrabold mb-1">Community Ambassador</span>
-            <span className="block text-base font-medium text-black/80">$100 per qualified lead + $500 per closed transaction</span>
+            <span className="block text-[15px] font-extrabold mb-0.5">Community Marketing Ambassador</span>
+            <span className="block text-[11px] font-medium text-black/80">$100 for each Qualified Affiliate Signup tied to your code, up to $3,000/month.</span>
           </button>
           <button
             onClick={() => router.push("/partner/signup?type=realtor")}
-            className="w-full py-5 rounded-2xl border border-white/15 bg-white/10 text-white font-extrabold text-lg focus:outline-none focus-visible:ring-4 focus-visible:ring-[#ff385c]/30 text-center transition-colors duration-150 hover:bg-[#fff6f6] hover:text-black active:bg-[#ff385c] active:text-white"
+            className="w-full py-2.5 rounded-2xl border border-white/15 bg-white/10 text-white font-extrabold text-[14px] focus:outline-none focus-visible:ring-4 focus-visible:ring-[#ff385c]/30 text-center transition-colors duration-150 hover:bg-[#fff6f6] hover:text-black active:bg-[#ff385c] active:text-white"
             type="button"
           >
-            <span className="block text-xl font-extrabold mb-1">Partner Agent <span className="ml-2 text-xs font-bold text-[#ff385c] align-middle bg-white/10 px-2 py-1 rounded">Licensed agents only</span></span>
-            <span className="block text-base font-medium text-white/90">$100 per qualified lead + Up to $5,000 per closed referral</span>
+            <span className="block text-[15px] font-extrabold mb-0.5">Partner Agent <span className="ml-2 text-[9px] font-bold text-[#ff385c] align-middle bg-white/10 px-1.5 py-0.5 rounded">Licensed agents only</span></span>
+            <span className="block text-[11px] font-medium text-white/90">Earn up to 30% referral commission from our nationwide team on qualified closings; marketing rewards and performance bonuses are paid via your brokerage where required.</span>
           </button>
         </div>
-        <div className="text-xs text-white/50 text-center mt-2">Not affiliated with any government agency.</div>
+        <div className="text-xs text-white/50 text-center mt-1">Not affiliated with any government agency.</div>
       </div>
     </AppShell>
   );

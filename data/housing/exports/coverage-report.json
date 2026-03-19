@@ -1,0 +1,22 @@
+{
+  "generatedAt": "2026-02-24T17:04:33.806Z",
+  "totalPrograms": 3,
+  "programsByState": {
+    "CA": 3
+  },
+  "programsByLevel": {
+    "city": 1,
+    "county": 2
+  },
+  "programsByCategory": {
+    "local_down_payment_assistance": 2,
+    "local_closing_cost_assistance": 1
+  },
+  "statesWithFewPrograms": [
+    {
+      "state": "CA",
+      "count": 3
+    }
+  ],
+  "sparseCoveragePrograms": []
+}

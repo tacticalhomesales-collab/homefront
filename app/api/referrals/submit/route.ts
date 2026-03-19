@@ -1,78 +1,47 @@
 import { NextRequest, NextResponse } from "next/server";
+import { createSupabaseLead } from "@/lib/leads";
 
-export async function POST(request: NextRequest) {
-  try {
-    const body = await request.json();
+export async function POST(req: NextRequest) {
+	try {
+		const data = await req.json();
+		const {
+			friend_name,
+			friend_phone,
+			friend_email,
+			friend_location,
+			friend_timeline,
+			friend_mission,
+			consented_at,
+			ref_code,
+		} = data;
 
-    const {
-      friend_name,
-      friend_phone,
-      friend_email,
-      friend_location,
-      friend_timeline,
-      friend_mission,
-      referrer_name,
-      referrer_phone,
-      referrer_email,
-      consented_at,
-    } = body;
+		if (!friend_name || !friend_phone) {
+			return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
+		}
 
-    // Validate required fields (referrer fields not required)
-    if (!friend_name || !friend_phone) {
-      return NextResponse.json(
-        { error: "Missing required fields" },
-        { status: 400 }
-      );
-    }
+		const journey = {
+			mission: friend_mission ?? null,
+			friend_location: friend_location ?? null,
+			friend_timeline: friend_timeline ?? null,
+			consented_at: consented_at ?? null,
+			source: "refer_consent",
+		};
 
-    // In production, this would:
-    // 1. Store in database
-    // 2. Send to CRM (e.g., Salesforce, HubSpot)
-    // 3. Trigger email/SMS notifications
-    // 4. Queue for follow-up
+		const result = await createSupabaseLead({
+			lead_name: friend_name,
+			lead_phone: friend_phone,
+			lead_email: friend_email ?? null,
+			ref_code: ref_code ?? null,
+			journey,
+		});
 
-    const referral = {
-      id: `ref_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-      friend: {
-        name: friend_name,
-        phone: friend_phone,
-        email: friend_email || null,
-        location: friend_location || null,
-        timeline: friend_timeline || null,
-        mission: friend_mission || null,
-      },
-      referrer: {
-        name: referrer_name,
-        phone: referrer_phone || null,
-        email: referrer_email || null,
-      },
-      consented_at,
-      received_at: new Date().toISOString(),
-      status: "pending",
-    };
+		if (!result.ok) {
+			return NextResponse.json({ error: result.error }, { status: 500 });
+		}
 
-    // Log for development (replace with actual storage in production)
-    console.log("✅ Referral received:", JSON.stringify(referral, null, 2));
-
-    // TODO: Production implementation
-    // - await db.referrals.create(referral)
-    // - await crm.createLead(referral.friend)
-    // - await email.sendConfirmation(referral.referrer.email)
-    // - await sms.sendThankYou(referral.referrer.phone)
-
-    return NextResponse.json(
-      {
-        success: true,
-        referral_id: referral.id,
-        message: "Referral received successfully",
-      },
-      { status: 200 }
-    );
-  } catch (error) {
-    console.error("❌ Referral submission error:", error);
-    return NextResponse.json(
-      { error: "Internal server error" },
-      { status: 500 }
-    );
-  }
+		return NextResponse.json({ lead: result.lead, success: true });
+	} catch (error) {
+		return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+	}
 }
+

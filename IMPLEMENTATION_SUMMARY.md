@@ -196,7 +196,7 @@ The following pages **ALREADY EXIST** in the repo and are confirmed working:
 
 ### **Official Gate (Unchanged)**
 ```
-/match-preview → /review → /consent → /verify → /contact → /confirmation
+/match-preview → /review → /contact → /confirmation
 ```
 
 ---

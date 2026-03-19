@@ -10,6 +10,7 @@ export default function LaunchOverlay() {
     // Check if already shown this session
     const sessionKey = "hf_launch_shown";
     if (typeof window !== "undefined" && sessionStorage.getItem(sessionKey)) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setShow(false);
       return;
     }
@@ -23,11 +24,13 @@ export default function LaunchOverlay() {
 
     // Start fade out
     const fadeTimer = setTimeout(() => {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setFadeOut(true);
     }, duration);
 
     // Remove overlay
     const hideTimer = setTimeout(() => {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setShow(false);
       if (typeof window !== "undefined") {
         sessionStorage.setItem(sessionKey, "1");

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import QRCode from "qrcode";
 import AppShell from "../../components/AppShell";
 import AddToHomeScreen from "../_components/AddToHomeScreen";
@@ -9,6 +9,7 @@ import ShareSheetModal from "../_components/ShareSheetModal";
 
 export default function ConfirmationPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   const [refCode, setRefCode] = useState("");
   const [refLink, setRefLink] = useState("");
@@ -17,6 +18,9 @@ export default function ConfirmationPage() {
   const [showA2HS, setShowA2HS] = useState(false);
   const [showShare, setShowShare] = useState(false);
   const [hasPartner, setHasPartner] = useState(false);
+  const [showAmbassadorPrompt, setShowAmbassadorPrompt] = useState(false);
+  const [ambassadorLoading, setAmbassadorLoading] = useState(false);
+  const [ambassadorError, setAmbassadorError] = useState<string | null>(null);
 
   // Generate or load referral code
   useEffect(() => {
@@ -46,6 +50,23 @@ export default function ConfirmationPage() {
     setRefCode(newCode);
   }, []);
 
+  // After confirmation, show Community Marketing Ambassador opt-in a few seconds later
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (hasPartner) return;
+
+    const name = searchParams.get("name");
+    const phone = searchParams.get("phone");
+
+    if (!name || !phone) return;
+
+    const timer = setTimeout(() => {
+      setShowAmbassadorPrompt(true);
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, [hasPartner, searchParams]);
+
   // Build referral link
   useEffect(() => {
     if (!refCode) return;
@@ -70,6 +91,24 @@ export default function ConfirmationPage() {
       .then(setQrDataUrl)
       .catch(() => setQrDataUrl(""));
   }, [refLink]);
+
+  // Automatically prompt to add HomeFront to the home screen
+  // If the ambassador prompt will show, we delay A2HS until after that flow.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const name = searchParams.get("name");
+    const phone = searchParams.get("phone");
+
+    // If we already have a partner or no contact info, just show A2HS after 3s
+    if (hasPartner || !name || !phone) {
+      const timer = setTimeout(() => {
+        setShowA2HS(true);
+      }, 3000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [hasPartner, searchParams]);
 
   const handleCopy = (text: string) => {
     if (typeof navigator === "undefined") return;
@@ -107,6 +146,90 @@ export default function ConfirmationPage() {
     }, 300);
   };
 
+  const handleAmbassadorClose = () => {
+    if (ambassadorLoading) return;
+    setShowAmbassadorPrompt(false);
+    setAmbassadorError(null);
+
+    // After closing, show Add to Home Screen shortly
+    setTimeout(() => {
+      setShowA2HS(true);
+    }, 400);
+  };
+
+  const handleAmbassadorAccept = async () => {
+    if (ambassadorLoading) return;
+
+    const rawName = (searchParams.get("name") || "").trim();
+    const rawPhone = (searchParams.get("phone") || "").trim();
+    const rawEmail = (searchParams.get("email") || "").trim();
+
+    if (!rawName || !rawPhone) {
+      setAmbassadorError("We couldn't find your contact details. Please try again later.");
+      return;
+    }
+
+    setAmbassadorLoading(true);
+    setAmbassadorError(null);
+
+    try {
+      const firstName = rawName.split(" ")[0] || rawName;
+
+      // If this person already has their own personal code from the
+      // confirmation/share flow, promote that exact code to their
+      // permanent partner code so it never changes.
+      let existingUserCode: string | null = null;
+      if (typeof window !== "undefined") {
+        try {
+          existingUserCode = window.localStorage.getItem("hf_user_code");
+        } catch {
+          existingUserCode = null;
+        }
+      }
+
+      const partnerPayload = {
+        type: "ambassador",
+        firstName,
+        phone: rawPhone,
+        email: rawEmail || undefined,
+        refCode: existingUserCode || undefined,
+      };
+
+      const response = await fetch("/api/partner/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(partnerPayload),
+      });
+
+      if (!response.ok) {
+        setAmbassadorError("Unable to enroll right now. Please try again later.");
+        return;
+      }
+
+      const result = await response.json().catch(() => null);
+
+      if (typeof window !== "undefined" && result) {
+        try {
+          const refCodeFromResult = result?.ref_code || result?.referrer?.ref_code;
+          if (refCodeFromResult) {
+            window.localStorage.setItem("hf_partner_public_code", refCodeFromResult);
+          }
+          window.localStorage.setItem("hf_partner", "1");
+        } catch {}
+      }
+
+      setShowAmbassadorPrompt(false);
+      // After successful enrollment, prompt to add HomeFront to Home Screen
+      setTimeout(() => {
+        setShowA2HS(true);
+      }, 400);
+    } catch (err) {
+      setAmbassadorError("Unable to enroll right now. Please try again later.");
+    } finally {
+      setAmbassadorLoading(false);
+    }
+  };
+
   return (
     <AppShell>
       <div className="w-full max-w-md relative mx-auto text-left px-2 pt-2 pb-2 flex flex-col gap-2">
@@ -115,7 +238,7 @@ export default function ConfirmationPage() {
           <h2 className="text-lg font-extrabold text-[#ff385c] mb-1">Congratulations!</h2>
           <p className="text-xs text-white font-semibold mb-1">A HomeFront representative will be in contact with you soon.</p>
           <p className="text-[11px] text-white/80 font-medium mt-1">
-            As a Community Ambassador, you can earn <span className="font-bold text-[#ff385c]">$100</span> for every qualified lead you refer. Share your personal QR code anytime—just visit the <span className="font-bold text-white">Share</span> tab on the homepage, or tap the <span className="font-bold text-[#ff385c]">HomeFront</span> logo at the top of the homepage to access your code and start inviting friends!
+            Share your personal QR code anytime to help friends, family members, or anyone in the community that could benefit from HomeFront—just visit the <span className="font-bold text-white">Share</span> tab on the homepage, or tap the <span className="font-bold text-[#ff385c]">HomeFront</span> logo at the top of the homepage to start inviting friends!
           </p>
         </div>
 
@@ -147,10 +270,61 @@ export default function ConfirmationPage() {
         >
           Back to Home
         </button>
-        <p className="mt-2 text-[9px] text-white/50 text-center">
-          <span className="font-semibold">Note:</span> A qualified lead is defined as a client who has signed a buyer representation agreement, obtained a pre-qualification from a lender, and has demonstrated intent to engage in meaningful real estate activity. Terms and conditions apply.
-        </p>
+        {/* Note removed as requested */}
         </div>
+
+      {showAmbassadorPrompt && (
+        <div className="fixed inset-0 z-[10000] flex items-center justify-center">
+          <div
+            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            onClick={handleAmbassadorClose}
+          />
+          <div className="relative bg-[#0b0f14] border border-white/15 rounded-3xl w-full max-w-md mx-4 p-4">
+            <div className="flex items-start justify-between mb-2">
+              <h2 className="text-lg font-extrabold text-white">Become a Community Marketing Ambassador?</h2>
+              <button
+                type="button"
+                onClick={handleAmbassadorClose}
+                className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/15 flex items-center justify-center transition"
+              >
+                <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            <p className="text-[11px] text-white/80 mb-3">
+              Yes, enroll me as a <span className="font-semibold">Community Marketing Ambassador</span> and create my QR code using my contact info so I can earn rewards when friends use HomeFront.
+            </p>
+            {ambassadorError && (
+              <p className="text-[11px] text-[#ff8a8a] mb-2">{ambassadorError}</p>
+            )}
+            <div className="flex flex-col gap-2 mt-1">
+              <button
+                type="button"
+                onClick={handleAmbassadorAccept}
+                disabled={ambassadorLoading}
+                className={[
+                  "w-full py-3 rounded-xl text-[14px] font-extrabold transition active:scale-[0.99]",
+                  "focus:outline-none focus-visible:ring-2 focus-visible:ring-[#ff385c]/60",
+                  ambassadorLoading
+                    ? "bg-[#ff385c]/70 text-white cursor-wait"
+                    : "bg-[#ff385c] text-white shadow-[0_1px_2px_rgba(255,56,92,0.18)]",
+                ].join(" ")}
+              >
+                {ambassadorLoading ? "Enrolling..." : "Yes, enroll me"}
+              </button>
+              <button
+                type="button"
+                onClick={handleAmbassadorClose}
+                disabled={ambassadorLoading}
+                className="w-full py-2 rounded-xl border border-white/20 bg-transparent text-[13px] font-semibold text-white/70 hover:bg-white/5 transition"
+              >
+                No thanks
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       <AddToHomeScreen isOpen={showA2HS} onClose={() => setShowA2HS(false)} onComplete={handleA2HSComplete} />
       <ShareSheetModal isOpen={showShare} onClose={() => setShowShare(false)} />
     </AppShell>

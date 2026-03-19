@@ -27,7 +27,7 @@ export default function PaygradeEnlistedPage() {
 
   return (
     <AppShell>
-      <div className="w-full max-w-md mx-auto flex flex-col items-center pt-1" style={{marginTop: '-0.75rem'}}>
+      <div className="w-full max-w-md mx-auto flex flex-col items-center pt-1" style={{ marginTop: "-0.25rem" }}>
         <h1 className="text-xl font-extrabold text-center mb-1">Enlisted Paygrade</h1>
         <div className="text-sm text-white/80 text-center mb-2 font-semibold">Select your paygrade.</div>
         {/* Condensed grid: 2 rows, 6 and 5 boxes for all enlisted paygrades */}
@@ -39,7 +39,7 @@ export default function PaygradeEnlistedPage() {
               onClick={() => goNext(pg)}
               disabled={pressed}
               className={[
-                "cursor-pointer pointer-events-auto block w-full py-2 rounded-lg text-sm font-extrabold active:scale-[0.99] transition select-none touch-manipulation focus:outline-none focus-visible:ring-2 focus-visible:ring-[#ff385c]/30",
+                "cursor-pointer pointer-events-auto block w-full py-2 rounded-xl text-sm font-extrabold active:scale-[0.99] transition select-none touch-manipulation focus:outline-none focus-visible:ring-2 focus-visible:ring-[#ff385c]/30",
                 active === pg
                   ? "bg-[#ff385c] text-white shadow-[0_4px_10px_rgba(255,56,92,0.18)]"
                   : pressed

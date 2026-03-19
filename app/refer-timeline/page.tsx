@@ -44,24 +44,25 @@ export default function ReferTimelinePage() {
     const isActive = activeLabel === value;
 
     return (
-      <button
-        type="button"
-        disabled={pressed}
-        onClick={() => onPick(value)}
-        className={[
-          "cursor-pointer pointer-events-auto block w-[calc(100%+2.5rem)] -mx-5 py-4 rounded-2xl",
-          "text-[21px] font-extrabold active:scale-[0.99] transition",
-          "select-none touch-manipulation",
-          "focus:outline-none focus-visible:ring-4 focus-visible:ring-[#ff385c]/30",
-          isActive
-            ? "bg-[#ff385c] text-white shadow-[0_10px_30px_rgba(255,56,92,0.25)]"
-            : pressed
-            ? "bg-white/5 border border-white/10 text-white/40 cursor-not-allowed"
-            : "border border-white/15 bg-white/10 text-white hover:bg-white/15",
-        ].join(" ")}
-      >
-        {label}
-      </button>
+      <div className="w-full max-w-xs mx-auto">
+        <button
+          type="button"
+          disabled={pressed}
+          onClick={() => onPick(value)}
+          className={[
+            "cursor-pointer pointer-events-auto block w-full py-2 rounded-xl",
+            "text-[15px] font-extrabold active:scale-[0.99] transition",
+            "select-none touch-manipulation focus:outline-none focus-visible:ring-4 focus-visible:ring-[#ff385c]/30",
+            isActive
+              ? "bg-[#ff385c] text-white shadow-[0_10px_30px_rgba(255,56,92,0.25)]"
+              : pressed
+              ? "bg-white/5 border border-white/10 text-white/40 cursor-not-allowed"
+              : "border border-white/15 bg-white/10 text-white hover:bg-white/15",
+          ].join(" ")}
+        >
+          {label}
+        </button>
+      </div>
     );
   };
 
@@ -76,7 +77,7 @@ export default function ReferTimelinePage() {
             When is your friend looking to move?
           </p>
         </div>
-        <div className="relative z-50 flex flex-col gap-3">
+        <div className="relative z-50 flex flex-col gap-3 items-center">
           {TIMELINES.map((t) => (
             <TimelineButton key={t.value} {...t} />
           ))}

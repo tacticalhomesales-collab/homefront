@@ -2,6 +2,8 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
+import AppShell from "../../components/AppShell";
+import ChoiceButton from "../_components/ChoiceButton";
 
 const PROPERTY_TYPES = ["Single-Family", "Condo", "Townhome", "Multi-Family", "Land", "Other"] as const;
 
@@ -56,31 +58,6 @@ export default function SellPropertyPage() {
     setTimeout(() => router.push(href), 120);
   };
 
-  const ChoiceButton = ({ label, onClick }: { label: string; onClick: () => void }) => {
-    const isActive = activeLabel === label;
-
-    return (
-      <button
-        type="button"
-        disabled={pressed}
-        onClick={onClick}
-        className={[
-          "cursor-pointer pointer-events-auto block w-[calc(100%+2.5rem)] -mx-5 py-4 rounded-2xl",
-          "text-[21px] font-extrabold active:scale-[0.99] transition",
-          "select-none touch-manipulation",
-          "focus:outline-none focus-visible:ring-4 focus-visible:ring-[#ff385c]/30",
-          isActive
-            ? "bg-[#ff385c] text-white shadow-[0_10px_30px_rgba(255,56,92,0.25)]"
-            : pressed
-            ? "bg-white/5 border border-white/10 text-white/40 cursor-not-allowed"
-            : "border border-white/15 bg-white/10 text-white hover:bg-white/15",
-        ].join(" ")}
-      >
-        {label}
-      </button>
-    );
-  };
-
   const GridButton = ({ label, onClick }: { label: string; onClick: () => void }) => {
     const isActive = activeLabel === label;
 
@@ -105,101 +82,90 @@ export default function SellPropertyPage() {
   };
 
   return (
-    <main className="min-h-[100dvh] w-full bg-[#0b0f14] text-white px-4">
-      <div className="min-h-[100dvh] flex flex-col items-center text-center pt-8 pb-10">
-        <div className="w-full max-w-md relative">
-          {/* Invisible spacer row */}
-          <div className="mb-3 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-[18px] font-extrabold tracking-[-0.02em] text-white/80 opacity-0 pointer-events-none select-none">
-            <span>Buy</span>
-            <span className="text-white/25">•</span>
-            <span>Sell</span>
-            <span className="text-white/25">•</span>
-            <span>Rent</span>
-            <span className="text-white/25">•</span>
-            <span>Manage</span>
-          </div>
+    <AppShell>
+      <div
+        className="w-full max-w-md relative mx-auto text-center px-4 pt-0 pb-10"
+        style={{ marginTop: "-0.75rem" }}
+      >
+        <div className="flex flex-col items-center justify-center pointer-events-none mb-2">
+          <h1 className="text-2xl font-extrabold tracking-tight leading-none text-white mb-0.5">
+            {step === 1 && "Property Location"}
+            {step === 2 && "Property Type"}
+            {step === 3 && "Occupancy"}
+          </h1>
+          <p className="mt-1 text-sm font-semibold text-white/70">
+            {step === 1 && "Where is the property you're selling?"}
+            {step === 2 && "What type of property?"}
+            {step === 3 && "Is it currently occupied?"}
+          </p>
+        </div>
 
-          {/* Logo */}
-          <div className="mx-auto w-full max-w-[95vw] mt-16 pointer-events-none select-none">
-            <img
-              src="/homefront-badge.png"
-              alt="HomeFront"
-              className="w-full h-auto scale-200 origin-center"
-              draggable={false}
-            />
-          </div>
-
-          {/* Title */}
-          <div className="-mt-6 flex flex-col items-center justify-center pointer-events-none">
-            <h1 className="text-4xl font-extrabold tracking-tight leading-none text-white">
-              {step === 1 && "Property Location"}
-              {step === 2 && "Property Type"}
-              {step === 3 && "Occupancy"}
-            </h1>
-            <p className="mt-3 text-sm font-semibold text-white/70">
-              {step === 1 && "Where is the property you're selling?"}
-              {step === 2 && "What type of property?"}
-              {step === 3 && "Is it currently occupied?"}
-            </p>
-          </div>
-
-          {/* Step 1: Location Input */}
-          {step === 1 && (
-            <div className="mt-6 relative z-50">
+        {/* Step 1: Location Input */}
+        {step === 1 && (
+          <div className="mt-3 relative z-50">
+            <div className="w-[calc(100%+2.5rem)] -mx-5">
               <input
                 type="text"
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && onSubmitLocation()}
                 placeholder="City or ZIP Code"
-                className="w-[calc(100%+2.5rem)] -mx-5 px-5 py-4 rounded-2xl
-                         border border-white/15 bg-white/10 text-white text-[21px] font-extrabold
-                         placeholder:text-white/40 focus:outline-none focus-visible:ring-4
-                         focus-visible:ring-[#ff385c]/30"
+                className="w-full rounded-2xl px-4 py-3 border border-white/15 bg-white/10 text-white text-[17px] font-extrabold placeholder:text-white/40 focus:outline-none focus-visible:ring-4 focus-visible:ring-[#ff385c]/30"
               />
-              <div className="mt-3">
-                <button
-                  type="button"
-                  disabled={!location.trim() || pressed}
-                  onClick={onSubmitLocation}
-                  className={[
-                    "w-[calc(100%+2.5rem)] -mx-5 py-4 rounded-2xl text-[21px] font-extrabold transition active:scale-[0.99]",
-                    "select-none touch-manipulation",
-                    !location.trim() || pressed
-                      ? "bg-white/5 border border-white/10 text-white/40 cursor-not-allowed"
-                      : "border border-white/15 bg-white/10 text-white hover:bg-white/15 cursor-pointer",
-                  ].join(" ")}
-                >
-                  Next
-                </button>
-              </div>
             </div>
-          )}
-
-          {/* Step 2: Property Type */}
-          {step === 2 && (
-            <div className="mt-3 relative z-50">
-              <div className="grid grid-cols-2 gap-3">
-                {PROPERTY_TYPES.map((type) => (
-                  <GridButton key={type} label={type} onClick={() => onPickPropertyType(type)} />
-                ))}
-              </div>
+            <div className="mt-3 w-[calc(100%+2.5rem)] -mx-5">
+              <button
+                type="button"
+                disabled={!location.trim() || pressed}
+                onClick={onSubmitLocation}
+                className={[
+                  "cursor-pointer pointer-events-auto block w-full py-2.5 rounded-xl text-[15px] font-extrabold transition active:scale-[0.99] select-none touch-manipulation focus:outline-none focus-visible:ring-4 focus-visible:ring-[#ff385c]/30",
+                  !location.trim() || pressed
+                    ? "bg-white/5 border border-white/10 text-white/40 cursor-not-allowed"
+                    : "border border-white/15 bg-white/10 text-white hover:bg-white/15 cursor-pointer",
+                ].join(" ")}
+              >
+                Next
+              </button>
             </div>
-          )}
+          </div>
+        )}
 
-          {/* Step 3: Occupied */}
-          {step === 3 && (
-            <div className="mt-2 relative z-50 flex flex-col gap-3">
-              <ChoiceButton label="Yes" onClick={() => onPickOccupied("yes")} />
-              <ChoiceButton label="No" onClick={() => onPickOccupied("no")} />
+        {/* Step 2: Property Type */}
+        {step === 2 && (
+          <div className="mt-3 relative z-50">
+            <div className="grid grid-cols-2 gap-3">
+              {PROPERTY_TYPES.map((type) => (
+                <GridButton key={type} label={type} onClick={() => onPickPropertyType(type)} />
+              ))}
             </div>
-          )}
+          </div>
+        )}
 
-          <p className="mt-5 text-[11px] text-white/45">
-            Not affiliated with any government agency.
-          </p>
-        </div>
+        {/* Step 3: Occupied */}
+        {step === 3 && (
+          <div className="mt-2 relative z-50 flex flex-col gap-2 items-center">
+            <div className="w-full max-w-xs">
+              <ChoiceButton
+                label="Yes"
+                active={activeLabel === "yes"}
+                disabled={pressed}
+                onClick={() => onPickOccupied("yes")}
+              />
+            </div>
+            <div className="w-full max-w-xs">
+              <ChoiceButton
+                label="No"
+                active={activeLabel === "no"}
+                disabled={pressed}
+                onClick={() => onPickOccupied("no")}
+              />
+            </div>
+          </div>
+        )}
+
+        <p className="mt-5 text-[11px] text-white/45 text-center">Not affiliated with any government agency.</p>
       </div>
-    </main>
+    </AppShell>
   );
 }

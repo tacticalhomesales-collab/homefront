@@ -8,9 +8,32 @@ type ChoiceButtonProps = {
   active?: boolean;
   disabled?: boolean;
   onClick?: () => void;
+  fullWidthBars?: boolean;
 };
 
-export default function ChoiceButton({ label, sub, active, disabled, onClick }: ChoiceButtonProps) {
+export default function ChoiceButton({ label, sub, active, disabled, onClick, fullWidthBars }: ChoiceButtonProps) {
+  if (fullWidthBars) {
+    return (
+      <button
+        type="button"
+        disabled={disabled}
+        onClick={onClick}
+        className={[
+          "cursor-pointer pointer-events-auto block w-[calc(100%+2.5rem)] -mx-5 py-1.5 rounded-xl",
+          "text-[15px] font-extrabold active:scale-[0.99] transition",
+          "select-none touch-manipulation",
+          "focus:outline-none focus-visible:ring-4 focus-visible:ring-[#ff385c]/30",
+          active
+            ? "bg-[#ff385c] text-white shadow-[0_10px_30px_rgba(255,56,92,0.25)]"
+            : "border border-white/15 bg-white/10 text-white hover:bg-white/15",
+          disabled ? "cursor-not-allowed opacity-80" : "cursor-pointer",
+        ].join(" ")}
+      >
+        {label}
+      </button>
+    );
+  }
+
   return (
     <button
       type="button"

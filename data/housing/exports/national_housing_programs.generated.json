@@ -1,0 +1,91 @@
+[
+  {
+    "program_id": "ca_example-city-housing-department-demo_demo-city-first-time-homebuyer-grant",
+    "name": "Demo City First-Time Homebuyer Grant",
+    "level": "city",
+    "state": "CA",
+    "geography": "Demo City limits",
+    "geography_type": "zip_based",
+    "applies_to_states": [
+      "CA"
+    ],
+    "applies_to_counties": [
+      "Demo County, CA"
+    ],
+    "applies_to_cities": [
+      "Demo City, CA"
+    ],
+    "applies_to_zip_codes": [
+      "90001",
+      "90002"
+    ],
+    "coverage_notes": "Source: example_city_manual (Example City Housing Department (Demo))\nThis is a fictional example program used only to demonstrate the pipeline.",
+    "category": "local_down_payment_assistance",
+    "assistance_summary": "Up to $15,000 in down payment assistance for eligible first-time buyers in Demo City (fictional example).",
+    "target_audience": "first_time_buyers",
+    "income_focus": "unknown",
+    "official_urls": [
+      "https://demo-city.gov/housing/programs/first-time-homebuyer-grant"
+    ],
+    "status": "open",
+    "last_reviewed": "2026-02-24",
+    "eligibility_notes": ""
+  },
+  {
+    "program_id": "ca_example-county-housing-authority-demo_demo-county-closing-cost-assistance",
+    "name": "Demo County Closing Cost Assistance",
+    "level": "county",
+    "state": "CA",
+    "geography": "Entire Demo County",
+    "geography_type": "zip_based",
+    "applies_to_states": [
+      "CA"
+    ],
+    "applies_to_counties": [
+      "Demo County, CA"
+    ],
+    "applies_to_cities": [],
+    "applies_to_zip_codes": [
+      "90003",
+      "90004"
+    ],
+    "coverage_notes": "Source: example_county_csv (Example County Housing Authority (Demo))\nFictional example for pipeline testing.",
+    "category": "local_closing_cost_assistance",
+    "assistance_summary": "Up to $7,500 in closing cost help for eligible buyers in Demo County (fictional).",
+    "target_audience": "first_time_buyers",
+    "income_focus": "unknown",
+    "official_urls": [
+      "https://demo-county.gov/housing/programs/closing-cost-assistance"
+    ],
+    "status": "open",
+    "last_reviewed": "2026-02-24",
+    "eligibility_notes": ""
+  },
+  {
+    "program_id": "ca_example-county-housing-authority-demo_demo-county-teacher-dpa",
+    "name": "Demo County Teacher DPA",
+    "level": "county",
+    "state": "CA",
+    "geography": "Demo County school districts",
+    "geography_type": "single_county",
+    "applies_to_states": [
+      "CA"
+    ],
+    "applies_to_counties": [
+      "Demo County, CA"
+    ],
+    "applies_to_cities": [],
+    "applies_to_zip_codes": [],
+    "coverage_notes": "Source: example_county_csv (Example County Housing Authority (Demo))\nFictional example for pipeline testing.",
+    "category": "local_down_payment_assistance",
+    "assistance_summary": "Down payment help for K-12 teachers buying in Demo County (fictional).",
+    "target_audience": "teachers",
+    "income_focus": "unknown",
+    "official_urls": [
+      "https://demo-county.gov/housing/programs/teacher-dpa"
+    ],
+    "status": "open",
+    "last_reviewed": "2026-02-24",
+    "eligibility_notes": ""
+  }
+]

@@ -32,7 +32,8 @@ export default function ReferLocationPage() {
     const q = new URLSearchParams();
     for (const [k, v] of sp.entries()) q.set(k, v);
 
-    setTimeout(() => router.push(`/refer-timeline?${q.toString()}`), 120);
+    // Skip separate timeline step; go straight to referral consent.
+    setTimeout(() => router.push(`/refer-consent?${q.toString()}`), 120);
   };
 
   return (
@@ -54,7 +55,7 @@ export default function ReferLocationPage() {
               inputMode="text"
               autoComplete="postal-code"
               placeholder="City or ZIP (e.g., 92028)"
-              className={["w-full rounded-2xl px-4 py-4","bg-white/10 border border-white/15 text-white","placeholder:text-white/35","outline-none","focus:border-white/25 focus:ring-4 focus:ring-[#ff385c]/20",].join(" ")}
+               className={["w-full rounded-2xl px-4 py-2.5","bg-white/10 border border-white/15 text-white text-[15px] font-extrabold","placeholder:text-white/35","outline-none","focus:border-white/25 focus:ring-4 focus:ring-[#ff385c]/20",].join(" ")}
             />
           </div>
           <div className="mt-3 w-[calc(100%+2.5rem)] -mx-5">
@@ -62,7 +63,7 @@ export default function ReferLocationPage() {
               type="button"
               disabled={!canContinue || pressed}
               onClick={goNext}
-              className={["cursor-pointer pointer-events-auto block w-full py-4 rounded-2xl","text-[21px] font-extrabold active:scale-[0.99] transition","select-none touch-manipulation","focus:outline-none focus-visible:ring-4 focus-visible:ring-[#ff385c]/30",!canContinue || pressed? "bg-white/5 border border-white/10 text-white/40 cursor-not-allowed": active? "bg-[#ff385c] text-white shadow-[0_10px_30px_rgba(255,56,92,0.25)]":"border border-white/15 bg-white/10 text-white hover:bg-white/15",].join(" ")}
+               className={["cursor-pointer pointer-events-auto block w-full py-2.5 rounded-xl","text-[15px] font-extrabold active:scale-[0.99] transition","select-none touch-manipulation","focus:outline-none focus-visible:ring-4 focus-visible:ring-[#ff385c]/30",!canContinue || pressed? "bg-white/5 border border-white/10 text-white/40 cursor-not-allowed": active? "bg-[#ff385c] text-white shadow-[0_10px_30px_rgba(255,56,92,0.25)]":"border border-white/15 bg-white/10 text-white hover:bg-white/15",].join(" ")}
             >
               Continue
             </button>

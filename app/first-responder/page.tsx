@@ -42,58 +42,45 @@ export default function FirstResponderPage() {
 
   return (
     <AppShell>
-      <div className="flex flex-col items-center text-center pt-0 pb-8 min-h-[70svh] px-4">
-        <div className="w-full max-w-md relative">
-          <div className="mb-0 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-[18px] font-extrabold tracking-[-0.02em] text-white/80 opacity-0 pointer-events-none select-none">
-            <span>Buy</span>
-            <span className="text-white/25">•</span>
-            <span>Sell</span>
-            <span className="text-white/25">•</span>
-            <span>Rent</span>
-            <span className="text-white/25">•</span>
-            <span>Manage</span>
-          </div>
-          <div className="m-0 flex flex-col items-center justify-center pointer-events-none">
-            <h1 className="text-4xl font-extrabold tracking-tight leading-none text-white">
-              First Responder
-            </h1>
-            <p className="mt-1 text-sm font-semibold text-white/70">
-              Select the option that best fits you.
-            </p>
-          </div>
-          <div className="mt-1 relative z-50 flex flex-col gap-2">
+      <div className="w-full max-w-md mx-auto flex flex-col items-center pt-1" style={{ marginTop: "-0.5rem" }}>
+        <div className="w-full flex flex-col items-center text-center pointer-events-none">
+          <h1 className="text-xl font-extrabold tracking-tight leading-none text-white mb-1">
+            First Responder
+          </h1>
+          <p className="text-sm font-semibold text-white/80">
+            Select the option that best fits you.
+          </p>
+        </div>
+          <div className="w-full flex flex-col gap-1.5 mt-1 items-center">
             {ROLES.map((r) => {
               const isActive = active === r;
 
               return (
-                <button
-                  key={r}
-                  type="button"
-                  disabled={pressed}
-                  onClick={() => goNext(r)}
-                  className={[
-                    "cursor-pointer pointer-events-auto block w-[calc(100%+2.5rem)] -mx-5 py-2 rounded-lg",
-                    "text-[15px] font-extrabold active:scale-[0.99] transition",
-                    "select-none touch-manipulation",
-                    "focus:outline-none focus-visible:ring-2 focus-visible:ring-[#ff385c]/30",
-                    isActive
-                      ? "bg-[#ff385c] text-white shadow-[0_6px_18px_rgba(255,56,92,0.18)] cursor-not-allowed"
-                      : pressed
-                      ? "bg-white/5 border border-white/10 text-white/40 cursor-not-allowed"
-                      : "border border-white/15 bg-white/10 text-white hover:bg-white/15",
-                  ].join(" ")}
-                >
-                  {r}
-                </button>
+                <div key={r} className="w-full max-w-xs">
+                  <button
+                    type="button"
+                    disabled={pressed}
+                    onClick={() => goNext(r)}
+                    className={[
+                      "cursor-pointer pointer-events-auto block w-full py-1 rounded-xl",
+                      "text-sm font-extrabold active:scale-[0.99] transition",
+                      "select-none touch-manipulation",
+                      "focus:outline-none focus-visible:ring-2 focus-visible:ring-[#ff385c]/30",
+                      isActive
+                        ? "bg-[#ff385c] text-white shadow-[0_6px_18px_rgba(255,56,92,0.18)] cursor-not-allowed"
+                        : pressed
+                        ? "bg-white/5 border border-white/10 text-white/40 cursor-not-allowed"
+                        : "border border-white/15 bg-white/10 text-white hover:bg-white/15",
+                    ].join(" ")}
+                    style={{ fontSize: "clamp(12px,2.4vw,14px)" }}
+                  >
+                    {r}
+                  </button>
+                </div>
               );
             })}
           </div>
-
-          <p className="mt-3 text-[11px] text-white/45">
-            Not affiliated with any government agency.
-          </p>
         </div>
-      </div>
     </AppShell>
   );
 }

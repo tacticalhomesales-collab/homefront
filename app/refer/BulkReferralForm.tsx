@@ -34,11 +34,51 @@ export default function BulkReferralForm() {
   const handleSubmit = async () => {
     if (!canSubmit || submitting) return;
     setSubmitting(true);
-    // TODO: Implement actual submission logic
-    setTimeout(() => {
+    try {
+      const partnerId =
+        typeof window !== "undefined"
+          ? window.sessionStorage.getItem("partner_id") || "referral_bulk"
+          : "referral_bulk";
+
+      const leads = rows.map((row) => {
+        const trimmedName = row.name.trim();
+        const [first, ...rest] = trimmedName.split(/\s+/);
+        const first_name = first || "Friend";
+        const last_name = rest.join(" ") || "Referral";
+
+        return {
+          first_name,
+          last_name,
+          phone: row.phone.trim(),
+          mission: row.mission,
+          location: null,
+          notes: null,
+          consented_at: new Date().toISOString(),
+        };
+      });
+
+      const response = await fetch("/api/leads/bulk", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          partner_id: partnerId,
+          leads,
+          submitted_at: new Date().toISOString(),
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Submission failed");
+      }
+
+      // After successful bulk referral submission, show the same
+      // thank-you experience as single referrals.
+      router.push("/refer-confirmation");
+    } catch (error) {
+      console.error("Bulk referral submission error:", error);
+      alert("Failed to submit referrals. Please try again.");
       setSubmitting(false);
-      router.push("/completion");
-    }, 1200);
+    }
   };
 
   return (
@@ -76,7 +116,7 @@ export default function BulkReferralForm() {
                 </td>
                 <td className="px-2 py-1">
                   <select
-                    className="w-full px-2 py-1 rounded bg-white/10 border border-white/15 text-white"
+                    className="w-full px-2 py-1 rounded bg-black border border-white/20 text-white"
                     value={row.mission}
                     onChange={e => handleChange(idx, "mission", e.target.value)}
                   >

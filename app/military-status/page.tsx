@@ -10,7 +10,6 @@ type Status = { label: string; value: string; audience: string };
 const STATUSES: Status[] = [
   { label: "Active Duty", value: "active", audience: "service_member" },
   { label: "Reserve", value: "reserve", audience: "service_member" },
-  { label: "National Guard", value: "guard", audience: "service_member" },
   { label: "Veteran / Retired", value: "veteran", audience: "veteran" },
   { label: "Spouse / Family", value: "family", audience: "family_member" },
 ];
@@ -31,7 +30,6 @@ function MilitaryStatusPage() {
     q.set("audience", s.audience);
     let nextPage = "branch";
     if (s.value === "family") nextPage = "family-profile";
-    else if (s.value === "guard") nextPage = "rank";
     const href = `/${nextPage}?${q.toString()}`;
     setTimeout(() => router.push(href), 120);
   };

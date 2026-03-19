@@ -32,6 +32,7 @@ export default function FlowLayout({
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true);
   }, []);
 
@@ -103,7 +104,7 @@ export default function FlowLayout({
           <div className="mt-3">{children}</div>
 
           {/* Footer disclaimer - consistent position */}
-          <p className="mt-5 text-[11px] text-white/45">
+          <p className="mt-5 text-[11px] text-white/45 text-center">
             Not affiliated with any government agency.
           </p>
         </div>

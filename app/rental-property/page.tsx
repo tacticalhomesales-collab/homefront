@@ -2,6 +2,7 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
+import AppShell from "../../components/AppShell";
 
 const RENTAL_TYPES = ["Single-Family", "Condo", "Townhome", "Multi-Family", "Commercial", "Other"] as const;
 
@@ -40,13 +41,13 @@ export default function RentalPropertyPage() {
       if (value === "Multi-Family") {
         setStep(3);
       } else {
-        // Skip to rental-status
+        // Skip to rental-timeline (manage/landlord timing) before rental status
         const q = new URLSearchParams();
         for (const [k, v] of sp.entries()) q.set(k, v);
         q.set("rental_location", location);
         q.set("rental_type", value);
         q.set("rental_units", "1");
-        router.push(`/rental-status?${q.toString()}`);
+        router.push(`/rental-timeline?${q.toString()}`);
       }
     }, 120);
   };
@@ -60,7 +61,7 @@ export default function RentalPropertyPage() {
     q.set("rental_type", rentalType);
     q.set("rental_units", units);
 
-    const href = `/rental-status?${q.toString()}`;
+    const href = `/rental-timeline?${q.toString()}`;
     setPressed(true);
     setTimeout(() => router.push(href), 120);
   };
@@ -89,126 +90,103 @@ export default function RentalPropertyPage() {
   };
 
   return (
-    <main className="min-h-[100dvh] w-full bg-[#0b0f14] text-white px-4">
-      <div className="min-h-[100dvh] flex flex-col items-center text-center pt-8 pb-10">
-        <div className="w-full max-w-md relative">
-          {/* Invisible spacer row */}
-          <div className="mb-3 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-[18px] font-extrabold tracking-[-0.02em] text-white/80 opacity-0 pointer-events-none select-none">
-            <span>Buy</span>
-            <span className="text-white/25">•</span>
-            <span>Sell</span>
-            <span className="text-white/25">•</span>
-            <span>Rent</span>
-            <span className="text-white/25">•</span>
-            <span>Manage</span>
-          </div>
+    <AppShell>
+      <div
+        className="w-full max-w-md relative mx-auto text-center px-4 pt-0 pb-10"
+        style={{ marginTop: "0.25rem" }}
+      >
+        <div className="flex flex-col items-center justify-center pointer-events-none mb-2">
+          <h1 className="text-2xl font-extrabold tracking-tight leading-none text-white mb-0.5">
+            {step === 1 && "Property Location"}
+            {step === 2 && "Property Type"}
+            {step === 3 && "Number of Units"}
+          </h1>
+          <p className="mt-1 text-sm font-semibold text-white/70">
+            {step === 1 && "Where is your rental property?"}
+            {step === 2 && "What type of property?"}
+            {step === 3 && "How many units?"}
+          </p>
+        </div>
 
-          {/* Logo */}
-          <div className="mx-auto w-full max-w-[320px] mt-4 mb-2 pointer-events-none select-none">
-            <img
-              src="/homefront-badge.png"
-              alt="HomeFront"
-              className="w-full h-auto"
-              draggable={false}
-            />
-          </div>
-
-          {/* Title */}
-          <div className="-mt-6 flex flex-col items-center justify-center pointer-events-none">
-            <h1 className="text-4xl font-extrabold tracking-tight leading-none text-white">
-              {step === 1 && "Property Location"}
-              {step === 2 && "Property Type"}
-              {step === 3 && "Number of Units"}
-            </h1>
-            <p className="mt-3 text-sm font-semibold text-white/70">
-              {step === 1 && "Where is your rental property?"}
-              {step === 2 && "What type of property?"}
-              {step === 3 && "How many units?"}
-            </p>
-          </div>
-
-          {/* Step 1: Location Input */}
-          {step === 1 && (
-            <div className="mt-6 relative z-50">
+        {/* Step 1: Location Input */}
+        {step === 1 && (
+          <div className="mt-3 relative z-50 flex flex-col items-center gap-3">
+            <div className="w-full max-w-xs">
               <input
                 type="text"
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && onSubmitLocation()}
                 placeholder="City or ZIP Code"
-                className="w-[calc(100%+2.5rem)] -mx-5 px-5 py-4 rounded-2xl
-                         border border-white/15 bg-white/10 text-white text-[21px] font-extrabold
-                         placeholder:text-white/40 focus:outline-none focus-visible:ring-4
-                         focus-visible:ring-[#ff385c]/30"
+                className="w-full px-4 py-2.5 rounded-2xl border border-white/15 bg-white/10 text-white text-[15px] font-extrabold placeholder:text-white/40 focus:outline-none focus-visible:ring-4 focus-visible:ring-[#ff385c]/30"
               />
-              <div className="mt-3">
-                <button
-                  type="button"
-                  disabled={!location.trim() || pressed}
-                  onClick={onSubmitLocation}
-                  className={[
-                    "w-[calc(100%+2.5rem)] -mx-5 py-4 rounded-2xl text-[21px] font-extrabold transition active:scale-[0.99]",
-                    "select-none touch-manipulation",
-                    !location.trim() || pressed
-                      ? "bg-white/5 border border-white/10 text-white/40 cursor-not-allowed"
-                      : "border border-white/15 bg-white/10 text-white hover:bg-white/15 cursor-pointer",
-                  ].join(" ")}
-                >
-                  Next
-                </button>
-              </div>
             </div>
-          )}
-
-          {/* Step 2: Property Type */}
-          {step === 2 && (
-            <div className="mt-3 relative z-50">
-              <div className="grid grid-cols-2 gap-3">
-                {RENTAL_TYPES.map((type) => (
-                  <GridButton key={type} label={type} onClick={() => onPickRentalType(type)} />
-                ))}
-              </div>
+            <div className="w-full max-w-xs">
+              <button
+                type="button"
+                disabled={!location.trim() || pressed}
+                onClick={onSubmitLocation}
+                className={[
+                  "w-full py-2.5 rounded-xl text-[15px] font-extrabold transition active:scale-[0.99]",
+                  "select-none touch-manipulation",
+                  !location.trim() || pressed
+                    ? "bg-white/5 border border-white/10 text-white/40 cursor-not-allowed"
+                    : "border border-white/15 bg-white/10 text-white hover:bg-white/15 cursor-pointer",
+                ].join(" ")}
+              >
+                Next
+              </button>
             </div>
-          )}
+          </div>
+        )}
 
-          {/* Step 3: Units (multi-family only) */}
-          {step === 3 && (
-            <div className="mt-6 relative z-50">
+        {/* Step 2: Property Type */}
+        {step === 2 && (
+          <div className="mt-3 relative z-50 flex flex-col items-center">
+            <div className="w-full max-w-xs grid grid-cols-2 gap-3">
+              {RENTAL_TYPES.map((type) => (
+                <GridButton key={type} label={type} onClick={() => onPickRentalType(type)} />
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Step 3: Units (multi-family only) */}
+        {step === 3 && (
+          <div className="mt-3 relative z-50 flex flex-col items-center gap-3">
+            <div className="w-full max-w-xs">
               <input
                 type="number"
                 value={units}
                 onChange={(e) => setUnits(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && onSubmitUnits()}
                 placeholder="e.g. 4"
-                className="w-[calc(100%+2.5rem)] -mx-5 px-5 py-4 rounded-2xl
-                         border border-white/15 bg-white/10 text-white text-[21px] font-extrabold
-                         placeholder:text-white/40 focus:outline-none focus-visible:ring-4
-                         focus-visible:ring-[#ff385c]/30"
+                className="w-full px-5 py-3 rounded-2xl border border-white/15 bg-white/10 text-white text-[18px] font-extrabold placeholder:text-white/40 focus:outline-none focus-visible:ring-4 focus-visible:ring-[#ff385c]/30"
               />
-              <div className="mt-3">
-                <button
-                  type="button"
-                  disabled={!units.trim() || pressed}
-                  onClick={onSubmitUnits}
-                  className={[
-                    "w-[calc(100%+2.5rem)] -mx-5 py-4 rounded-2xl text-[21px] font-extrabold transition active:scale-[0.99]",
-                    "select-none touch-manipulation",
-                    !units.trim() || pressed
-                      ? "bg-white/5 border border-white/10 text-white/40 cursor-not-allowed"
-                      : "border border-white/15 bg-white/10 text-white hover:bg-white/15 cursor-pointer",
-                  ].join(" ")}
-                >
-                  Next
-                </button>
-              </div>
             </div>
-          )}
+            <div className="w-full max-w-xs">
+              <button
+                type="button"
+                disabled={!units.trim() || pressed}
+                onClick={onSubmitUnits}
+                className={[
+                  "w-full py-3 rounded-2xl text-[18px] font-extrabold transition active:scale-[0.99]",
+                  "select-none touch-manipulation",
+                  !units.trim() || pressed
+                    ? "bg-white/5 border border-white/10 text-white/40 cursor-not-allowed"
+                    : "border border-white/15 bg-white/10 text-white hover:bg-white/15 cursor-pointer",
+                ].join(" ")}
+              >
+                Next
+              </button>
+            </div>
+          </div>
+        )}
 
-          <p className="mt-5 text-[11px] text-white/45">
-            Not affiliated with any government agency.
-          </p>
-        </div>
+        <p className="mt-5 text-[11px] text-white/45 text-center">
+          Not affiliated with any government agency.
+        </p>
       </div>
-    </main>
+    </AppShell>
   );
 }

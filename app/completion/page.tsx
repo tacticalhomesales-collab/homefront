@@ -17,7 +17,7 @@ export default function CompletionPage() {
           Return to Home
         </button>
         <p className="text-white/60 text-sm">
-          We appreciate your trust in HomeFront. Our team will reach out to your referral soon.
+          Share your personal QR code anytime to help friends, family members, or anyone in the community that could benefit from HomeFront—just visit the <b>Share</b> tab on the homepage, or tap the HomeFront logo at the top of the homepage to start inviting friends!
         </p>
       </div>
     </AppShell>

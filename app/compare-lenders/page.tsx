@@ -104,18 +104,32 @@ export default function CompareLendersPage() {
 
           {/* Step 1: Lender Type */}
           {step === 1 && (
-            <div className="mt-2 relative z-50 flex flex-col gap-3">
+            <div className="mt-2 relative z-50 flex flex-col gap-3 items-center">
               {LENDER_TYPES.map((type) => (
-                <ChoiceButton key={type} label={type} onClick={() => onPickLenderType(type)} />
+                <div key={type} className="w-full max-w-xs">
+                  <ChoiceButton
+                    label={type}
+                    active={activeLabel === type}
+                    disabled={pressed}
+                    onClick={() => onPickLenderType(type)}
+                  />
+                </div>
               ))}
             </div>
           )}
 
           {/* Step 2: Rate Band */}
           {step === 2 && (
-            <div className="mt-2 relative z-50 flex flex-col gap-3">
+            <div className="mt-2 relative z-50 flex flex-col gap-3 items-center">
               {RATE_BANDS.map((band) => (
-                <ChoiceButton key={band} label={band} onClick={() => onPickRateBand(band)} />
+                <div key={band} className="w-full max-w-xs">
+                  <ChoiceButton
+                    label={band}
+                    active={activeLabel === band}
+                    disabled={pressed}
+                    onClick={() => onPickRateBand(band)}
+                  />
+                </div>
               ))}
             </div>
           )}
@@ -159,14 +173,21 @@ export default function CompareLendersPage() {
 
           {/* Step 4: Credit Band */}
           {step === 4 && (
-            <div className="mt-2 relative z-50 flex flex-col gap-3">
+            <div className="mt-2 relative z-50 flex flex-col gap-3 items-center">
               {CREDIT_BANDS.map((c) => (
-                <ChoiceButton key={c} label={c} onClick={() => onPickCreditBand(c)} />
+                <div key={c} className="w-full max-w-xs">
+                  <ChoiceButton
+                    label={c}
+                    active={activeLabel === c}
+                    disabled={pressed}
+                    onClick={() => onPickCreditBand(c)}
+                  />
+                </div>
               ))}
             </div>
           )}
 
-          <p className="mt-5 text-[11px] text-white/45">
+          <p className="mt-5 text-[11px] text-white/45 text-center">
             Not affiliated with any government agency.
           </p>
         </div>

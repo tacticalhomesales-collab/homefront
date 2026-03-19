@@ -1,0 +1,72 @@
+[
+  {
+    "source": {
+      "source_id": "example_county_csv",
+      "state": "CA",
+      "agency": "Example County Housing Authority (Demo)",
+      "level": "county",
+      "source_type": "csv",
+      "official_url": "https://example-county.gov/housing/programs",
+      "active": true,
+      "notes": "Demo-only example for a county program list in CSV form. Not a real program.",
+      "raw_file": "data/housing/sources/raw/examples/county_programs.example.csv",
+      "parser": "csv_generic"
+    },
+    "rawFilePath": "C:\\Users\\Kienan Wubs\\Desktop\\newest homefront model\\homefront-main\\homefront-main\\data\\housing\\sources\\raw\\examples\\county_programs.example.csv",
+    "rowIndex": 0,
+    "raw": {
+      "name": "Demo County Closing Cost Assistance",
+      "state": "CA",
+      "level": "county",
+      "geography": "Entire Demo County",
+      "counties": [
+        "Demo County"
+      ],
+      "zip_codes": [
+        "90003",
+        "90004"
+      ],
+      "category": "local_closing_cost_assistance",
+      "target_audience": "first_time_buyers",
+      "assistance_summary": "Up to $7,500 in closing cost help for eligible buyers in Demo County (fictional).",
+      "official_urls": [
+        "https://demo-county.gov/housing/programs/closing-cost-assistance"
+      ],
+      "status": "open",
+      "notes": "Fictional example for pipeline testing."
+    }
+  },
+  {
+    "source": {
+      "source_id": "example_county_csv",
+      "state": "CA",
+      "agency": "Example County Housing Authority (Demo)",
+      "level": "county",
+      "source_type": "csv",
+      "official_url": "https://example-county.gov/housing/programs",
+      "active": true,
+      "notes": "Demo-only example for a county program list in CSV form. Not a real program.",
+      "raw_file": "data/housing/sources/raw/examples/county_programs.example.csv",
+      "parser": "csv_generic"
+    },
+    "rawFilePath": "C:\\Users\\Kienan Wubs\\Desktop\\newest homefront model\\homefront-main\\homefront-main\\data\\housing\\sources\\raw\\examples\\county_programs.example.csv",
+    "rowIndex": 1,
+    "raw": {
+      "name": "Demo County Teacher DPA",
+      "state": "CA",
+      "level": "county",
+      "geography": "Demo County school districts",
+      "counties": [
+        "Demo County"
+      ],
+      "category": "local_down_payment_assistance",
+      "target_audience": "teachers",
+      "assistance_summary": "Down payment help for K-12 teachers buying in Demo County (fictional).",
+      "official_urls": [
+        "https://demo-county.gov/housing/programs/teacher-dpa"
+      ],
+      "status": "open",
+      "notes": "Fictional example for pipeline testing."
+    }
+  }
+]

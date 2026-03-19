@@ -228,14 +228,12 @@
 
 ## ✅ OFFICIAL GATE FLOW (Unchanged)
 
-### Test Path: `/match-preview` → `/review` → `/consent` → `/verify` → `/contact` → `/confirmation`
+### Test Path: `/match-preview` → `/review` → `/contact` → `/confirmation`
 
-**Critical: /verify is ONLY page with verification overlay**
+**Critical: contact is the ONLY place consent is captured**
 - [ ] /match-preview: NO verification overlay
 - [ ] /review: NO verification overlay
-- [ ] /consent: NO verification overlay
-- [ ] **/verify**: Shows 2.5s spinner + 0.5s checkmark overlay, sets verified=1, redirects to /contact
-- [ ] /contact: NO verification overlay (verified=1 already set)
+- [ ] /contact: Shows contact fields + single consent/terms checkbox and NO verification overlay
 - [ ] /confirmation: NO verification overlay
 
 **URLSearchParams Preservation**

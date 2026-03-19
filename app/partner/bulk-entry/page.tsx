@@ -29,7 +29,7 @@ export default function BulkEntryPage() {
     if (typeof window !== "undefined") {
       const isAuth = sessionStorage.getItem("partner_authenticated") === "true";
       if (!isAuth) {
-        router.push("/partner/login");
+        router.push("/partner/login?next=/partner/bulk-entry");
         return;
       }
       setAuthenticated(true);

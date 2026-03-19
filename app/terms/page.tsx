@@ -18,7 +18,7 @@ export default function TermsPage() {
       <div className="max-w-3xl mx-auto px-6 py-10">
         <div className="mb-8">
           <Link
-            href={`/consent?${getParamString()}`}
+            href={`/contact?${getParamString()}`}
             className="text-[#ff385c] hover:text-[#ff284d] text-sm font-semibold flex items-center gap-2"
           >
             <svg
@@ -31,7 +31,7 @@ export default function TermsPage() {
             >
               <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
             </svg>
-            Back to Consent
+            Back
           </Link>
         </div>
 

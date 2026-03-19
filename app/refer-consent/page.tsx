@@ -32,6 +32,7 @@ export default function ReferConsentPage() {
           friend_location: referralData.location,
           friend_timeline: referralData.timeline,
           friend_mission: mission,
+          ref_code: referralData.ref_code,
           consented_at: new Date().toISOString(),
         }),
       });

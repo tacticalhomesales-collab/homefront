@@ -94,21 +94,7 @@ export const storage = {
   },
 };
 
-// TODO: Replace with actual database
-// Example PostgreSQL implementation:
-/*
-import { Pool } from 'pg';
-const pool = new Pool({ connectionString: process.env.DATABASE_URL });
-
-export const storage = {
-  async createPartner(partner: Partner): Promise<Partner> {
-    const result = await pool.query(
-      `INSERT INTO partners (id, public_code, first_name, last_name, contact, portal_token_hash, created_at)
-       VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *`,
-      [partner.id, partner.public_code, partner.first_name, partner.last_name, partner.contact, partner.portal_token_hash, partner.created_at]
-    );
-    return result.rows[0];
-  },
-  // ... etc
-};
-*/
+// This in-memory storage was originally scaffolded with a PostgreSQL example
+// that wrote to a partner_leads table. The real implementation now uses
+// Supabase Referrers/Partners, so that example has been removed to avoid
+// confusion with non-existent tables.

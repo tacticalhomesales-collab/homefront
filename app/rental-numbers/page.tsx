@@ -25,7 +25,9 @@ export default function RentalNumbersPage() {
     const q = new URLSearchParams();
     for (const [k, v] of sp.entries()) q.set(k, v);
     q.set("rent_band", value);
-    const href = `/review?${q.toString()}`;
+    const mission = (sp.get("mission") || "").toLowerCase();
+    const nextPath = mission === "rent" ? "/rental-needs" : "/review";
+    const href = `${nextPath}?${q.toString()}`;
     setTimeout(() => router.push(href), 120);
   };
 
@@ -95,7 +97,7 @@ export default function RentalNumbersPage() {
 
   return (
     <AppShell>
-      <div className="w-full max-w-md mx-auto flex flex-col items-center pt-1" style={{marginTop: '-0.75rem'}}>
+      <div className="w-full max-w-md mx-auto flex flex-col items-center pt-1" style={{ marginTop: "0.25rem" }}>
         <h1 className="text-xl font-extrabold text-center mb-1">Monthly Rent</h1>
         <div className="text-sm text-white/80 text-center mb-2 font-semibold">Approximate monthly rent income</div>
 

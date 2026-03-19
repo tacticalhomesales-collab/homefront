@@ -28,7 +28,7 @@ export default function PaygradeOfficerPage() {
 
   return (
     <AppShell>
-      <div className="w-full max-w-md mx-auto flex flex-col items-center pt-1" style={{marginTop: '-0.75rem'}}>
+      <div className="w-full max-w-md mx-auto flex flex-col items-center pt-1" style={{ marginTop: "-0.25rem" }}>
         <h1 className="text-xl font-extrabold text-center mb-1">Officer Paygrade</h1>
         <div className="text-sm text-white/80 text-center mb-2 font-semibold">Select your paygrade.</div>
         {/* Condensed grid: 2 rows of 5 for all officer paygrades */}

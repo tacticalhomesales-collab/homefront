@@ -1,11 +1,12 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import FlowLayout from "../../_components/FlowLayout";
 
 export default function PartnerLoginPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   const [passcode, setPasscode] = useState("");
   const [error, setError] = useState("");
@@ -13,7 +14,8 @@ export default function PartnerLoginPage() {
 
   // In production, verify against env variable or auth service
   // For MVP, using simple passcode check
-  const PARTNER_PASSCODE = process.env.NEXT_PUBLIC_PARTNER_PASSCODE || "HOMEFRONT2026";
+  const PARTNER_PASSCODE = process.env.NEXT_PUBLIC_PARTNER_PASSCODE || "1775";
+  const nextPath = searchParams.get("next") || "/partner/bulk-entry";
 
   const handleLogin = async () => {
     if (!passcode.trim()) return;
@@ -31,7 +33,7 @@ export default function PartnerLoginPage() {
         sessionStorage.setItem("partner_login_time", new Date().toISOString());
       }
 
-      router.push("/partner/bulk-entry");
+      router.push(nextPath);
     } else {
       setError("Invalid passcode. Please try again.");
       setLoading(false);
@@ -39,8 +41,22 @@ export default function PartnerLoginPage() {
   };
 
   return (
-    <FlowLayout title="Partner Portal" subtitle="Secure access for authorized partners.">
+    <FlowLayout
+      title={null}
+      logoWidth={320}
+      logoHeight={160}
+      logoContainerClassName="mx-auto w-full max-w-[80vw] mt-10 pointer-events-none select-none"
+      logoClassName="w-full h-auto scale-125 origin-center"
+    >
       <div className="relative z-50 flex flex-col gap-4">
+        <div className="flex flex-col items-center justify-center pointer-events-none mt-8 mb-3">
+          <h1 className="text-3xl font-extrabold tracking-tight leading-none text-white">
+            Partner Portal
+          </h1>
+          <p className="mt-2 text-sm font-semibold text-white/70">
+            Secure access for authorized partners.
+          </p>
+        </div>
         <div className="flex flex-col gap-3 text-left">
           <label className="flex flex-col">
             <span className="text-xs font-bold text-white/70 uppercase tracking-wide mb-1.5">
@@ -72,7 +88,7 @@ export default function PartnerLoginPage() {
             </div>
           )}
 
-          <p className="text-xs text-white/50 mt-1">
+          <p className="text-xs text-white/50 mt-1 text-center">
             Contact your HomeFront representative if you need access.
           </p>
         </div>
@@ -96,10 +112,7 @@ export default function PartnerLoginPage() {
         <button
           type="button"
           onClick={() => router.push("/")}
-          className="w-[calc(100%+2.5rem)] -mx-5 py-3 rounded-2xl
-                     border border-white/15 bg-white/10 text-white text-[16px] font-extrabold
-                     hover:bg-white/15 active:scale-[0.99] transition
-                     focus:outline-none focus-visible:ring-4 focus-visible:ring-white/30"
+          className="mt-1 text-[13px] font-bold text-[#ff385c] hover:text-[#ff667f] focus:outline-none"
         >
           Back to Home
         </button>

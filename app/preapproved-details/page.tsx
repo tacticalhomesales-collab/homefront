@@ -3,6 +3,7 @@
 import AppShell from "../../components/AppShell";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
+import ChoiceButton from "../_components/ChoiceButton";
 
 const LOAN_TYPES = ["Conventional", "FHA", "VA", "Other", "Not sure"] as const;
 const BUDGET_RANGES = [
@@ -32,13 +33,19 @@ export default function PreapprovedDetailsPage() {
     q.set("loan_type", loanType);
     q.set("budget_range", budgetRange);
     q.set("shop_lenders", shopLenders);
+    const mission = (sp.get("mission") || "").toLowerCase();
 
-    // If shop_lenders = "yes" (value is "yes"), route to compare-lenders
+    // For buy flows, always ask a timeline question after preapproval details
+    if (mission === "buy") {
+      const next = shopLenders === "yes" ? "compare-lenders" : "review";
+      return `/buy-timeline?next=${next}&${q.toString()}`;
+    }
+
+    // Non-buy flows keep existing behavior
     if (shopLenders === "yes") {
       return `/compare-lenders?${q.toString()}`;
     }
 
-    // Otherwise route to match-preview (now review)
     return `/review?${q.toString()}`;
   };
 
@@ -78,31 +85,6 @@ export default function PreapprovedDetailsPage() {
     setTimeout(() => router.push(href), 120);
   };
 
-  const ChoiceButton = ({ label, onClick }: { label: string; onClick: () => void }) => {
-    const isActive = activeLabel === label;
-
-    return (
-      <button
-        type="button"
-        disabled={pressed}
-        onClick={onClick}
-        className={[
-          "cursor-pointer pointer-events-auto block w-[calc(100%+2.5rem)] -mx-5 py-2 rounded-xl",
-          "text-[15px] font-extrabold active:scale-[0.99] transition",
-          "select-none touch-manipulation",
-          "focus:outline-none focus-visible:ring-4 focus-visible:ring-[#ff385c]/30",
-          isActive
-            ? "bg-[#ff385c] text-white shadow-[0_10px_30px_rgba(255,56,92,0.25)]"
-            : pressed
-            ? "bg-white/5 border border-white/10 text-white/40 cursor-not-allowed"
-            : "border border-white/15 bg-white/10 text-white hover:bg-white/15",
-        ].join(" ")}
-      >
-        {label}
-      </button>
-    );
-  };
-
   const GridButton = ({ label, onClick }: { label: string; onClick: () => void }) => {
     const isActive = activeLabel === label;
 
@@ -128,7 +110,7 @@ export default function PreapprovedDetailsPage() {
 
   return (
     <AppShell>
-      <div>
+      <div className="w-full max-w-md relative mx-auto text-center px-4 pt-0 pb-10">
         {/* Invisible spacer row */}
         <div className="mb-1 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-[14px] font-extrabold tracking-[-0.02em] text-white/80 opacity-0 pointer-events-none select-none">
           <span>Buy</span>
@@ -156,9 +138,16 @@ export default function PreapprovedDetailsPage() {
 
         {/* Step 1: Loan Type */}
         {step === 1 && (
-          <div className="mt-1 relative z-50 flex flex-col gap-2">
+          <div className="mt-1 relative z-50 flex flex-col gap-2 items-center">
             {LOAN_TYPES.map((type) => (
-              <ChoiceButton key={type} label={type} onClick={() => onPickLoanType(type)} />
+              <div key={type} className="w-full max-w-xs">
+                <ChoiceButton
+                  label={type}
+                  active={activeLabel === type}
+                  disabled={pressed}
+                  onClick={() => onPickLoanType(type)}
+                />
+              </div>
             ))}
           </div>
         )}
@@ -176,13 +165,27 @@ export default function PreapprovedDetailsPage() {
 
         {/* Step 3: Shop Lenders */}
         {step === 3 && (
-          <div className="mt-1 relative z-50 flex flex-col gap-2">
-            <ChoiceButton label="Yes, compare options" onClick={() => onPickShopLenders("yes")} />
-            <ChoiceButton label="No, I'm all set" onClick={() => onPickShopLenders("no")} />
+          <div className="mt-1 relative z-50 flex flex-col gap-2 items-center">
+            <div className="w-full max-w-xs">
+              <ChoiceButton
+                label="Yes, compare options"
+                active={activeLabel === "yes"}
+                disabled={pressed}
+                onClick={() => onPickShopLenders("yes")}
+              />
+            </div>
+            <div className="w-full max-w-xs">
+              <ChoiceButton
+                label="No, I'm all set"
+                active={activeLabel === "no"}
+                disabled={pressed}
+                onClick={() => onPickShopLenders("no")}
+              />
+            </div>
           </div>
         )}
 
-        <p className="mt-3 text-[10px] text-white/45">
+        <p className="mt-3 text-[10px] text-white/45 text-center">
           Not affiliated with any government agency.
         </p>
       </div>
