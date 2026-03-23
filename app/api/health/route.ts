@@ -3,7 +3,21 @@ import { NextResponse } from "next/server";
 import { prisma } from "../../../lib/prisma";
 import { supabaseAdmin } from "@/lib/supabaseServer";
 
-export async function GET() {
+type ServiceCheck = {
+  ok: boolean;
+  error?: string;
+  skipped?: boolean;
+};
+
+function getErrorMessage(error: unknown) {
+  if (error instanceof Error) return error.message;
+  return String(error);
+}
+
+export async function GET(req: Request) {
+  const { searchParams } = new URL(req.url);
+  const shouldProbeConnections = searchParams.get("probe") === "1";
+
   // Check env vars
   const env = {
     url: !!process.env.NEXT_PUBLIC_SUPABASE_URL,
@@ -11,28 +25,35 @@ export async function GET() {
     service: !!process.env.SUPABASE_SERVICE_ROLE_KEY,
   };
 
-  // Check DB connection (simple query)
-  let db = { ok: false, error: undefined };
-  let supabase: { ok: boolean; error: string | undefined } = { ok: false, error: undefined };
-  try {
-    await prisma.$queryRaw`SELECT 1`;
-    db.ok = true;
-  } catch (error: any) {
-    db.ok = false;
-    db.error = error.message || String(error);
-  }
+  const db: ServiceCheck = { ok: false, skipped: !shouldProbeConnections };
+  const supabase: ServiceCheck = { ok: false, skipped: !shouldProbeConnections };
 
-  try {
-    const { error } = await supabaseAdmin.from("Leads").select("id").limit(1);
-    if (!error) {
-      supabase.ok = true;
-    } else {
-      supabase.ok = false;
-      supabase.error = error?.message ? String(error.message) : undefined;
+  if (shouldProbeConnections) {
+    try {
+      await prisma.$queryRaw`SELECT 1`;
+      db.ok = true;
+      db.skipped = false;
+    } catch (error: unknown) {
+      db.ok = false;
+      db.skipped = false;
+      db.error = getErrorMessage(error);
     }
-  } catch (error: any) {
-    supabase.ok = false;
-    supabase.error = error.message || String(error);
+
+    try {
+      const { error } = await supabaseAdmin.from("Leads").select("id").limit(1);
+      if (!error) {
+        supabase.ok = true;
+        supabase.skipped = false;
+      } else {
+        supabase.ok = false;
+        supabase.skipped = false;
+        supabase.error = error.message ? String(error.message) : undefined;
+      }
+    } catch (error: unknown) {
+      supabase.ok = false;
+      supabase.skipped = false;
+      supabase.error = getErrorMessage(error);
+    }
   }
 
   return NextResponse.json({ ok: true, env, db, supabase });

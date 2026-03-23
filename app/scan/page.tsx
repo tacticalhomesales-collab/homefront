@@ -17,6 +17,31 @@ type MatchResponse = {
   error?: string;
 };
 
+function formatPhoneNumber(value: string) {
+  const digits = value.replace(/\D/g, "");
+  if (digits.length === 10) {
+    return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`;
+  }
+  return value;
+}
+
+function renderContactBlock(contactText?: string) {
+  if (!contactText) return null;
+
+  const segments = contactText.split(",").map((segment) => segment.trim());
+  const name = segments.find((segment) => !segment.toLowerCase().startsWith("nmlsr id"));
+  const license = segments.find((segment) => segment.toLowerCase().startsWith("nmlsr id"));
+  const phoneRaw = segments.find((segment) => /\d/.test(segment) && !segment.toLowerCase().startsWith("nmlsr id"));
+
+  return (
+    <div className="text-[11px] text-[#ffd7a1] font-semibold leading-relaxed">
+      {name && <div>Wells Fargo contact: {name}</div>}
+      {phoneRaw && <div>{formatPhoneNumber(phoneRaw)}</div>}
+      {license && <div>{license}</div>}
+    </div>
+  );
+}
+
 export default function ScanPage() {
   const router = useRouter();
   const sp = useSearchParams();
@@ -125,6 +150,7 @@ export default function ScanPage() {
                       <div className="text-[11px] text-white/80">
                         {m.assistance_max_text}
                       </div>
+                      {renderContactBlock(m.contact_text)}
                     </li>
                   ))}
                 </ul>
@@ -145,6 +171,7 @@ export default function ScanPage() {
                       <div className="text-[11px] text-white/80">
                         {m.assistance_max_text}
                       </div>
+                      {renderContactBlock(m.contact_text)}
                     </li>
                   ))}
                 </ul>

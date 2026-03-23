@@ -7,6 +7,7 @@ export type ProgramMatch = {
   category: string;
   geography: string;
   assistance_max_text: string;
+  contact_text?: string;
   official_urls: string[];
   status: "open" | "closed" | "unknown";
   why: string[];
@@ -19,6 +20,11 @@ export type MatchResult = {
   excluded: ProgramMatch[];
 };
 
+const PROGRAM_PRIORITY: Record<string, number> = {
+  wells_dream_plan_home: 200,
+  wells_homebuyer_access: 190,
+};
+
 function buildBaseMatch(program: ProgramRecord): Omit<ProgramMatch, "why" | "missing_fields"> {
   return {
     program_id: program.program_id,
@@ -26,6 +32,7 @@ function buildBaseMatch(program: ProgramRecord): Omit<ProgramMatch, "why" | "mis
     category: program.category,
     geography: program.geography,
     assistance_max_text: program.assistance_max_text,
+    contact_text: program.contact_text,
     official_urls: program.official_urls,
     status: program.status,
   };
@@ -63,6 +70,20 @@ function computeMissingFields(e: EligibilityProfile, program: ProgramRecord): st
     }
   }
   return missing;
+}
+
+function sortMatches(matches: ProgramMatch[]) {
+  return matches
+    .map((match, index) => ({ match, index }))
+    .sort((left, right) => {
+      const priorityDiff =
+        (PROGRAM_PRIORITY[right.match.program_id] || 0) -
+        (PROGRAM_PRIORITY[left.match.program_id] || 0);
+
+      if (priorityDiff !== 0) return priorityDiff;
+      return left.index - right.index;
+    })
+    .map(({ match }) => match);
 }
 
 export function matchPrograms(
@@ -126,5 +147,9 @@ export function matchPrograms(
     }
   }
 
-  return { matched, maybe, excluded };
+  return {
+    matched: sortMatches(matched),
+    maybe: sortMatches(maybe),
+    excluded,
+  };
 }

@@ -13,6 +13,7 @@ type ProgramMatch = {
   category: string;
   geography: string;
   assistance_max_text: string;
+  contact_text?: string;
   official_urls: string[];
   status: "open" | "closed" | "unknown";
   why: string[];
@@ -36,6 +37,31 @@ type MatchResponse = {
   summary?: MatchSummary;
   error?: string;
 };
+
+function formatPhoneNumber(value: string) {
+  const digits = value.replace(/\D/g, "");
+  if (digits.length === 10) {
+    return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`;
+  }
+  return value;
+}
+
+function renderContactBlock(contactText?: string) {
+  if (!contactText) return null;
+
+  const segments = contactText.split(",").map((segment) => segment.trim());
+  const name = segments.find((segment) => !segment.toLowerCase().startsWith("nmlsr id"));
+  const license = segments.find((segment) => segment.toLowerCase().startsWith("nmlsr id"));
+  const phoneRaw = segments.find((segment) => /\d/.test(segment) && !segment.toLowerCase().startsWith("nmlsr id"));
+
+  return (
+    <div className="mb-1 text-[9px] text-[#ffd7a1] font-semibold leading-relaxed">
+      {name && <div>Wells Fargo contact: {name}</div>}
+      {phoneRaw && <div>{formatPhoneNumber(phoneRaw)}</div>}
+      {license && <div>{license}</div>}
+    </div>
+  );
+}
 
 export default function ProgramResultsPage() {
   const router = useRouter();
@@ -123,6 +149,7 @@ export default function ProgramResultsPage() {
                         </span>
                       </div>
                       <p className="text-[9px] text-white/80 mb-1">{p.assistance_max_text}</p>
+                      {renderContactBlock(p.contact_text)}
                       {p.official_urls.length > 0 && (
                         <div className="mt-1 text-[9px] text-[#7bdcff]">
                           {p.official_urls.map((url) => (
@@ -163,6 +190,7 @@ export default function ProgramResultsPage() {
                         </span>
                       </div>
                       <p className="text-[9px] text-white/80 mb-1">{p.assistance_max_text}</p>
+                      {renderContactBlock(p.contact_text)}
                       {p.missing_fields.length > 0 && (
                         <p className="mt-1 text-[9px] text-white/60">
                           Missing: {p.missing_fields.join(", ")}
