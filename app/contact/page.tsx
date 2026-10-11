@@ -4,6 +4,21 @@ import { useMemo, useRef, useState, useEffect, type ReactNode } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import AppShell from "../../components/AppShell";
+import { buildApiUrl } from "@/lib/publicApp";
+
+declare global {
+  interface Window {
+    gtag?: (
+      command: "event",
+      eventName: "conversion",
+      params: {
+        send_to: string;
+        value: number;
+        currency: string;
+      }
+    ) => void;
+  }
+}
 
 type VerifyStage = "idle" | "verifying" | "verified";
 
@@ -135,11 +150,22 @@ export default function ContactPage() {
         },
       };
 
-      await fetch("/api/lead", {
+      const leadRes = await fetch(buildApiUrl("/api/lead"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(leadPayload),
       });
+
+      const leadResult = (await leadRes.json().catch(() => null)) as { ok?: boolean } | null;
+      const leadSavedSuccessfully = leadRes.ok && leadResult?.ok === true;
+
+      if (leadSavedSuccessfully) {
+        window.gtag?.("event", "conversion", {
+          send_to: "AW-14883340182/syRmCNbUuJMdEJbRxe1E",
+          value: 1.0,
+          currency: "USD",
+        });
+      }
     } catch (err) {
       console.error("[ContactPage] Lead submission failed", err);
       // We still continue to confirmation so the UX is not blocked.
