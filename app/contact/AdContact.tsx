@@ -8,10 +8,19 @@ import AppShell from "../../components/AppShell";
 type ContactAction = "call" | "text";
 
 function trackTap(action: ContactAction) {
-  // Taps indicate intent. They do not prove a connected call or a delivered text.
-  const eventName = action === "call" ? "chatgpt_call_tap" : "chatgpt_text_tap";
+  // Button taps indicate intent, not completed phone calls or delivered texts.
+  // Attribute Google Ads taps separately from ChatGPT referrals.
+  const query = new URLSearchParams(window.location.search);
+  const source =
+    query.get("utm_source") === "google"
+      ? "google_ads"
+      : query.get("source") === "chatgpt"
+        ? "chatgpt"
+        : "direct";
+  const campaign = query.get("utm_campaign") || "north_county";
+  const eventName = `${source}_${action}_tap`;
   try {
-    track(eventName, { source: "chatgpt", campaign: "north_county" });
+    track(eventName, { source, campaign });
   } catch {
     // Calling/texting must never be blocked by analytics.
   }
@@ -19,7 +28,7 @@ function trackTap(action: ContactAction) {
     const tag = window.gtag as unknown as
       | ((command: string, name: string, parameters: Record<string, string>) => void)
       | undefined;
-    tag?.("event", eventName, { source: "chatgpt", campaign: "north_county" });
+    tag?.("event", eventName, { source, campaign });
   } catch {
     // Calling/texting must never be blocked by analytics.
   }
