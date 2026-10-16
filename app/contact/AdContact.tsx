@@ -27,74 +27,44 @@ function trackTap(action: ContactAction) {
 
 export default function AdContact() {
   return (
-    <AppShell>
-      <section className="flex w-full flex-col items-center pb-12 text-center">
-        <div className="mb-2 flex w-full justify-start">
-          <a
-            href="/"
-            aria-label="Back to HomeFront homepage"
-            className="rounded-md px-2 py-1 text-xs font-semibold text-white/65 underline-offset-4 hover:text-white hover:underline focus-visible:outline-2 focus-visible:outline-[#ff385c]"
-          >
+    <AppShell hideBrandHeader>
+      <section className="mx-auto flex w-full max-w-[520px] flex-col items-center pb-7 pt-2 text-center">
+        <div className="mb-2 flex w-full justify-between px-1 text-xs">
+          <span className="font-extrabold tracking-wide text-white">HOMEFRONT</span>
+          <a href="/" aria-label="Back to HomeFront homepage" className="font-medium text-white/70 underline-offset-4 hover:underline">
             ← Home
           </a>
         </div>
-        <h1
-          className="mb-3 block w-full text-center font-extrabold leading-tight tracking-tight text-white"
-          style={{
-            fontSize: "clamp(1.4rem,4vw,2.1rem)",
-            fontFamily: "Inter, ui-sans-serif, system-ui, sans-serif",
-            textShadow: "0 2px 16px rgba(0,0,0,0.12)",
-          }}
-        >
-          Your Next Move Starts Here.
-        </h1>
-        <p className="mb-4 px-2 text-center text-[clamp(12px,3.2vw,14px)] font-semibold leading-snug text-white">
-          Buying, selling, or using a VA loan? Connect <span className="text-amber-300">DIRECTLY</span> with HomeFront&apos;s veteran-led Realtors.
-        </p>
-
-        {/* Match the grey navigation tiles used on the HomeFront homepage. */}
-        <div className="grid w-full grid-cols-2 gap-3">
-          <a
-            href="tel:+14424368161"
-            onClick={() => trackTap("call")}
-            className="flex min-h-[82px] flex-col items-center justify-center rounded-lg border border-white/15 bg-white/10 px-2 py-3 text-center text-white shadow-md transition-colors hover:border-[#ff385c] hover:bg-[#ff385c] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#ff385c]"
-          >
-            <span className="text-[clamp(13px,3.2vw,16px)] font-extrabold leading-tight">Talk to a Realtor Now</span>
-            <span className="mt-1 text-[11px] font-medium text-white/80">Call our local team</span>
-          </a>
-          <a
-            href="sms:+14424368161"
-            onClick={() => trackTap("text")}
-            className="flex min-h-[82px] flex-col items-center justify-center rounded-lg border border-white/15 bg-white/10 px-2 py-3 text-center text-white shadow-md transition-colors hover:border-[#ff385c] hover:bg-[#ff385c] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#ff385c]"
-          >
-            <span className="text-[clamp(13px,3.2vw,16px)] font-extrabold leading-tight">Text a Realtor Now</span>
-            <span className="mt-1 text-[11px] font-medium text-white/80">Send a message directly</span>
-          </a>
-        </div>
-
-        <div className="mt-4 w-full overflow-hidden rounded-lg border border-white/15 bg-white/10">
+        <div className="relative h-[188px] w-full overflow-hidden rounded-lg border border-white/15 bg-white/10 sm:h-[230px]">
           <Image
             src="/homefront-team-sharp.jpg"
-            alt="The HomeFront Realty Group team"
-            width={1122}
-            height={720}
-            unoptimized
-            className="h-auto w-full object-cover"
+            alt="HomeFront's veteran-led real estate team"
+            fill
+            sizes="(max-width: 520px) 100vw, 520px"
+            className="object-cover object-center"
             priority
           />
         </div>
-
-        <p className="mt-4 text-center text-sm font-semibold text-white">
-          Real people. Local expertise. <span className="text-amber-300">No obligation.</span>
+        <h1 className="mt-3 text-[clamp(23px,6vw,30px)] font-extrabold leading-tight tracking-tight">
+          Talk to a HomeFront Realtor
+        </h1>
+        <p className="mt-2 max-w-[420px] px-2 text-[13px] leading-snug text-white/80">
+          Buying, selling, or using a VA loan? Connect with our veteran-led local team.
         </p>
-        <a href="tel:+14424368161" className="mt-3 text-base font-bold text-white underline underline-offset-4">
-          (442) 436-8161
-        </a>
-        <p className="mt-3 text-center text-xs text-white/60">
-          Fallbrook · Oceanside · Bonsall · Vista · San Marcos
-        </p>
-        <p className="mt-5 max-w-md text-center text-[11px] leading-relaxed text-white/45">
-          HomeFront provides real estate guidance. VA loan eligibility and approval are determined by the VA and participating lenders.
+        <div className="mt-4 grid w-full grid-cols-1 gap-2.5">
+          <a href="tel:+14424368161" onClick={() => trackTap("call")}
+            className="flex min-h-[58px] items-center justify-center rounded-lg bg-[#ff385c] px-3 py-3 text-[17px] font-extrabold text-white shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">
+            Talk to a Realtor Now
+          </a>
+          <a href="sms:+14424368161" onClick={() => trackTap("text")}
+            className="flex min-h-[58px] items-center justify-center rounded-lg border border-white/30 bg-white/10 px-3 py-3 text-[17px] font-extrabold text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">
+            Text a Realtor Now
+          </a>
+        </div>
+        <a href="tel:+14424368161" className="mt-3 text-sm font-semibold text-white/90 underline underline-offset-4">(442) 436-8161</a>
+        <p className="mt-3 text-[11px] text-white/55">Fallbrook · Oceanside · Bonsall · Vista · San Marcos</p>
+        <p className="mt-3 max-w-[450px] text-[10px] leading-relaxed text-white/40">
+          Free, no-obligation consultation. VA loan eligibility and approval are determined by the VA and participating lenders.
         </p>
       </section>
       <Analytics />
