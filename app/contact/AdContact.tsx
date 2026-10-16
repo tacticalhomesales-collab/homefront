@@ -28,15 +28,45 @@ function trackTap(action: ContactAction) {
 export default function AdContact() {
   return (
     <AppShell>
-      <section className="mx-auto flex w-full max-w-[520px] flex-col items-center px-1 pb-12 text-center">
-        <p className="mt-1 text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#ff98ad]">
-          Veteran-Led Real Estate · North County San Diego
+      <section className="flex w-full flex-col items-center pb-12 text-center">
+        <h1
+          className="mb-3 block w-full text-center font-extrabold leading-tight tracking-tight text-white"
+          style={{
+            fontSize: "clamp(1.4rem,4vw,2.1rem)",
+            fontFamily: "Inter, ui-sans-serif, system-ui, sans-serif",
+            textShadow: "0 2px 16px rgba(0,0,0,0.12)",
+          }}
+        >
+          Your Next Move Starts Here.
+        </h1>
+        <p className="mb-4 px-2 text-center text-[clamp(12px,3.2vw,14px)] font-semibold leading-snug text-white">
+          Buying, selling, or using a VA loan? Connect <span className="text-amber-300">DIRECTLY</span> with HomeFront&apos;s veteran-led Realtors.
         </p>
 
-        <div className="relative mt-3 w-full overflow-hidden rounded-xl border border-white/15 bg-white/5">
+        {/* Match the grey navigation tiles used on the HomeFront homepage. */}
+        <div className="grid w-full grid-cols-2 gap-3">
+          <a
+            href="tel:+14424368161"
+            onClick={() => trackTap("call")}
+            className="flex min-h-[82px] flex-col items-center justify-center rounded-lg border border-white/15 bg-white/10 px-2 py-3 text-center text-white shadow-md transition-colors hover:border-[#ff385c] hover:bg-[#ff385c] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#ff385c]"
+          >
+            <span className="text-[clamp(13px,3.2vw,16px)] font-extrabold leading-tight">Speak With a Realtor</span>
+            <span className="mt-1 text-[11px] font-medium text-white/80">Call our local team</span>
+          </a>
+          <a
+            href="sms:+14424368161"
+            onClick={() => trackTap("text")}
+            className="flex min-h-[82px] flex-col items-center justify-center rounded-lg border border-white/15 bg-white/10 px-2 py-3 text-center text-white shadow-md transition-colors hover:border-[#ff385c] hover:bg-[#ff385c] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#ff385c]"
+          >
+            <span className="text-[clamp(13px,3.2vw,16px)] font-extrabold leading-tight">Text a Realtor Now</span>
+            <span className="mt-1 text-[11px] font-medium text-white/80">Send a message directly</span>
+          </a>
+        </div>
+
+        <div className="mt-4 w-full overflow-hidden rounded-lg border border-white/15 bg-white/10">
           <Image
             src="/homefront-team.avif"
-            alt="The HomeFront Realty Group team in front of the HomeFront sign"
+            alt="The HomeFront Realty Group team"
             width={550}
             height={353}
             className="h-auto w-full object-cover"
@@ -44,46 +74,17 @@ export default function AdContact() {
           />
         </div>
 
-        <h1 className="mt-5 text-[clamp(25px,6vw,32px)] font-extrabold leading-tight tracking-tight">
-          Ready to Buy or Sell?
-        </h1>
-        <p className="mt-3 max-w-md text-[15px] leading-relaxed text-white/85">
-          Buying, selling, or using a VA loan? Speak directly with HomeFront&apos;s
-          veteran-led real estate team.
+        <p className="mt-4 text-center text-sm font-semibold text-white">
+          Real people. Local expertise. <span className="text-amber-300">No obligation.</span>
         </p>
-        <p className="mt-2 text-sm font-bold text-[#ffadbd]">
-          Free consultation · No obligation
-        </p>
-
-        <div className="mt-5 flex w-full flex-col gap-3">
-          <a
-            href="tel:+14424368161"
-            onClick={() => trackTap("call")}
-            className="flex min-h-[60px] items-center justify-center rounded-xl bg-[#ff385c] px-4 py-3 text-[17px] font-extrabold text-white shadow-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-          >
-            Speak With a Realtor
-          </a>
-          <a
-            href="sms:+14424368161"
-            onClick={() => trackTap("text")}
-            className="flex min-h-[60px] items-center justify-center rounded-xl border border-white/35 bg-white/10 px-4 py-3 text-[17px] font-extrabold text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-          >
-            Text a Realtor Now
-          </a>
-        </div>
-
-        <a
-          href="tel:+14424368161"
-          className="mt-5 text-base font-bold text-white underline underline-offset-4"
-        >
+        <a href="tel:+14424368161" className="mt-3 text-base font-bold text-white underline underline-offset-4">
           (442) 436-8161
         </a>
-        <p className="mt-4 text-xs leading-relaxed text-white/60">
+        <p className="mt-3 text-center text-xs text-white/60">
           Fallbrook · Oceanside · Bonsall · Vista · San Marcos
         </p>
-        <p className="mt-6 max-w-md text-[11px] leading-relaxed text-white/45">
-          HomeFront provides real estate guidance. VA loan eligibility
-          and approval are determined by the VA and participating lenders.
+        <p className="mt-5 max-w-md text-center text-[11px] leading-relaxed text-white/45">
+          HomeFront provides real estate guidance. VA loan eligibility and approval are determined by the VA and participating lenders.
         </p>
       </section>
       <Analytics />
