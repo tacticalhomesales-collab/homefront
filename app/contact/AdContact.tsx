@@ -65,10 +65,11 @@ export default function AdContact() {
 
         <div className="mt-4 w-full overflow-hidden rounded-lg border border-white/15 bg-white/10">
           <Image
-            src="/homefront-team.avif"
+            src="/homefront-team-sharp.jpg"
             alt="The HomeFront Realty Group team"
-            width={550}
-            height={353}
+            width={1122}
+            height={720}
+            unoptimized
             className="h-auto w-full object-cover"
             priority
           />
