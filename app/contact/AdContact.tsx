@@ -50,7 +50,7 @@ export default function AdContact() {
             onClick={() => trackTap("call")}
             className="flex min-h-[82px] flex-col items-center justify-center rounded-lg border border-white/15 bg-white/10 px-2 py-3 text-center text-white shadow-md transition-colors hover:border-[#ff385c] hover:bg-[#ff385c] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#ff385c]"
           >
-            <span className="text-[clamp(13px,3.2vw,16px)] font-extrabold leading-tight">Speak With a Realtor</span>
+            <span className="text-[clamp(13px,3.2vw,16px)] font-extrabold leading-tight">Talk to a Realtor Now</span>
             <span className="mt-1 text-[11px] font-medium text-white/80">Call our local team</span>
           </a>
           <a
