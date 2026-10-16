@@ -43,14 +43,14 @@ export default function AdContact() {
             href="tel:+14424368161"
             onClick={() => trackTap("call")}
           >
-            Call HomeFront Now
+            Speak With a Realtor
           </a>
           <a
             className="flex min-h-14 items-center justify-center rounded-xl border border-white/40 bg-white/10 px-4 text-lg font-bold text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
             href="sms:+14424368161"
             onClick={() => trackTap("text")}
           >
-            Text HomeFront Now
+            Text a Realtor Now
           </a>
         </div>
         <a href="tel:+14424368161" className="mt-4 text-base font-bold underline underline-offset-4">
