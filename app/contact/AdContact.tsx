@@ -58,7 +58,7 @@ export default function AdContact() {
           </a>
           <a href="sms:+14424368161" onClick={() => trackTap("text")}
             className="flex min-h-[58px] items-center justify-center rounded-lg border border-white/30 bg-white/10 px-3 py-3 text-[17px] font-extrabold text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">
-            Text a Realtor Now
+            Message an Agent Now
           </a>
         </div>
         <a href="tel:+14424368161" className="mt-3 text-sm font-semibold text-white/90 underline underline-offset-4">(442) 436-8161</a>
