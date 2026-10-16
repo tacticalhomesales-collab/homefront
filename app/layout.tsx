@@ -6,8 +6,8 @@ import PWARegister from "./pwa-register";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.thehomefront.ai"),
-  title: "HomeFront",
-  description: "Streamlined access to your housing benefits",
+  title: "HomeFront | Veteran-Led Real Estate in North County San Diego",
+  description: "Veteran-led HomeFront real estate team serving Fallbrook, Oceanside, Bonsall, Vista and North County San Diego. VA homebuying guidance, local buyer representation and home-selling strategy.",
   applicationName: "HomeFront",
   manifest: "/manifest.webmanifest",
   appleWebApp: {
@@ -20,8 +20,8 @@ export const metadata: Metadata = {
     apple: "/icons/homefront_homefront_logo_transparent.png",
   },
   openGraph: {
-    title: "HomeFront",
-    description: "Streamlined access to your housing benefits.",
+    title: "HomeFront | North County San Diego Real Estate",
+    description: "Veteran-led real estate team in Fallbrook, Oceanside and North County. Buying, selling and VA homebuying guidance.",
     url: "https://www.thehomefront.ai",
     siteName: "HomeFront",
     images: [
@@ -29,17 +29,33 @@ export const metadata: Metadata = {
         url: "/homefront-badge.png",
         width: 1200,
         height: 630,
-        alt: "HomeFront - Streamlined access to your housing benefits",
+        alt: "HomeFront veteran-led North County San Diego real estate team",
       },
     ],
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "HomeFront",
-    description: "Streamlined access to your housing benefits.",
+    title: "HomeFront | Veteran-Led North County Real Estate",
+    description: "Buy or sell in Fallbrook, Oceanside and North County San Diego with HomeFront. VA homebuying guidance and local expertise.",
     images: ["/homefront-badge.png"],
   },
+};
+
+const homeFrontOrganization = {
+  "@context": "https://schema.org",
+  "@type": "RealEstateAgent",
+  name: "HomeFront Realty Group",
+  url: "https://www.thehomefront.ai",
+  description: "Veteran-led real estate team assisting buyers and sellers throughout North County San Diego, including buyers exploring VA financing.",
+  areaServed: [
+    "Fallbrook, California",
+    "Oceanside, California",
+    "Bonsall, California",
+    "Vista, California",
+    "San Marcos, California",
+    "Valley Center, California"
+  ]
 };
 
 export const viewport: Viewport = {
@@ -73,6 +89,10 @@ gtag('config', 'AW-14883340182');`}
         />
       </head>
       <body className="h-full">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(homeFrontOrganization) }}
+        />
         <PWARegister />
         <Suspense fallback={<div className="min-h-[100dvh] bg-[#0b0f14]" />}>
           {children}
