@@ -4,6 +4,7 @@ import { useMemo, useRef, useState, useEffect, type ReactNode } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import AppShell from "../../components/AppShell";
+import AdContact from "./AdContact";
 import { buildApiUrl } from "@/lib/publicApp";
 
 declare global {
@@ -187,6 +188,10 @@ export default function ContactPage() {
       window.location.assign(nextUrl);
     }, 900);
   };
+
+  if (sp.get("source") === "chatgpt") {
+    return <AdContact />;
+  }
 
   return (
     <AppShell>
