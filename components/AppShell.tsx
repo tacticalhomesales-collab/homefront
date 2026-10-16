@@ -8,9 +8,10 @@ import { IntentBanner } from "./IntentVisuals";
 type AppShellProps = {
   children: React.ReactNode;
   footer?: React.ReactNode;
+  hideBrandHeader?: boolean;
 };
 
-export default function AppShell({ children, footer }: AppShellProps) {
+export default function AppShell({ children, footer, hideBrandHeader = false }: AppShellProps) {
   const sp = useSearchParams();
   const mission = sp.get("mission");
   const pathname = usePathname();
@@ -41,6 +42,7 @@ export default function AppShell({ children, footer }: AppShellProps) {
         )}
 
         {/* Header: size to content (NO fixed 30svh height) */}
+        {!hideBrandHeader && (
         <header className="pt-2 pb-2 flex flex-col items-center justify-center relative">
           {pathname === "/" ? (
             <>
@@ -84,6 +86,7 @@ export default function AppShell({ children, footer }: AppShellProps) {
             />
           )}
         </header>
+        )}
 
         {/* Content */}
         <div className="flex flex-col w-full flex-1">
