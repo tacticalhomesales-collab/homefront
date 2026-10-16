@@ -2,63 +2,88 @@
 
 import { track } from "@vercel/analytics";
 import { Analytics } from "@vercel/analytics/react";
+import Image from "next/image";
 import AppShell from "../../components/AppShell";
 
 type ContactAction = "call" | "text";
 
 function trackTap(action: ContactAction) {
-  // A button tap is not proof of a completed call or a delivered message.
+  // Taps indicate intent. They do not prove a connected call or a delivered text.
   const eventName = action === "call" ? "chatgpt_call_tap" : "chatgpt_text_tap";
   try {
     track(eventName, { source: "chatgpt", campaign: "north_county" });
-  } catch {}
+  } catch {
+    // Calling/texting must never be blocked by analytics.
+  }
   try {
     const tag = window.gtag as unknown as
-      | ((command: "event", name: string, parameters: Record<string, string>) => void)
+      | ((command: string, name: string, parameters: Record<string, string>) => void)
       | undefined;
     tag?.("event", eventName, { source: "chatgpt", campaign: "north_county" });
-  } catch {}
+  } catch {
+    // Calling/texting must never be blocked by analytics.
+  }
 }
 
 export default function AdContact() {
   return (
     <AppShell>
-      <section className="mx-auto flex w-full max-w-md flex-col items-center px-3 pb-12 text-center">
-        <p className="mt-2 text-sm font-bold uppercase tracking-wider text-white/70">
-          Veteran-Led Real Estate • North County San Diego
+      <section className="mx-auto flex w-full max-w-[520px] flex-col items-center px-1 pb-12 text-center">
+        <p className="mt-1 text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#ff98ad]">
+          Veteran-Led Real Estate · North County San Diego
         </p>
-        <h1 className="mt-4 text-2xl font-extrabold leading-tight sm:text-3xl">
+
+        <div className="relative mt-3 w-full overflow-hidden rounded-xl border border-white/15 bg-white/5">
+          <Image
+            src="/homefront-team.avif"
+            alt="The HomeFront Realty Group team in front of the HomeFront sign"
+            width={550}
+            height={353}
+            className="h-auto w-full object-cover"
+            priority
+          />
+        </div>
+
+        <h1 className="mt-5 text-[clamp(25px,6vw,32px)] font-extrabold leading-tight tracking-tight">
           Ready to Buy or Sell?
         </h1>
-        <p className="mt-3 text-sm leading-relaxed text-white/85 sm:text-base">
-          Call or text HomeFront for a free, no-obligation conversation
-          about buying, selling, or purchasing a home with a VA loan.
+        <p className="mt-3 max-w-md text-[15px] leading-relaxed text-white/85">
+          Buying, selling, or using a VA loan? Speak directly with HomeFront&apos;s
+          veteran-led real estate team.
         </p>
-        <p className="mt-4 text-xs font-semibold text-white/70">
-          Fallbrook • Oceanside • Bonsall • Vista • San Marcos
+        <p className="mt-2 text-sm font-bold text-[#ffadbd]">
+          Free consultation · No obligation
         </p>
-        <div className="mt-6 flex w-full flex-col gap-3">
+
+        <div className="mt-5 flex w-full flex-col gap-3">
           <a
-            className="flex min-h-14 items-center justify-center rounded-xl bg-[#ff385c] px-4 text-lg font-bold text-white shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
             href="tel:+14424368161"
             onClick={() => trackTap("call")}
+            className="flex min-h-[60px] items-center justify-center rounded-xl bg-[#ff385c] px-4 py-3 text-[17px] font-extrabold text-white shadow-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
           >
             Speak With a Realtor
           </a>
           <a
-            className="flex min-h-14 items-center justify-center rounded-xl border border-white/40 bg-white/10 px-4 text-lg font-bold text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
             href="sms:+14424368161"
             onClick={() => trackTap("text")}
+            className="flex min-h-[60px] items-center justify-center rounded-xl border border-white/35 bg-white/10 px-4 py-3 text-[17px] font-extrabold text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
           >
             Text a Realtor Now
           </a>
         </div>
-        <a href="tel:+14424368161" className="mt-4 text-base font-bold underline underline-offset-4">
+
+        <a
+          href="tel:+14424368161"
+          className="mt-5 text-base font-bold text-white underline underline-offset-4"
+        >
           (442) 436-8161
         </a>
-        <p className="mt-6 text-xs leading-relaxed text-white/50">
-          We provide real estate guidance, not loan approval. VA eligibility
-          and lending decisions are made by the VA and participating lenders.
+        <p className="mt-4 text-xs leading-relaxed text-white/60">
+          Fallbrook · Oceanside · Bonsall · Vista · San Marcos
+        </p>
+        <p className="mt-6 max-w-md text-[11px] leading-relaxed text-white/45">
+          HomeFront provides real estate guidance. VA loan eligibility
+          and approval are determined by the VA and participating lenders.
         </p>
       </section>
       <Analytics />
